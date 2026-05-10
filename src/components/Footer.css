@@ -1,0 +1,119 @@
+.footer {
+  background: var(--color-night);
+  color: var(--color-white);
+  padding-top: var(--space-20);
+  padding-bottom: var(--space-8);
+  border-top: 1px solid var(--color-night-light);
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1.5fr;
+  gap: var(--space-12);
+  margin-bottom: var(--space-16);
+}
+
+.footer-brand p {
+  color: var(--color-gray-400);
+  margin-top: var(--space-4);
+  max-width: 300px;
+}
+
+.footer-heading {
+  color: var(--color-white);
+  font-size: var(--fs-h4);
+  margin-bottom: var(--space-6);
+  position: relative;
+}
+
+.footer-links {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.footer-link {
+  color: var(--color-gray-400);
+  transition: all var(--transition-fast);
+  font-size: var(--fs-small);
+}
+
+.footer-link:hover {
+  color: var(--color-periwinkle);
+  transform: translateX(5px);
+}
+
+.footer-newsletter p {
+  color: var(--color-gray-400);
+  font-size: var(--fs-small);
+  margin-bottom: var(--space-4);
+}
+
+.newsletter-form {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.newsletter-form input {
+  background: var(--color-night-light);
+  border: 1px solid var(--color-gray-800);
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md);
+  color: var(--color-white);
+  flex: 1;
+}
+
+.footer-bottom {
+  border-top: 1px solid var(--color-night-light);
+  padding-top: var(--space-8);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
+
+.footer-copy {
+  color: var(--color-gray-500);
+  font-size: var(--fs-xs);
+}
+
+.footer-socials {
+  display: flex;
+  gap: var(--space-4);
+}
+
+.social-link {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  background: var(--color-night-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-gray-400);
+  transition: all var(--transition-base);
+}
+
+.social-link:hover {
+  background: var(--color-blue);
+  color: var(--color-white);
+  transform: translateY(-3px);
+}
+
+@media (max-width: 992px) {
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+  
+  .newsletter-form {
+    flex-direction: column;
+  }
+}

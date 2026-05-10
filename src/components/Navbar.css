@@ -1,0 +1,117 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--navbar-height);
+  display: flex;
+  align-items: center;
+  z-index: var(--z-sticky);
+  transition: all var(--transition-base);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.navbar--scrolled {
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: var(--shadow-sm);
+  height: calc(var(--navbar-height) - 10px);
+}
+
+.navbar .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-links {
+  display: flex;
+  gap: var(--space-8);
+  align-items: center;
+}
+
+.nav-link {
+  font-weight: var(--fw-medium);
+  color: var(--color-gray-700);
+  font-size: var(--fs-small);
+  transition: all var(--transition-fast);
+  position: relative;
+  padding: var(--space-2) 0;
+}
+
+.nav-link:hover, .nav-link.active {
+  color: var(--color-blue);
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--color-blue);
+  transition: width var(--transition-base);
+}
+
+.nav-link:hover::after, .nav-link.active::after {
+  width: 100%;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.mobile-toggle {
+  display: none;
+  color: var(--color-night);
+  cursor: pointer;
+}
+
+.nav-links .mobile-nav-btn {
+  display: none;
+}
+
+/* ---- Mobile Menu ---- */
+@media (max-width: 992px) {
+  .nav-links {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 280px;
+    height: 100vh;
+    background: var(--color-white);
+    flex-direction: column;
+    padding: var(--space-20) var(--space-8);
+    gap: var(--space-6);
+    box-shadow: var(--shadow-2xl);
+    transform: translateX(100%);
+    transition: transform var(--transition-slow);
+    z-index: var(--z-overlay);
+  }
+
+  .nav-links.open {
+    transform: translateX(0);
+  }
+
+  .mobile-toggle {
+    display: block;
+    z-index: var(--z-modal);
+  }
+
+  .nav-actions .btn {
+    display: none;
+  }
+  
+  .nav-links .mobile-nav-btn {
+    display: flex;
+    width: 100%;
+    margin-top: var(--space-4);
+  }
+}

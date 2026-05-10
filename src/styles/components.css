@@ -1,0 +1,211 @@
+/* =============================================
+   PIXORA — Shared Component Styles
+   ============================================= */
+
+/* ---- Buttons ---- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: 0.875rem 1.75rem;
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-body);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-base);
+  cursor: pointer;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.btn--primary {
+  background: var(--color-blue);
+  color: var(--color-white);
+  box-shadow: var(--shadow-md);
+}
+
+.btn--primary:hover {
+  background: var(--color-blue-dark);
+  color: var(--color-white) !important;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg), var(--shadow-glow-blue);
+}
+
+.btn--secondary {
+  background: var(--color-frost);
+  color: var(--color-blue);
+  border: 1px solid var(--color-frost-dark);
+}
+
+.btn--secondary:hover {
+  background: var(--color-frost-dark);
+  transform: translateY(-2px);
+}
+
+.btn--coral {
+  background: var(--color-coral);
+  color: var(--color-white);
+  box-shadow: var(--shadow-md);
+}
+
+.btn--coral:hover {
+  background: var(--color-coral-dark);
+  color: var(--color-white) !important;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg), var(--shadow-glow-coral);
+}
+
+.btn--outline {
+  background: transparent;
+  color: var(--color-blue);
+  border: 2px solid var(--color-blue);
+}
+
+.btn--outline:hover {
+  background: var(--color-blue);
+  color: var(--color-white) !important;
+  transform: translateY(-2px);
+}
+
+.btn--white {
+  background: var(--color-white);
+  color: var(--color-night);
+}
+
+.btn--white:hover {
+  background: var(--color-frost);
+  color: var(--color-night) !important;
+  transform: translateY(-2px);
+}
+
+.btn--lg {
+  padding: 1.125rem 2.25rem;
+  font-size: var(--fs-body-lg);
+  border-radius: var(--radius-lg);
+}
+
+.btn--sm {
+  padding: 0.5rem 1rem;
+  font-size: var(--fs-small);
+  border-radius: var(--radius-sm);
+}
+
+/* ---- Cards ---- */
+.card {
+  background: var(--color-white);
+  border-radius: var(--radius-xl);
+  padding: var(--space-8);
+  border: 1px solid var(--color-gray-200);
+  transition: all var(--transition-spring);
+  position: relative;
+  overflow: hidden;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-xl);
+  border-color: var(--color-blue-light);
+}
+
+.card--glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.card--dark {
+  background: var(--color-night);
+  color: var(--color-white);
+  border-color: var(--color-night-light);
+}
+
+.card--dark h3, .card--dark p {
+  color: inherit;
+}
+
+/* ---- Form Elements ---- */
+.form-group {
+  margin-bottom: var(--space-6);
+}
+
+.form-label {
+  display: block;
+  font-weight: var(--fw-semibold);
+  margin-bottom: var(--space-2);
+  font-size: var(--fs-small);
+  color: var(--color-night);
+}
+
+.form-control {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: var(--color-white);
+  border: 2px solid var(--color-gray-200);
+  border-radius: var(--radius-md);
+  font-size: var(--fs-body);
+  transition: all var(--transition-base);
+}
+
+.form-control:focus {
+  border-color: var(--color-blue);
+  box-shadow: 0 0 0 4px rgba(79, 110, 247, 0.1);
+}
+
+.form-control::placeholder {
+  color: var(--color-gray-400);
+}
+
+textarea.form-control {
+  min-height: 120px;
+  resize: vertical;
+}
+
+/* ---- Badges & Tags ---- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-full);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-wider);
+}
+
+.badge--blue { background: var(--color-frost); color: var(--color-blue); }
+.badge--coral { background: #FFEAEA; color: var(--color-coral); }
+.badge--green { background: #E6F6EB; color: #2D9D78; }
+
+/* ---- Icons ---- */
+.icon-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: var(--radius-lg);
+  background: var(--color-frost);
+  color: var(--color-blue);
+  margin-bottom: var(--space-4);
+  transition: all var(--transition-base);
+}
+
+.card:hover .icon-box {
+  background: var(--color-blue);
+  color: var(--color-white);
+  transform: scale(1.1) rotate(5deg);
+}
+
+/* ---- Grid Layouts ---- */
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-8); }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-8); }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-8); }
+
+@media (max-width: 992px) {
+  .grid-3, .grid-4 { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 640px) {
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+}

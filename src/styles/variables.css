@@ -1,0 +1,123 @@
+/* =============================================
+   PIXORA DESIGN SYSTEM — CSS Custom Properties
+   ============================================= */
+
+:root {
+  /* ---- Brand Colors ---- */
+  --color-night:        #1A1A3E;
+  --color-night-light:  #2A2A5E;
+  --color-night-dark:   #12122E;
+  --color-blue:         #4F6EF7;
+  --color-blue-light:   #6B87FF;
+  --color-blue-dark:    #3A56D4;
+  --color-periwinkle:   #7B96FF;
+  --color-periwinkle-light: #9DB2FF;
+  --color-coral:        #FF6B6B;
+  --color-coral-light:  #FF8F8F;
+  --color-coral-dark:   #E55555;
+  --color-frost:        #F0F4FF;
+  --color-frost-dark:   #E0E8FF;
+  --color-white:        #FFFFFF;
+  --color-gray-100:     #F7F8FC;
+  --color-gray-200:     #E8ECF4;
+  --color-gray-300:     #CCD2E0;
+  --color-gray-400:     #9AA2B8;
+  --color-gray-500:     #6B7280;
+  --color-gray-600:     #4B5563;
+  --color-gray-700:     #374151;
+  --color-gray-800:     #1F2937;
+
+  /* ---- Gradients ---- */
+  --gradient-primary:   linear-gradient(135deg, var(--color-blue) 0%, var(--color-periwinkle) 100%);
+  --gradient-hero:      linear-gradient(135deg, var(--color-night) 0%, var(--color-night-light) 50%, #2E3A7A 100%);
+  --gradient-coral:     linear-gradient(135deg, var(--color-coral) 0%, #FF8E53 100%);
+  --gradient-frost:     linear-gradient(180deg, var(--color-frost) 0%, var(--color-white) 100%);
+  --gradient-cta:       linear-gradient(135deg, var(--color-night) 0%, var(--color-blue-dark) 100%);
+  --gradient-glass:     linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+  --gradient-card:      linear-gradient(180deg, var(--color-white) 0%, var(--color-frost) 100%);
+
+  /* ---- Typography ---- */
+  --font-primary:       'Inter', Verdana, Geneva, Tahoma, sans-serif;
+  --font-mono:          'JetBrains Mono', 'Fira Code', monospace;
+
+  --fs-display:         clamp(2.5rem, 5vw, 4.5rem);
+  --fs-h1:              clamp(2rem, 4vw, 3.5rem);
+  --fs-h2:              clamp(1.75rem, 3vw, 2.5rem);
+  --fs-h3:              clamp(1.25rem, 2vw, 1.75rem);
+  --fs-h4:              clamp(1.1rem, 1.5vw, 1.35rem);
+  --fs-body:            1rem;
+  --fs-body-lg:         1.125rem;
+  --fs-small:           0.875rem;
+  --fs-xs:              0.75rem;
+
+  --fw-regular:         400;
+  --fw-medium:          500;
+  --fw-semibold:        600;
+  --fw-bold:            700;
+  --fw-extrabold:       800;
+
+  --lh-tight:           1.2;
+  --lh-normal:          1.6;
+  --lh-relaxed:         1.8;
+
+  --ls-tight:           -0.02em;
+  --ls-normal:          0;
+  --ls-wide:            0.05em;
+  --ls-wider:           0.1em;
+
+  /* ---- Spacing Scale ---- */
+  --space-1:            0.25rem;   /* 4px */
+  --space-2:            0.5rem;    /* 8px */
+  --space-3:            0.75rem;   /* 12px */
+  --space-4:            1rem;      /* 16px */
+  --space-5:            1.25rem;   /* 20px */
+  --space-6:            1.5rem;    /* 24px */
+  --space-8:            2rem;      /* 32px */
+  --space-10:           2.5rem;    /* 40px */
+  --space-12:           3rem;      /* 48px */
+  --space-16:           4rem;      /* 64px */
+  --space-20:           5rem;      /* 80px */
+  --space-24:           6rem;      /* 96px */
+  --space-32:           8rem;      /* 128px */
+
+  /* ---- Layout ---- */
+  --container-max:      1200px;
+  --container-wide:     1400px;
+  --container-narrow:   800px;
+  --container-padding:  var(--space-6);
+
+  /* ---- Borders & Radii ---- */
+  --radius-sm:          0.375rem;   /* 6px */
+  --radius-md:          0.5rem;     /* 8px */
+  --radius-lg:          0.75rem;    /* 12px */
+  --radius-xl:          1rem;       /* 16px */
+  --radius-2xl:         1.5rem;     /* 24px */
+  --radius-full:        9999px;
+
+  /* ---- Shadows ---- */
+  --shadow-xs:          0 1px 2px rgba(26, 26, 62, 0.04);
+  --shadow-sm:          0 2px 8px rgba(26, 26, 62, 0.06);
+  --shadow-md:          0 4px 16px rgba(26, 26, 62, 0.08);
+  --shadow-lg:          0 8px 32px rgba(26, 26, 62, 0.10);
+  --shadow-xl:          0 16px 48px rgba(26, 26, 62, 0.14);
+  --shadow-2xl:         0 24px 64px rgba(26, 26, 62, 0.18);
+  --shadow-glow-blue:   0 0 30px rgba(79, 110, 247, 0.3);
+  --shadow-glow-coral:  0 0 30px rgba(255, 107, 107, 0.3);
+  --shadow-inner:       inset 0 2px 4px rgba(26, 26, 62, 0.06);
+
+  /* ---- Transitions ---- */
+  --transition-fast:    150ms ease;
+  --transition-base:    250ms ease;
+  --transition-slow:    400ms ease;
+  --transition-spring:  500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* ---- Z-Index Scale ---- */
+  --z-dropdown:         100;
+  --z-sticky:           200;
+  --z-overlay:          300;
+  --z-modal:            400;
+  --z-toast:            500;
+
+  /* ---- Navbar ---- */
+  --navbar-height:      72px;
+}

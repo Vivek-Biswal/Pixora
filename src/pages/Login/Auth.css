@@ -1,0 +1,290 @@
+/* =============================================
+   PREMIUM AUTHENTICATION STYLES (Login / Signup)
+   ============================================= */
+
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #0F111A; /* Deep dark premium background */
+  position: relative;
+  overflow: hidden;
+  padding: var(--space-8) var(--space-4);
+}
+
+/* Futuristic grid background */
+.auth-grid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Beautiful background glows */
+.auth-bg-glow {
+  position: absolute;
+  filter: blur(140px);
+  opacity: 0.5;
+  border-radius: 50%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.glow-1 {
+  width: 600px;
+  height: 600px;
+  top: -200px;
+  left: -200px;
+  background: var(--color-blue);
+  animation: floatSlow 15s ease-in-out infinite alternate;
+}
+
+.glow-2 {
+  width: 500px;
+  height: 500px;
+  bottom: -150px;
+  right: -100px;
+  background: var(--color-coral);
+  animation: floatSlow 12s ease-in-out infinite alternate-reverse;
+}
+
+.auth-container {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.auth-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.auth-logo {
+  margin-bottom: var(--space-8);
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.95);
+  padding: var(--space-3) var(--space-6);
+  border-radius: var(--radius-full);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.auth-card {
+  width: 100%;
+  background: rgba(20, 23, 33, 0.7); /* Dark glassmorphism */
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-radius: var(--radius-2xl);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: var(--space-10);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: var(--space-10);
+}
+
+.auth-header h2 {
+  color: var(--color-white);
+  font-size: var(--fs-h2);
+  margin-bottom: var(--space-2);
+  letter-spacing: -0.02em;
+}
+
+.auth-header p {
+  color: var(--color-gray-400);
+  font-size: 15px;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-form .form-label {
+  color: var(--color-gray-300);
+  margin-bottom: var(--space-2);
+}
+
+.input-with-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-with-icon .input-icon {
+  position: absolute;
+  left: 1rem;
+  color: var(--color-gray-500);
+  pointer-events: none;
+  transition: color var(--transition-fast);
+}
+
+.auth-form .form-control {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--color-white);
+  padding: 0.875rem 1rem 0.875rem 2.75rem;
+  border-radius: var(--radius-lg);
+  font-size: 15px;
+}
+
+.auth-form .form-control:focus {
+  background: rgba(0, 0, 0, 0.4);
+  border-color: var(--color-blue);
+  box-shadow: 0 0 0 4px rgba(79, 110, 247, 0.15);
+}
+
+.auth-form .form-control:focus + .input-icon,
+.auth-form .form-control:focus ~ .input-icon {
+  color: var(--color-blue);
+}
+
+.password-toggle {
+  position: absolute;
+  right: 1rem;
+  color: var(--color-gray-500);
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  transition: color var(--transition-fast);
+}
+
+.password-toggle:hover {
+  color: var(--color-gray-300);
+}
+
+.auth-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-8);
+  margin-top: var(--space-4);
+  font-size: 14px;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  color: var(--color-gray-300);
+  user-select: none;
+}
+
+.checkbox-label input {
+  display: none;
+}
+
+.checkbox-custom {
+  width: 18px;
+  height: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.2);
+  position: relative;
+  transition: all var(--transition-fast);
+}
+
+.checkbox-label input:checked + .checkbox-custom {
+  background: var(--color-blue);
+  border-color: var(--color-blue);
+}
+
+.checkbox-label input:checked + .checkbox-custom::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 6px;
+  width: 4px;
+  height: 9px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.forgot-password {
+  color: var(--color-periwinkle-light);
+  font-weight: var(--fw-medium);
+  transition: color var(--transition-fast);
+}
+
+.forgot-password:hover {
+  color: var(--color-white);
+}
+
+.auth-divider {
+  display: flex;
+  align-items: center;
+  margin: var(--space-8) 0;
+  color: var(--color-gray-500);
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.auth-divider span {
+  padding: 0 var(--space-4);
+}
+
+.social-btn {
+  background: white;
+  color: #1A1A3E !important;
+  font-weight: 600;
+  border: none;
+}
+
+.social-btn:hover {
+  background: #f0f4ff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+}
+
+.auth-footer-text {
+  margin-top: var(--space-8);
+  text-align: center;
+  color: var(--color-gray-400);
+  font-size: 15px;
+}
+
+.auth-footer-text a {
+  color: var(--color-white);
+  font-weight: var(--fw-semibold);
+  margin-left: 4px;
+}
+
+.auth-footer-text a:hover {
+  color: var(--color-blue-light);
+  text-decoration: underline;
+}
+
+@media (max-width: 640px) {
+  .auth-card {
+    padding: var(--space-8) var(--space-6);
+  }
+}
