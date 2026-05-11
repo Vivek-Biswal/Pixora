@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Check, ArrowRight, ArrowLeft, Send, Sparkles, User, Briefcase, Calendar, AlertCircle } from 'lucide-react';
+import { Check, ArrowRight, ArrowLeft, Send, Sparkles, User, Briefcase, Calendar, AlertCircle, UploadCloud } from 'lucide-react';
+import toast, { Toaster } from 'react-hot-toast';
 import ScrollAnimator from '../../components/ScrollAnimator';
 import { useAuth } from '../../context/AuthContext';
+import { submitProjectRequest } from '../../services/db';
 
 const Request = () => {
   const [step, setStep] = useState(1);
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { isAuthenticated, user } = useAuth();
   const navigate = useNavigate();
 
@@ -15,6 +18,7 @@ const Request = () => {
     name: '', company: '', email: '', phone: '',
     category: '', description: '', budget: '', deadline: ''
   });
+  const [file, setFile] = useState(null);
 
   // Load saved progress on mount
   useEffect(() => {
@@ -52,11 +56,28 @@ const Request = () => {
   
   const prevStep = () => setStep(step - 1);
 
-  const handleSubmit = (e) => {
+  const handleFileChange = (e) => {
+    if (e.target.files[0]) {
+      setFile(e.target.files[0]);
+    }
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitted(true);
-    localStorage.removeItem('pixora_request_data');
-    localStorage.removeItem('pixora_request_step');
+    if (!isAuthenticated) return;
+
+    setIsSubmitting(true);
+    try {
+      await submitProjectRequest(user.uid, formData, file);
+      setSubmitted(true);
+      localStorage.removeItem('pixora_request_data');
+      localStorage.removeItem('pixora_request_step');
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to submit request. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (submitted) {
@@ -81,6 +102,7 @@ const Request = () => {
 
   return (
     <div className="request-page" style={{ paddingTop: 'var(--navbar-height)' }}>
+      <Toaster position="top-right" />
       <section className="section bg-frost" style={{ background: 'var(--color-frost)', textAlign: 'center' }}>
         <div className="container">
           <ScrollAnimator animation="fade-in">
@@ -170,6 +192,20 @@ const Request = () => {
                       <label className="form-label">Description of your needs</label>
                       <textarea name="description" value={formData.description} onChange={handleChange} className="form-control" placeholder="Tell us what you want to achieve..." style={{ height: '150px' }}></textarea>
                     </div>
+                    <div className="form-group">
+                      <label className="form-label">Upload Reference Files (Temporarily Disabled)</label>
+                      <div style={{ 
+                        border: '2px dashed var(--color-gray-300)', borderRadius: 'var(--radius-lg)', 
+                        padding: '2rem', textAlign: 'center', cursor: 'not-allowed', background: 'var(--color-frost)',
+                        opacity: 0.6
+                      }}>
+                        <UploadCloud size={32} style={{ color: 'var(--color-gray-400)', marginBottom: '10px' }} />
+                        <p style={{ margin: 0, fontSize: '14px', color: 'var(--color-gray-500)' }}>
+                          File uploads are currently being activated. <br />
+                          Please share links to your files in the description above instead.
+                        </p>
+                      </div>
+                    </div>
                   </ScrollAnimator>
                 )}
 
@@ -239,8 +275,8 @@ const Request = () => {
                       Next Step <ArrowRight size={18} />
                     </button>
                   ) : (
-                    <button type="submit" className="btn btn--coral btn--lg">
-                      Submit Request <Send size={18} />
+                    <button type="submit" className="btn btn--coral btn--lg" disabled={isSubmitting}>
+                      {isSubmitting ? 'Submitting...' : 'Submit Request'} <Send size={18} />
                     </button>
                   )}
                 </div>
