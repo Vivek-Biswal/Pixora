@@ -1,6 +1,5 @@
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { db, storage } from '../config/firebase';
+import { db } from '../config/firebase';
 
 export const submitProjectRequest = async (userId, requestData, file) => {
   try {
@@ -8,17 +7,9 @@ export const submitProjectRequest = async (userId, requestData, file) => {
     let fileName = null;
 
     if (file) {
-<<<<<<< HEAD
       // Storage is temporarily disabled for this project
       console.log("File upload bypassed: Firebase Storage is disabled.");
       fileName = file.name + " (Pending activation)";
-=======
-      // Upload file to Firebase Storage
-      const storageRef = ref(storage, `project_requests/${userId}/${Date.now()}_${file.name}`);
-      const uploadResult = await uploadBytes(storageRef, file);
-      fileUrl = await getDownloadURL(uploadResult.ref);
-      fileName = file.name;
->>>>>>> 318d02ee012d758f89ea62caa95d6ee562e4c88e
     }
 
     // Save request to Firestore

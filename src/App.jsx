@@ -22,19 +22,6 @@ import ForgotPassword from './pages/ForgotPassword/ForgotPassword.jsx';
 import AdminDashboard from './pages/Admin/AdminDashboard.jsx';
 import ClientDashboard from './pages/Client/ClientDashboard.jsx';
 import { AuthProvider, useAuth } from './context/AuthContext.jsx';
-<<<<<<< HEAD
-=======
-
-const ProtectedRoute = ({ children, adminOnly = false }) => {
-  const { user, isAuthenticated, loading } = useAuth();
-  
-  if (loading) return <div className="loading-screen">Loading...</div>;
-  if (!isAuthenticated) return <Navigate to="/login" />;
-  if (adminOnly && user?.role !== 'admin') return <Navigate to="/dashboard" />;
-  
-  return children;
-};
->>>>>>> 318d02ee012d758f89ea62caa95d6ee562e4c88e
 
 // ─── Protected Route ────────────────────────────────────────────────────────
 const ProtectedRoute = ({ children, adminOnly = false }) => {
@@ -89,7 +76,6 @@ function App() {
     <AuthProvider>
       <Router>
         <ScrollToTop />
-<<<<<<< HEAD
         <Routes>
           {/* Public site pages — wrapped in Navbar + Footer */}
           <Route path="/" element={<SiteLayout><Home /></SiteLayout>} />
@@ -120,36 +106,6 @@ function App() {
           {/* Fallback */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
-=======
-        <Navbar />
-        <main>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/services" element={<Services />} />
-            <Route path="/portfolio" element={<Portfolio />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/pricing" element={<Pricing />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/request" element={<Request />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            
-            {/* Dashboard Routes */}
-            <Route path="/dashboard" element={
-              <ProtectedRoute>
-                <ClientDashboard />
-              </ProtectedRoute>
-            } />
-            <Route path="/admin" element={
-              <ProtectedRoute adminOnly={true}>
-                <AdminDashboard />
-              </ProtectedRoute>
-            } />
-          </Routes>
-        </main>
-        <Footer />
->>>>>>> 318d02ee012d758f89ea62caa95d6ee562e4c88e
       </Router>
     </AuthProvider>
   );

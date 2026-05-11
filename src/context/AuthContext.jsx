@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-<<<<<<< HEAD
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -12,20 +11,6 @@ import {
 } from 'firebase/auth';
 import { doc, setDoc, getDoc, serverTimestamp } from 'firebase/firestore';
 import { auth, db } from '../config/firebase';
-=======
-import { 
-  createUserWithEmailAndPassword, 
-  signInWithEmailAndPassword, 
-  signOut, 
-  onAuthStateChanged,
-  GoogleAuthProvider,
-  signInWithPopup,
-  sendPasswordResetEmail,
-  updateProfile
-} from 'firebase/auth';
-import { doc, setDoc, getDoc } from 'firebase/firestore';
-import { auth, db, googleProvider } from '../config/firebase';
->>>>>>> 318d02ee012d758f89ea62caa95d6ee562e4c88e
 
 const AuthContext = createContext();
 export const useAuth = () => useContext(AuthContext);
@@ -52,7 +37,6 @@ const createUserDoc = async (firebaseUser, extraData = {}) => {
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-<<<<<<< HEAD
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -82,32 +66,6 @@ export const AuthProvider = ({ children }) => {
             email: firebaseUser.email,
             name: firebaseUser.displayName || firebaseUser.email.split('@')[0],
             role: 'client'
-=======
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
-      if (firebaseUser) {
-        // Fetch additional user data from Firestore if needed
-        try {
-          const userDoc = await getDoc(doc(db, 'users', firebaseUser.uid));
-          const userData = userDoc.exists() ? userDoc.data() : {};
-          
-          setUser({
-            uid: firebaseUser.uid,
-            email: firebaseUser.email,
-            name: firebaseUser.displayName || userData.name || firebaseUser.email.split('@')[0],
-            role: userData.role || 'client',
-            ...userData
-          });
-          setIsAuthenticated(true);
-        } catch (error) {
-          console.error("Error fetching user data:", error);
-          setUser({
-            uid: firebaseUser.uid,
-            email: firebaseUser.email,
-            name: firebaseUser.displayName || firebaseUser.email.split('@')[0]
->>>>>>> 318d02ee012d758f89ea62caa95d6ee562e4c88e
           });
           setIsAuthenticated(true);
         }
@@ -121,7 +79,6 @@ export const AuthProvider = ({ children }) => {
     return unsubscribe;
   }, []);
 
-<<<<<<< HEAD
   // ─── Sign up with Email/Password ─────────────────────────────────────────
   const signup = async (email, password, name) => {
     const { user: firebaseUser } = await createUserWithEmailAndPassword(auth, email, password);
@@ -163,54 +120,6 @@ export const AuthProvider = ({ children }) => {
     await signOut(auth);
     setUser(null);
     setIsAuthenticated(false);
-=======
-  const signup = async (email, password, name) => {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    
-    // Update profile
-    await updateProfile(userCredential.user, { displayName: name });
-    
-    // Create user document in Firestore
-    await setDoc(doc(db, 'users', userCredential.user.uid), {
-      name,
-      email,
-      role: 'client',
-      createdAt: new Date().toISOString()
-    });
-    
-    return userCredential.user;
-  };
-
-  const login = (email, password) => {
-    return signInWithEmailAndPassword(auth, email, password);
-  };
-
-  const loginWithGoogle = async () => {
-    const userCredential = await signInWithPopup(auth, googleProvider);
-    
-    // Check if user document exists, if not create it
-    const userDocRef = doc(db, 'users', userCredential.user.uid);
-    const userDocSnap = await getDoc(userDocRef);
-    
-    if (!userDocSnap.exists()) {
-      await setDoc(userDocRef, {
-        name: userCredential.user.displayName,
-        email: userCredential.user.email,
-        role: 'client',
-        createdAt: new Date().toISOString()
-      });
-    }
-    
-    return userCredential.user;
-  };
-
-  const resetPassword = (email) => {
-    return sendPasswordResetEmail(auth, email);
-  };
-
-  const logout = () => {
-    return signOut(auth);
->>>>>>> 318d02ee012d758f89ea62caa95d6ee562e4c88e
   };
 
   const value = {
@@ -226,22 +135,8 @@ export const AuthProvider = ({ children }) => {
 
   // Show children only when loading is complete to avoid flash of unauthenticated content
   return (
-<<<<<<< HEAD
     <AuthContext.Provider value={value}>
       {children}
-=======
-    <AuthContext.Provider value={{ 
-      isAuthenticated, 
-      user, 
-      loading,
-      signup,
-      login, 
-      loginWithGoogle,
-      resetPassword,
-      logout 
-    }}>
-      {!loading && children}
->>>>>>> 318d02ee012d758f89ea62caa95d6ee562e4c88e
     </AuthContext.Provider>
   );
 };
