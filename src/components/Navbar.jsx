@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, Link, useLocation } from 'react-router-dom';
-import { Menu, X, ArrowRight } from 'lucide-react';
+import { Menu, X, ArrowRight, LayoutDashboard, LogOut } from 'lucide-react';
 import Logo from './Logo.jsx';
+import { useAuth } from '../context/AuthContext.jsx';
 import './Navbar.css';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
+  const { isAuthenticated, logout, user } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -49,21 +51,48 @@ const Navbar = () => {
               {item.name}
             </NavLink>
           ))}
-          <Link to="/request" className="btn btn--primary btn--sm mobile-nav-btn">
-            Get Started <ArrowRight size={16} />
-          </Link>
-          <Link to="/login" className="btn btn--outline btn--sm mobile-nav-btn">
-            Login
-          </Link>
+          
+          {isAuthenticated ? (
+            <>
+              <Link to={user?.role === 'admin' ? "/admin" : "/dashboard"} className="nav-link">
+                Dashboard
+              </Link>
+              <button onClick={logout} className="btn btn--outline btn--sm mobile-nav-btn">
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <Link to="/request" className="btn btn--primary btn--sm mobile-nav-btn">
+                Get Started <ArrowRight size={16} />
+              </Link>
+              <Link to="/login" className="btn btn--outline btn--sm mobile-nav-btn">
+                Login
+              </Link>
+            </>
+          )}
         </div>
 
         <div className="nav-actions">
-          <Link to="/request" className="btn btn--primary btn--sm">
-            Get Started <ArrowRight size={16} />
-          </Link>
-          <Link to="/login" className="btn btn--outline btn--sm">
-            Login
-          </Link>
+          {isAuthenticated ? (
+            <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+              <Link to={user?.role === 'admin' ? "/admin" : "/dashboard"} className="btn btn--primary btn--sm">
+                <LayoutDashboard size={16} /> Dashboard
+              </Link>
+              <button onClick={logout} className="icon-btn" title="Logout">
+                <LogOut size={20} />
+              </button>
+            </div>
+          ) : (
+            <>
+              <Link to="/request" className="btn btn--primary btn--sm">
+                Get Started <ArrowRight size={16} />
+              </Link>
+              <Link to="/login" className="btn btn--outline btn--sm">
+                Login
+              </Link>
+            </>
+          )}
           <div className="mobile-toggle" onClick={() => setIsOpen(!isOpen)}>
             {isOpen ? <X size={28} /> : <Menu size={28} />}
           </div>

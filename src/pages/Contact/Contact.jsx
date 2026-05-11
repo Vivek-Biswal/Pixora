@@ -1,10 +1,47 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Mail, Phone, MapPin, MessageSquare, Send, Camera, MessageCircle, Briefcase } from 'lucide-react';
+import toast, { Toaster } from 'react-hot-toast';
 import ScrollAnimator from '../../components/ScrollAnimator';
+import { submitContactMessage } from '../../services/db';
 
 const Contact = () => {
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    subject: 'New Project Inquiry',
+    message: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    try {
+      await submitContactMessage({
+        name: `${formData.firstName} ${formData.lastName}`,
+        email: formData.email,
+        subject: formData.subject,
+        message: formData.message
+      });
+      toast.success("Message sent successfully! We'll get back to you soon.");
+      setFormData({
+        firstName: '', lastName: '', email: '', subject: 'New Project Inquiry', message: ''
+      });
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to send message. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
   return (
     <div className="contact-page" style={{ paddingTop: 'var(--navbar-height)' }}>
+      <Toaster position="top-right" />
       {/* Hero */}
       <section className="section bg-frost" style={{ background: 'var(--color-frost)', textAlign: 'center' }}>
         <div className="container">
@@ -27,24 +64,24 @@ const Contact = () => {
             <ScrollAnimator animation="from-left">
               <div className="card" style={{ padding: 'var(--space-10)' }}>
                 <h3 style={{ marginBottom: 'var(--space-6)' }}>Send us a message</h3>
-                <form onSubmit={(e) => e.preventDefault()}>
+                <form onSubmit={handleSubmit}>
                   <div className="grid-2">
                     <div className="form-group">
                       <label className="form-label">First Name</label>
-                      <input type="text" className="form-control" placeholder="John" required />
+                      <input type="text" name="firstName" value={formData.firstName} onChange={handleChange} className="form-control" placeholder="John" required />
                     </div>
                     <div className="form-group">
                       <label className="form-label">Last Name</label>
-                      <input type="text" className="form-control" placeholder="Doe" required />
+                      <input type="text" name="lastName" value={formData.lastName} onChange={handleChange} className="form-control" placeholder="Doe" required />
                     </div>
                   </div>
                   <div className="form-group">
                     <label className="form-label">Email Address</label>
-                    <input type="email" className="form-control" placeholder="john@example.com" required />
+                    <input type="email" name="email" value={formData.email} onChange={handleChange} className="form-control" placeholder="john@example.com" required />
                   </div>
                   <div className="form-group">
                     <label className="form-label">Subject</label>
-                    <select className="form-control">
+                    <select name="subject" value={formData.subject} onChange={handleChange} className="form-control">
                       <option>New Project Inquiry</option>
                       <option>General Support</option>
                       <option>Partnership</option>
@@ -53,10 +90,10 @@ const Contact = () => {
                   </div>
                   <div className="form-group">
                     <label className="form-label">Message</label>
-                    <textarea className="form-control" placeholder="Tell us more about your needs..." required></textarea>
+                    <textarea name="message" value={formData.message} onChange={handleChange} className="form-control" placeholder="Tell us more about your needs..." required></textarea>
                   </div>
-                  <button type="submit" className="btn btn--primary btn--lg" style={{ width: '100%' }}>
-                    Send Message <Send size={18} />
+                  <button type="submit" className="btn btn--primary btn--lg" style={{ width: '100%' }} disabled={isSubmitting}>
+                    {isSubmitting ? 'Sending...' : 'Send Message'} <Send size={18} />
                   </button>
                 </form>
               </div>

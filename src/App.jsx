@@ -18,7 +18,20 @@ import Contact from './pages/Contact/Contact.jsx';
 import Request from './pages/Request/Request.jsx';
 import Login from './pages/Login/Login.jsx';
 import Signup from './pages/Signup/Signup.jsx';
-import { AuthProvider } from './context/AuthContext.jsx';
+import ForgotPassword from './pages/ForgotPassword/ForgotPassword.jsx';
+import AdminDashboard from './pages/Admin/AdminDashboard.jsx';
+import ClientDashboard from './pages/Client/ClientDashboard.jsx';
+import { AuthProvider, useAuth } from './context/AuthContext.jsx';
+
+const ProtectedRoute = ({ children, adminOnly = false }) => {
+  const { user, isAuthenticated, loading } = useAuth();
+  
+  if (loading) return <div className="loading-screen">Loading...</div>;
+  if (!isAuthenticated) return <Navigate to="/login" />;
+  if (adminOnly && user?.role !== 'admin') return <Navigate to="/dashboard" />;
+  
+  return children;
+};
 
 // Scroll to top on route change
 const ScrollToTop = () => {
@@ -46,6 +59,19 @@ function App() {
             <Route path="/request" element={<Request />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            
+            {/* Dashboard Routes */}
+            <Route path="/dashboard" element={
+              <ProtectedRoute>
+                <ClientDashboard />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin" element={
+              <ProtectedRoute adminOnly={true}>
+                <AdminDashboard />
+              </ProtectedRoute>
+            } />
           </Routes>
         </main>
         <Footer />
