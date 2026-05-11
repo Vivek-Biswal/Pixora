@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+<<<<<<< HEAD
 import { Mail, Lock, Eye, EyeOff, LogIn } from 'lucide-react';
+=======
+import { Mail, Lock, Eye, EyeOff, LogIn, Globe } from 'lucide-react';
+>>>>>>> 318d02ee012d758f89ea62caa95d6ee562e4c88e
 import toast, { Toaster } from 'react-hot-toast';
 import ScrollAnimator from '../../components/ScrollAnimator';
 import { useAuth } from '../../context/AuthContext';
@@ -24,6 +28,7 @@ const Login = () => {
 
     setIsSubmitting(true);
     try {
+<<<<<<< HEAD
       const firebaseUser = await login(email, password);
       toast.success("Welcome back!");
       
@@ -43,6 +48,17 @@ const Login = () => {
         message = "Invalid email or password.";
       }
       toast.error(message);
+=======
+      await login(email, password);
+      toast.success("Welcome back!");
+      
+      const searchParams = new URLSearchParams(location.search);
+      const returnTo = searchParams.get('returnTo');
+      navigate(returnTo || '/');
+    } catch (error) {
+      console.error(error);
+      toast.error(error.message || "Failed to log in");
+>>>>>>> 318d02ee012d758f89ea62caa95d6ee562e4c88e
     } finally {
       setIsSubmitting(false);
     }
@@ -54,6 +70,7 @@ const Login = () => {
       toast.success("Welcome back!");
       const searchParams = new URLSearchParams(location.search);
       const returnTo = searchParams.get('returnTo');
+<<<<<<< HEAD
       
       setTimeout(() => {
         navigate(returnTo || '/dashboard');
@@ -69,12 +86,22 @@ const Login = () => {
       } else {
         toast.error(`Google sign-in failed: ${error.code}`);
       }
+=======
+      navigate(returnTo || '/');
+    } catch (error) {
+      console.error(error);
+      toast.error("Google sign in failed.");
+>>>>>>> 318d02ee012d758f89ea62caa95d6ee562e4c88e
     }
   };
 
   return (
     <div className="auth-page">
       <Toaster position="top-right" />
+<<<<<<< HEAD
+=======
+      {/* Background elements for premium feel */}
+>>>>>>> 318d02ee012d758f89ea62caa95d6ee562e4c88e
       <div className="auth-bg-glow glow-1"></div>
       <div className="auth-bg-glow glow-2"></div>
       <div className="auth-grid"></div>

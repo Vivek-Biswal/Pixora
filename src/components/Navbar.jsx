@@ -53,9 +53,20 @@ const Navbar = () => {
           ))}
           
           {isAuthenticated ? (
+<<<<<<< HEAD
             <button onClick={logout} className="btn btn--outline btn--sm mobile-nav-btn">
               Logout
             </button>
+=======
+            <>
+              <Link to={user?.role === 'admin' ? "/admin" : "/dashboard"} className="nav-link">
+                Dashboard
+              </Link>
+              <button onClick={logout} className="btn btn--outline btn--sm mobile-nav-btn">
+                Logout
+              </button>
+            </>
+>>>>>>> 318d02ee012d758f89ea62caa95d6ee562e4c88e
           ) : (
             <>
               <Link to="/request" className="btn btn--primary btn--sm mobile-nav-btn">

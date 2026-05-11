@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
+<<<<<<< HEAD
 import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, Eye, EyeOff, UserPlus, User } from 'lucide-react';
+=======
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Mail, Lock, User, Eye, EyeOff, UserPlus, Globe } from 'lucide-react';
+>>>>>>> 318d02ee012d758f89ea62caa95d6ee562e4c88e
 import toast, { Toaster } from 'react-hot-toast';
 import ScrollAnimator from '../../components/ScrollAnimator';
 import { useAuth } from '../../context/AuthContext';
@@ -21,15 +26,19 @@ const Signup = () => {
       toast.error("Please fill in all fields.");
       return;
     }
+<<<<<<< HEAD
     if (password.length < 6) {
       toast.error("Password must be at least 6 characters.");
       return;
     }
+=======
+>>>>>>> 318d02ee012d758f89ea62caa95d6ee562e4c88e
 
     setIsSubmitting(true);
     try {
       await signup(email, password, name);
       toast.success("Account created successfully!");
+<<<<<<< HEAD
       setTimeout(() => {
         navigate('/dashboard');
       }, 500);
@@ -42,6 +51,15 @@ const Signup = () => {
         message = "Invalid email format.";
       }
       toast.error(message);
+=======
+      
+      const searchParams = new URLSearchParams(location.search);
+      const returnTo = searchParams.get('returnTo');
+      navigate(returnTo || '/');
+    } catch (error) {
+      console.error(error);
+      toast.error(error.message || "Failed to create account");
+>>>>>>> 318d02ee012d758f89ea62caa95d6ee562e4c88e
     } finally {
       setIsSubmitting(false);
     }
@@ -50,6 +68,7 @@ const Signup = () => {
   const handleGoogleSignup = async () => {
     try {
       await loginWithGoogle();
+<<<<<<< HEAD
       toast.success("Welcome to Pixora!");
       setTimeout(() => {
         navigate('/dashboard');
@@ -57,12 +76,25 @@ const Signup = () => {
     } catch (error) {
       console.error(error);
       toast.error("Google sign up failed. Please try again.");
+=======
+      toast.success("Signed in with Google!");
+      const searchParams = new URLSearchParams(location.search);
+      const returnTo = searchParams.get('returnTo');
+      navigate(returnTo || '/');
+    } catch (error) {
+      console.error(error);
+      toast.error("Google sign in failed.");
+>>>>>>> 318d02ee012d758f89ea62caa95d6ee562e4c88e
     }
   };
 
   return (
     <div className="auth-page">
       <Toaster position="top-right" />
+<<<<<<< HEAD
+=======
+      {/* Background elements for premium feel */}
+>>>>>>> 318d02ee012d758f89ea62caa95d6ee562e4c88e
       <div className="auth-bg-glow glow-1"></div>
       <div className="auth-bg-glow glow-2"></div>
       <div className="auth-grid"></div>
@@ -113,7 +145,11 @@ const Signup = () => {
                   <input 
                     type={showPassword ? "text" : "password"} 
                     className="form-control" 
+<<<<<<< HEAD
                     placeholder="••••••••" 
+=======
+                    placeholder="Create a strong password" 
+>>>>>>> 318d02ee012d758f89ea62caa95d6ee562e4c88e
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required 
@@ -132,7 +168,11 @@ const Signup = () => {
                 {isSubmitting ? 'Creating account...' : 'Sign Up'} <UserPlus size={18} style={{ marginLeft: '8px' }} />
               </button>
             </form>
+<<<<<<< HEAD
 
+=======
+            
+>>>>>>> 318d02ee012d758f89ea62caa95d6ee562e4c88e
             <div className="auth-divider">
               <span>or sign up with</span>
             </div>

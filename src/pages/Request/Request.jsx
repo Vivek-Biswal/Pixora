@@ -193,6 +193,7 @@ const Request = () => {
                       <textarea name="description" value={formData.description} onChange={handleChange} className="form-control" placeholder="Tell us what you want to achieve..." style={{ height: '150px' }}></textarea>
                     </div>
                     <div className="form-group">
+<<<<<<< HEAD
                       <label className="form-label">Upload Reference Files (Temporarily Disabled)</label>
                       <div style={{ 
                         border: '2px dashed var(--color-gray-300)', borderRadius: 'var(--radius-lg)', 
@@ -204,6 +205,18 @@ const Request = () => {
                           File uploads are currently being activated. <br />
                           Please share links to your files in the description above instead.
                         </p>
+=======
+                      <label className="form-label">Upload Reference Files (Optional)</label>
+                      <div style={{ 
+                        border: '2px dashed var(--color-gray-300)', borderRadius: 'var(--radius-lg)', 
+                        padding: '2rem', textAlign: 'center', cursor: 'pointer', background: 'var(--color-frost)'
+                      }} onClick={() => document.getElementById('file-upload').click()}>
+                        <UploadCloud size={32} style={{ color: 'var(--color-blue)', marginBottom: '10px' }} />
+                        <p style={{ margin: 0, fontSize: '14px', color: 'var(--color-gray-600)' }}>
+                          {file ? file.name : "Click to upload a document, image, or PDF"}
+                        </p>
+                        <input id="file-upload" type="file" style={{ display: 'none' }} onChange={handleFileChange} />
+>>>>>>> 318d02ee012d758f89ea62caa95d6ee562e4c88e
                       </div>
                     </div>
                   </ScrollAnimator>
