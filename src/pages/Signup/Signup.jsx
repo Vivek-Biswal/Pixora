@@ -4,7 +4,7 @@ import { Mail, Lock, Eye, EyeOff, UserPlus, User } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
 import ScrollAnimator from '../../components/ScrollAnimator';
 import { useAuth } from '../../context/AuthContext';
-import './Auth.css';
+import '../Login/Auth.css';
 
 const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
