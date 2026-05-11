@@ -59,11 +59,15 @@ const Login = () => {
         navigate(returnTo || '/dashboard');
       }, 500);
     } catch (error) {
-      console.error(error);
+      console.error("DEBUG: Google Login Failed", error);
       if (error.code === 'auth/popup-closed-by-user') {
-        toast.error("Google login cancelled.");
+        toast.error("Sign-in popup was closed.");
+      } else if (error.code === 'auth/unauthorized-domain') {
+        toast.error("Domain unauthorized. Please add your Vercel URL in Firebase Console > Auth > Settings > Authorized Domains.");
+      } else if (error.code === 'auth/internal-error') {
+        toast.error("Internal Firebase error. Try again in a moment.");
       } else {
-        toast.error("Google sign in failed. Please try again.");
+        toast.error(`Google sign-in failed: ${error.code}`);
       }
     }
   };

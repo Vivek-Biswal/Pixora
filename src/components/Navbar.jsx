@@ -53,14 +53,9 @@ const Navbar = () => {
           ))}
           
           {isAuthenticated ? (
-            <>
-              <Link to={user?.role === 'admin' ? "/admin" : "/dashboard"} className="nav-link">
-                Dashboard
-              </Link>
-              <button onClick={logout} className="btn btn--outline btn--sm mobile-nav-btn">
-                Logout
-              </button>
-            </>
+            <button onClick={logout} className="btn btn--outline btn--sm mobile-nav-btn">
+              Logout
+            </button>
           ) : (
             <>
               <Link to="/request" className="btn btn--primary btn--sm mobile-nav-btn">

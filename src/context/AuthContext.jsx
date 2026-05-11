@@ -95,11 +95,21 @@ export const AuthProvider = ({ children }) => {
 
   // ─── Login with Google ───────────────────────────────────────────────────
   const loginWithGoogle = async () => {
-    const provider = new GoogleAuthProvider();
-    provider.setCustomParameters({ prompt: 'select_account' });
-    const { user: firebaseUser } = await signInWithPopup(auth, provider);
-    await createUserDoc(firebaseUser);
-    return firebaseUser;
+    try {
+      console.log("AUTH: Initiating Google Sign-in...");
+      const provider = new GoogleAuthProvider();
+      provider.setCustomParameters({ prompt: 'select_account' });
+      const { user: firebaseUser } = await signInWithPopup(auth, provider);
+      
+      console.log("AUTH: Google Sign-in successful, syncing with Firestore...");
+      const userData = await createUserDoc(firebaseUser);
+      console.log("AUTH: Firestore sync complete.", userData);
+      
+      return firebaseUser;
+    } catch (error) {
+      console.error("AUTH: Google Sign-in error:", error.code, error.message);
+      throw error;
+    }
   };
 
   // ─── Reset password ──────────────────────────────────────────────────────
