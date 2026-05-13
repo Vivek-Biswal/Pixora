@@ -105,27 +105,27 @@ const Contact = () => {
                 <div className="contact-info-item" style={{ display: 'flex', gap: '20px' }}>
                   <div className="icon-box" style={{ flexShrink: 0 }}><Mail /></div>
                   <div>
-                    <h4 style={{ marginBottom: '5px' }}>Email Us</h4>
+                    <h4 style={{ marginBottom: '5px' }}>Official Support</h4>
                     <p style={{ color: 'var(--color-blue)', fontWeight: '600' }}>hello@pixora.studio</p>
-                    <p style={{ fontSize: '14px' }}>Expect a response within 24 hours.</p>
+                    <p style={{ fontSize: '14px' }}>Business inquiries and support.</p>
                   </div>
                 </div>
                 
                 <div className="contact-info-item" style={{ display: 'flex', gap: '20px' }}>
                   <div className="icon-box" style={{ flexShrink: 0 }}><Phone /></div>
                   <div>
-                    <h4 style={{ marginBottom: '5px' }}>Call Us</h4>
-                    <p style={{ color: 'var(--color-blue)', fontWeight: '600' }}>+1 (555) 000-PIXORA</p>
-                    <p style={{ fontSize: '14px' }}>Mon-Fri from 9am to 6pm EST.</p>
+                    <h4 style={{ marginBottom: '5px' }}>Phone Support</h4>
+                    <p style={{ color: 'var(--color-blue)', fontWeight: '600' }}>+91 98765 43210</p>
+                    <p style={{ fontSize: '14px' }}>Mon-Fri, 10am to 6pm IST.</p>
                   </div>
                 </div>
                 
                 <div className="contact-info-item" style={{ display: 'flex', gap: '20px' }}>
                   <div className="icon-box" style={{ flexShrink: 0 }}><MapPin /></div>
                   <div>
-                    <h4 style={{ marginBottom: '5px' }}>Our Studio</h4>
-                    <p style={{ fontWeight: '600' }}>123 Design Avenue, Suite 400</p>
-                    <p style={{ fontSize: '14px' }}>Creative District, NY 10001</p>
+                    <h4 style={{ marginBottom: '5px' }}>Registered Office</h4>
+                    <p style={{ fontWeight: '600' }}>Plot No. 42, Digital Hub, Sector 5</p>
+                    <p style={{ fontSize: '14px' }}>Bhubaneswar, Odisha, India 751024</p>
                   </div>
                 </div>
 

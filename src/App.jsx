@@ -21,6 +21,10 @@ import Signup from './pages/Signup/Signup.jsx';
 import ForgotPassword from './pages/ForgotPassword/ForgotPassword.jsx';
 import AdminDashboard from './pages/Admin/AdminDashboard.jsx';
 import ClientDashboard from './pages/Client/ClientDashboard.jsx';
+import PrivacyPolicy from './pages/Legal/PrivacyPolicy.jsx';
+import TermsConditions from './pages/Legal/TermsConditions.jsx';
+import RefundPolicy from './pages/Legal/RefundPolicy.jsx';
+import ShippingPolicy from './pages/Legal/ShippingPolicy.jsx';
 import { AuthProvider, useAuth } from './context/AuthContext.jsx';
 
 // ─── Protected Route ────────────────────────────────────────────────────────
@@ -85,6 +89,10 @@ function App() {
           <Route path="/pricing" element={<SiteLayout><Pricing /></SiteLayout>} />
           <Route path="/contact" element={<SiteLayout><Contact /></SiteLayout>} />
           <Route path="/request" element={<SiteLayout><Request /></SiteLayout>} />
+          <Route path="/privacy-policy" element={<SiteLayout><PrivacyPolicy /></SiteLayout>} />
+          <Route path="/terms-conditions" element={<SiteLayout><TermsConditions /></SiteLayout>} />
+          <Route path="/refund-policy" element={<SiteLayout><RefundPolicy /></SiteLayout>} />
+          <Route path="/shipping-policy" element={<SiteLayout><ShippingPolicy /></SiteLayout>} />
 
           {/* Auth pages — redirect to dashboard if already logged in */}
           <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
