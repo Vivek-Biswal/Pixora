@@ -21,8 +21,6 @@ import {
   X,
   TrendingUp,
   Calendar,
-  AlertSquare,
-  CheckSquare2,
   Zap,
   Target
 } from 'lucide-react';
@@ -256,15 +254,18 @@ const ClientDashboard = () => {
           <div className="cd-activity-list" style={{ marginTop: '16px' }}>
             {dummyActivities
               .filter(act => activityFilter === 'all' || act.type === activityFilter)
-              .map((act, i) => (
-                <div className="cd-activity-item" key={act.id}>
-                  <div className="cd-activity-icon"><act.icon size={16} /></div>
-                  <div className="cd-activity-content">
-                    <div className="cd-activity-text">{act.action} <span>{act.target}</span></div>
-                    <div className="cd-activity-time">{act.time}</div>
+              .map((act, i) => {
+                const IconComponent = act.icon;
+                return (
+                  <div className="cd-activity-item" key={act.id}>
+                    <div className="cd-activity-icon"><IconComponent size={16} /></div>
+                    <div className="cd-activity-content">
+                      <div className="cd-activity-text">{act.action} <span>{act.target}</span></div>
+                      <div className="cd-activity-time">{act.time}</div>
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
           </div>
         </motion.div>
       </div>
@@ -288,7 +289,7 @@ const ClientDashboard = () => {
 
         <motion.div className="cd-card cd-widget-card" whileHover={{ borderColor: 'var(--cd-border-hover)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
-            <div className="cd-widget-icon"><AlertSquare size={18} /></div>
+            <div className="cd-widget-icon"><AlertCircle size={18} /></div>
             <span style={{ fontWeight: 600, fontSize: '14px' }}>Support Tickets</span>
           </div>
           <div style={{ fontSize: '13px', color: 'var(--cd-text-secondary)', lineHeight: '1.6' }}>
