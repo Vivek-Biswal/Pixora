@@ -16,7 +16,15 @@ import {
   AlertCircle,
   Activity,
   ChevronRight,
-  MoreHorizontal
+  MoreHorizontal,
+  Menu,
+  X,
+  TrendingUp,
+  Calendar,
+  AlertSquare,
+  CheckSquare2,
+  Zap,
+  Target
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
@@ -29,15 +37,25 @@ import './ClientDashboard.css';
 
 // --- Dummy Data for Premium Feel ---
 const dummyActivities = [
-  { id: 1, action: "Project status updated to", target: "In Progress", time: "2 hours ago", icon: Activity },
-  { id: 2, action: "Invoice #INV-2026-001 generated for", target: "Advance Payment", time: "5 hours ago", icon: FileText },
-  { id: 3, action: "New message received from", target: "Pixora Team", time: "1 day ago", icon: MessageSquare },
-  { id: 4, action: "Project request submitted", target: "SaaS Dashboard Redesign", time: "2 days ago", icon: FolderGit2 },
+  { id: 1, action: "Project status updated to", target: "In Progress", time: "2 hours ago", icon: Activity, type: "project" },
+  { id: 2, action: "Invoice #INV-2026-001 generated for", target: "Advance Payment", time: "5 hours ago", icon: FileText, type: "payment" },
+  { id: 3, action: "New message received from", target: "Pixora Team", time: "1 day ago", icon: MessageSquare, type: "message" },
+  { id: 4, action: "Project request submitted", target: "SaaS Dashboard Redesign", time: "2 days ago", icon: FolderGit2, type: "project" },
 ];
 
 const dummyInvoices = [
   { id: "INV-2026-001", date: "May 15, 2026", amount: "₹1,000", status: "Pending", desc: "Advance Payment" },
   { id: "INV-2026-000", date: "May 01, 2026", amount: "₹5,000", status: "Paid", desc: "Discovery Phase" }
+];
+
+const dummyReminders = [
+  { id: 1, title: "Kickoff Meeting", date: "May 18, 2026", time: "10:00 AM", icon: Calendar },
+  { id: 2, title: "Design Review", date: "May 22, 2026", time: "2:00 PM", icon: Target },
+];
+
+const dummySupportTickets = [
+  { id: "TKT-001", title: "Integration Help Needed", status: "open", priority: "high", created: "2 days ago" },
+  { id: "TKT-002", title: "Feature Request: Dark Mode", status: "closed", priority: "low", created: "1 week ago" },
 ];
 
 const ClientDashboard = () => {
@@ -47,6 +65,9 @@ const ClientDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState('overview');
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const [activityFilter, setActivityFilter] = useState('all');
 
   useEffect(() => {
     if (!user) return;
@@ -118,38 +139,51 @@ const ClientDashboard = () => {
 
   const renderOverview = () => (
     <motion.div variants={pageVariants} initial="initial" animate="in" exit="out" key="overview">
-      <div className="cd-page-title">Overview</div>
-      <div className="cd-page-subtitle">Welcome back, {user?.name?.split(' ')[0]}. Here's what's happening.</div>
+      <div className="cd-page-title">Dashboard</div>
+      <div className="cd-page-subtitle">Welcome back, {user?.name?.split(' ')[0]}. Here's your project snapshot.</div>
 
-      <div className="cd-grid-3">
-        <div className="cd-card cd-stat-card">
+      {/* Stats Row */}
+      <div className="cd-grid-4">
+        <motion.div className="cd-card cd-stat-card" whileHover={{ y: -4 }}>
           <div className="cd-stat-header">
             <div className="cd-stat-icon"><FolderGit2 size={18} /></div>
             Total Projects
           </div>
           <div className="cd-stat-value">{loading ? '-' : requests.length}</div>
           <div className="cd-stat-trend cd-trend-positive"><ArrowUpRight size={14} /> 1 new this week</div>
-        </div>
-        <div className="cd-card cd-stat-card">
+        </motion.div>
+
+        <motion.div className="cd-card cd-stat-card" whileHover={{ y: -4 }}>
           <div className="cd-stat-header">
-            <div className="cd-stat-icon"><Activity size={18} /></div>
+            <div className="cd-stat-icon cd-icon-accent"><Activity size={18} /></div>
             Active Phase
           </div>
           <div className="cd-stat-value">{loading ? '-' : requests.filter(r => r.status === 'active').length}</div>
           <div className="cd-stat-trend cd-trend-neutral">In progress</div>
-        </div>
-        <div className="cd-card cd-stat-card">
+        </motion.div>
+
+        <motion.div className="cd-card cd-stat-card" whileHover={{ y: -4 }}>
           <div className="cd-stat-header">
-            <div className="cd-stat-icon"><CreditCard size={18} /></div>
+            <div className="cd-stat-icon cd-icon-warning"><CreditCard size={18} /></div>
             Pending Payments
           </div>
           <div className="cd-stat-value">1</div>
           <div className="cd-stat-trend cd-trend-neutral" style={{ color: 'var(--cd-warning)' }}>Action Required</div>
-        </div>
+        </motion.div>
+
+        <motion.div className="cd-card cd-stat-card" whileHover={{ y: -4 }}>
+          <div className="cd-stat-header">
+            <div className="cd-stat-icon cd-icon-success"><CheckCircle2 size={18} /></div>
+            Completed
+          </div>
+          <div className="cd-stat-value">{loading ? '-' : requests.filter(r => r.status === 'completed').length}</div>
+          <div className="cd-stat-trend cd-trend-positive"><TrendingUp size={14} /> On track</div>
+        </motion.div>
       </div>
 
+      {/* Main Grid: Projects + Activity */}
       <div className="cd-grid-2-1">
-        <div className="cd-card">
+        <motion.div className="cd-card">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
             <div style={{ fontWeight: 600, fontSize: '15px' }}>Recent Projects</div>
             <button className="cd-btn-secondary" style={{ padding: '6px 12px', fontSize: '12px' }} onClick={() => setActiveTab('projects')}>
@@ -166,7 +200,7 @@ const ClientDashboard = () => {
             <div className="cd-empty">
               <div className="cd-empty-icon"><FolderGit2 size={24} /></div>
               <div className="cd-empty-title">No projects yet</div>
-              <div className="cd-empty-desc">Create your first project request to get started with Pixora.</div>
+              <div className="cd-empty-desc">Create your first project request to get started with Pixora and unlock premium web solutions.</div>
               <button className="cd-btn-primary" onClick={() => navigate('/request')}><Plus size={16} /> New Request</button>
             </div>
           ) : (
@@ -201,22 +235,82 @@ const ClientDashboard = () => {
               </table>
             </div>
           )}
-        </div>
+        </motion.div>
 
-        <div className="cd-card">
-          <div style={{ fontWeight: 600, fontSize: '15px', marginBottom: '24px' }}>Recent Activity</div>
-          <div className="cd-activity-list">
-            {dummyActivities.map((act, i) => (
-              <div className="cd-activity-item" key={act.id}>
-                <div className="cd-activity-icon"><act.icon size={16} /></div>
-                <div className="cd-activity-content">
-                  <div className="cd-activity-text">{act.action} <span>{act.target}</span></div>
-                  <div className="cd-activity-time">{act.time}</div>
-                </div>
-              </div>
-            ))}
+        <motion.div className="cd-card">
+          <div style={{ fontWeight: 600, fontSize: '15px', marginBottom: '12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <span>Recent Activity</span>
+            <div style={{ display: 'flex', gap: '4px' }}>
+              {['all', 'project', 'payment', 'message'].map(filter => (
+                <button
+                  key={filter}
+                  onClick={() => setActivityFilter(filter)}
+                  className={`cd-filter-btn ${activityFilter === filter ? 'active' : ''}`}
+                  style={{ fontSize: '11px', padding: '4px 8px' }}
+                >
+                  {filter}
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
+          <div className="cd-activity-list" style={{ marginTop: '16px' }}>
+            {dummyActivities
+              .filter(act => activityFilter === 'all' || act.type === activityFilter)
+              .map((act, i) => (
+                <div className="cd-activity-item" key={act.id}>
+                  <div className="cd-activity-icon"><act.icon size={16} /></div>
+                  <div className="cd-activity-content">
+                    <div className="cd-activity-text">{act.action} <span>{act.target}</span></div>
+                    <div className="cd-activity-time">{act.time}</div>
+                  </div>
+                </div>
+              ))}
+          </div>
+        </motion.div>
+      </div>
+
+      {/* Bottom Widgets */}
+      <div className="cd-grid-3">
+        <motion.div className="cd-card cd-widget-card" whileHover={{ borderColor: 'var(--cd-border-hover)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+            <div className="cd-widget-icon"><Calendar size={18} /></div>
+            <span style={{ fontWeight: 600, fontSize: '14px' }}>Upcoming</span>
+          </div>
+          <div style={{ fontSize: '13px', color: 'var(--cd-text-secondary)', lineHeight: '1.6' }}>
+            {dummyReminders.length > 0 ? (
+              <>
+                <div style={{ fontWeight: 500, color: 'var(--cd-text-primary)' }}>{dummyReminders[0].title}</div>
+                <div>{dummyReminders[0].date} at {dummyReminders[0].time}</div>
+              </>
+            ) : 'No upcoming reminders'}
+          </div>
+        </motion.div>
+
+        <motion.div className="cd-card cd-widget-card" whileHover={{ borderColor: 'var(--cd-border-hover)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+            <div className="cd-widget-icon"><AlertSquare size={18} /></div>
+            <span style={{ fontWeight: 600, fontSize: '14px' }}>Support Tickets</span>
+          </div>
+          <div style={{ fontSize: '13px', color: 'var(--cd-text-secondary)', lineHeight: '1.6' }}>
+            <div><span style={{ color: 'var(--cd-text-primary)', fontWeight: 500 }}>{dummySupportTickets.filter(t => t.status === 'open').length}</span> open ticket{dummySupportTickets.filter(t => t.status === 'open').length !== 1 ? 's' : ''}</div>
+            <button className="cd-btn-secondary" style={{ fontSize: '11px', padding: '4px 8px', marginTop: '8px' }}>View All</button>
+          </div>
+        </motion.div>
+
+        <motion.div className="cd-card cd-widget-card" whileHover={{ borderColor: 'var(--cd-border-hover)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+            <div className="cd-widget-icon"><Zap size={18} /></div>
+            <span style={{ fontWeight: 600, fontSize: '14px' }}>Quick Actions</span>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <button className="cd-btn-secondary" style={{ fontSize: '12px', padding: '8px 12px', justifyContent: 'flex-start' }}>
+              <Plus size={14} /> New Request
+            </button>
+            <button className="cd-btn-secondary" style={{ fontSize: '12px', padding: '8px 12px', justifyContent: 'flex-start' }}>
+              <MessageSquare size={14} /> Send Message
+            </button>
+          </div>
+        </motion.div>
       </div>
     </motion.div>
   );
@@ -226,68 +320,73 @@ const ClientDashboard = () => {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px' }}>
         <div>
           <div className="cd-page-title">Projects</div>
-          <div className="cd-page-subtitle" style={{ marginBottom: 0 }}>Manage your project requests and track their progress.</div>
+          <div className="cd-page-subtitle" style={{ marginBottom: 0 }}>Manage your requests and track progress across all phases.</div>
         </div>
         <button className="cd-btn-primary" onClick={() => navigate('/request')}>
           <Plus size={16} /> New Request
         </button>
       </div>
 
-      <div className="cd-card" style={{ padding: 0, overflow: 'hidden' }}>
-        {loading ? (
+      {loading ? (
+        <div className="cd-card">
           <div style={{ padding: '24px' }}>
             <div className="cd-sk-line long"></div>
             <div className="cd-sk-line medium"></div>
             <div className="cd-sk-line long"></div>
           </div>
-        ) : requests.length === 0 ? (
-          <div className="cd-empty" style={{ border: 'none', margin: '40px 0' }}>
-            <div className="cd-empty-icon"><FolderGit2 size={24} /></div>
-            <div className="cd-empty-title">No projects found</div>
-            <div className="cd-empty-desc">You haven't submitted any projects yet.</div>
-          </div>
-        ) : (
-          <div className="cd-table-container">
-            <table className="cd-table">
-              <thead>
-                <tr>
-                  <th>Project Name</th>
-                  <th>Category</th>
-                  <th>Status</th>
-                  <th>Submitted</th>
-                  <th style={{ textAlign: 'right' }}>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {requests.map(r => (
-                  <tr key={r.id}>
-                    <td style={{ fontWeight: 500 }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <FolderGit2 size={16} color="var(--cd-text-muted)" />
-                        {r.company || 'Personal Project'}
-                      </div>
-                    </td>
-                    <td style={{ color: 'var(--cd-text-secondary)' }}>{r.category}</td>
-                    <td>
-                      <span className={`cd-badge cd-badge-${r.status || 'pending'}`}>
-                        {r.status || 'pending'}
-                      </span>
-                    </td>
-                    <td style={{ color: 'var(--cd-text-secondary)' }}>
-                      {r.createdAt?.toDate ? r.createdAt.toDate().toLocaleDateString() : 'Just now'}
-                    </td>
-                    <td style={{ textAlign: 'right' }}>
-                      <button className="cd-btn-icon" style={{ marginLeft: 'auto' }}>
-                        <MoreHorizontal size={16} />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-      </div>
+        </div>
+      ) : requests.length === 0 ? (
+        <div className="cd-empty" style={{ minHeight: '300px' }}>
+          <div className="cd-empty-icon"><FolderGit2 size={32} /></div>
+          <div className="cd-empty-title">No projects found</div>
+          <div className="cd-empty-desc">You haven't submitted any project requests yet. Start your journey with Pixora today.</div>
+          <button className="cd-btn-primary" onClick={() => navigate('/request')}><Plus size={16} /> Create First Request</button>
+        </div>
+      ) : (
+        <div className="cd-projects-grid">
+          {requests.map(r => (
+            <motion.div key={r.id} className="cd-project-card" whileHover={{ y: -4, borderColor: 'var(--cd-border-hover)' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontSize: '15px', fontWeight: 600, color: 'var(--cd-text-primary)', marginBottom: '4px' }}>
+                    {r.company || 'Personal Project'}
+                  </div>
+                  <div style={{ fontSize: '13px', color: 'var(--cd-text-secondary)' }}>
+                    {r.category || 'General'}
+                  </div>
+                </div>
+                <button className="cd-btn-icon" style={{ width: '32px', height: '32px' }}>
+                  <MoreHorizontal size={16} />
+                </button>
+              </div>
+
+              <div style={{ marginBottom: '16px' }}>
+                <span className={`cd-badge cd-badge-${r.status || 'pending'}`}>
+                  {(r.status || 'pending').charAt(0).toUpperCase() + (r.status || 'pending').slice(1)}
+                </span>
+              </div>
+
+              <div style={{ marginBottom: '16px' }}>
+                <div style={{ fontSize: '12px', color: 'var(--cd-text-secondary)', marginBottom: '8px', display: 'flex', justifyContent: 'space-between' }}>
+                  <span>Progress</span>
+                  <span>{r.status === 'completed' ? '100' : r.status === 'active' ? '45' : '15'}%</span>
+                </div>
+                <div className="cd-progress-bar-bg">
+                  <div className="cd-progress-bar-fill" style={{ width: r.status === 'completed' ? '100%' : r.status === 'active' ? '45%' : '15%' }}></div>
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '12px', color: 'var(--cd-text-secondary)', marginBottom: '16px', paddingTop: '16px', borderTop: '1px solid var(--cd-border)' }}>
+                <span>Submitted {r.createdAt?.toDate ? r.createdAt.toDate().toLocaleDateString() : 'recently'}</span>
+              </div>
+
+              <button className="cd-btn-secondary" style={{ width: '100%', justifyContent: 'center' }}>
+                View Details
+              </button>
+            </motion.div>
+          ))}
+        </div>
+      )}
     </motion.div>
   );
 
@@ -400,24 +499,44 @@ const ClientDashboard = () => {
         style: { background: '#18181b', color: '#fff', border: '1px solid #27272a' }
       }} />
       
-      {/* Sidebar */}
-      <aside className="cd-sidebar">
-        <Link to="/" className="cd-logo">
-          <div className="cd-logo-icon">P</div>
-          <span className="cd-logo-text">Pixora</span>
-        </Link>
+      {/* Sidebar with mobile toggle */}
+      <aside className={`cd-sidebar ${sidebarOpen ? 'cd-sidebar-open' : 'cd-sidebar-closed'}`}>
+        <div className="cd-sidebar-header">
+          <Link to="/" className="cd-logo">
+            <div className="cd-logo-icon">P</div>
+            <span className="cd-logo-text">Pixora</span>
+          </Link>
+          <button 
+            className="cd-sidebar-toggle cd-mobile-only"
+            onClick={() => setSidebarOpen(false)}
+          >
+            <X size={20} />
+          </button>
+        </div>
 
         <nav className="cd-nav">
-          <button className={`cd-nav-item ${activeTab === 'overview' ? 'active' : ''}`} onClick={() => setActiveTab('overview')}>
+          <button 
+            className={`cd-nav-item ${activeTab === 'overview' ? 'active' : ''}`} 
+            onClick={() => { setActiveTab('overview'); setSidebarOpen(false); }}
+          >
             <LayoutDashboard size={18} /> Overview
           </button>
-          <button className={`cd-nav-item ${activeTab === 'projects' ? 'active' : ''}`} onClick={() => setActiveTab('projects')}>
+          <button 
+            className={`cd-nav-item ${activeTab === 'projects' ? 'active' : ''}`} 
+            onClick={() => { setActiveTab('projects'); setSidebarOpen(false); }}
+          >
             <FolderGit2 size={18} /> Projects
           </button>
-          <button className={`cd-nav-item ${activeTab === 'billing' ? 'active' : ''}`} onClick={() => setActiveTab('billing')}>
+          <button 
+            className={`cd-nav-item ${activeTab === 'billing' ? 'active' : ''}`} 
+            onClick={() => { setActiveTab('billing'); setSidebarOpen(false); }}
+          >
             <CreditCard size={18} /> Billing
           </button>
-          <button className={`cd-nav-item ${activeTab === 'messages' ? 'active' : ''}`} onClick={() => setActiveTab('messages')}>
+          <button 
+            className={`cd-nav-item ${activeTab === 'messages' ? 'active' : ''}`} 
+            onClick={() => { setActiveTab('messages'); setSidebarOpen(false); }}
+          >
             <MessageSquare size={18} /> Support
           </button>
         </nav>
@@ -430,10 +549,18 @@ const ClientDashboard = () => {
               <span className="cd-user-plan">Client Portal</span>
             </div>
           </div>
-          <button className="cd-nav-item" onClick={() => navigate('/settings')} style={{ color: 'var(--cd-text-secondary)' }}>
+          <button 
+            className="cd-nav-item" 
+            onClick={() => navigate('/settings')} 
+            style={{ color: 'var(--cd-text-secondary)' }}
+          >
             <Settings size={18} /> Settings
           </button>
-          <button className="cd-nav-item" onClick={handleLogout} style={{ color: 'var(--cd-text-secondary)' }}>
+          <button 
+            className="cd-nav-item" 
+            onClick={handleLogout} 
+            style={{ color: 'var(--cd-text-secondary)' }}
+          >
             <LogOut size={18} /> Logout
           </button>
         </div>
@@ -442,24 +569,55 @@ const ClientDashboard = () => {
       {/* Main Content */}
       <main className="cd-main">
         <header className="cd-header">
-          <div className="cd-breadcrumbs">
-            <span>Pixora</span> <ChevronRight size={14} /> <span style={{ textTransform: 'capitalize' }}>{activeTab}</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+            <button 
+              className="cd-sidebar-toggle cd-mobile-only"
+              onClick={() => setSidebarOpen(true)}
+              style={{ display: sidebarOpen ? 'none' : 'flex' }}
+            >
+              <Menu size={20} />
+            </button>
+            <div className="cd-breadcrumbs">
+              <span>Pixora</span> <ChevronRight size={14} /> <span style={{ textTransform: 'capitalize' }}>{activeTab}</span>
+            </div>
           </div>
+          
           <div className="cd-header-actions">
-            <div style={{ position: 'relative', width: '240px' }}>
+            <div style={{ position: 'relative', flex: 1, maxWidth: '280px' }}>
               <Search size={14} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--cd-text-muted)' }} />
               <input 
                 type="text" 
-                placeholder="Search..." 
+                placeholder="Search projects..." 
                 style={{ 
                   width: '100%', background: 'var(--cd-surface)', border: '1px solid var(--cd-border)', 
-                  padding: '8px 12px 8px 36px', borderRadius: 'var(--cd-radius-sm)', color: 'var(--cd-text-primary)', outline: 'none', fontSize: '13px'
-                }} 
+                  padding: '10px 12px 10px 36px', borderRadius: 'var(--cd-radius-sm)', color: 'var(--cd-text-primary)', outline: 'none', fontSize: '13px', transition: 'all 0.2s'
+                }}
+                onFocus={(e) => e.target.style.borderColor = 'var(--cd-border-hover)'}
+                onBlur={(e) => e.target.style.borderColor = 'var(--cd-border)'}
               />
             </div>
-            <button className="cd-btn-icon">
-              <Bell size={18} />
-            </button>
+            
+            <div style={{ position: 'relative' }}>
+              <button 
+                className="cd-btn-icon"
+                onClick={() => setNotificationsOpen(!notificationsOpen)}
+                style={{ position: 'relative' }}
+              >
+                <Bell size={18} />
+                <span style={{ position: 'absolute', top: '2px', right: '2px', width: '6px', height: '6px', background: 'var(--cd-accent)', borderRadius: '50%' }}></span>
+              </button>
+              
+              {notificationsOpen && (
+                <div className="cd-notifications-dropdown">
+                  <div style={{ fontWeight: 600, fontSize: '14px', marginBottom: '12px', paddingBottom: '12px', borderBottom: '1px solid var(--cd-border)' }}>
+                    Notifications
+                  </div>
+                  <div style={{ fontSize: '13px', color: 'var(--cd-text-secondary)', textAlign: 'center', padding: '20px 12px' }}>
+                    No new notifications
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </header>
 
