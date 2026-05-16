@@ -26,12 +26,13 @@ const Portfolio = () => {
   return (
     <div className="portfolio-page" style={{ paddingTop: 'var(--navbar-height)' }}>
       {/* Hero */}
-      <section className="section bg-frost" style={{ background: 'var(--color-frost)', textAlign: 'center' }}>
-        <div className="container">
+      <section className="section" style={{ textAlign: 'center', position: 'relative' }}>
+        <div style={{ position: 'absolute', top: '-50%', left: '50%', transform: 'translateX(-50%)', width: '800px', height: '800px', background: 'radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 60%)', filter: 'blur(60px)', zIndex: 0, pointerEvents: 'none' }} />
+        <div className="container" style={{ position: 'relative', zIndex: 1 }}>
           <ScrollAnimator animation="fade-in">
             <span className="section-badge">Our Work</span>
-            <h1 style={{ marginBottom: 'var(--space-4)' }}>Portfolio of Excellence</h1>
-            <p style={{ maxWidth: '600px', margin: '0 auto' }}>
+            <h1 style={{ marginBottom: 'var(--space-4)', fontSize: 'var(--fs-giant)', letterSpacing: 'var(--ls-tightest)' }}>Portfolio of Excellence</h1>
+            <p style={{ maxWidth: '600px', margin: '0 auto', fontSize: 'var(--fs-lg)', color: 'var(--text-secondary)' }}>
               Explore our latest projects where design meets functionality to create 
               exceptional digital experiences.
             </p>
@@ -80,12 +81,13 @@ const Portfolio = () => {
       </section>
 
       {/* CTA */}
-      <section className="section bg-frost" style={{ background: 'var(--color-frost)' }}>
-        <div className="container">
-          <div className="card" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '20px' }}>
+      <section className="section" style={{ position: 'relative' }}>
+        <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '600px', height: '600px', background: 'radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, transparent 60%)', filter: 'blur(60px)', zIndex: 0, pointerEvents: 'none' }} />
+        <div className="container" style={{ position: 'relative', zIndex: 1 }}>
+          <div className="card" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '20px', background: 'rgba(255,255,255,0.02)', backdropFilter: 'blur(12px)', border: '1px solid var(--border-subtle)', boxShadow: '0 20px 40px rgba(0,0,0,0.4)' }}>
             <div>
-              <h3>Have a project in mind?</h3>
-              <p>Let's discuss how we can bring your vision to life.</p>
+              <h3 style={{ fontSize: 'var(--fs-h3)', marginBottom: '8px' }}>Have a project in mind?</h3>
+              <p style={{ color: 'var(--text-secondary)' }}>Let's discuss how we can bring your vision to life.</p>
             </div>
             <button className="btn btn--primary">
               Contact Us Today <ArrowRight size={18} />

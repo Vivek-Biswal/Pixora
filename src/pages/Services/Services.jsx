@@ -61,12 +61,13 @@ const Services = () => {
   return (
     <div className="services-page" style={{ paddingTop: 'var(--navbar-height)' }}>
       {/* Page Hero */}
-      <section className="section bg-frost" style={{ background: 'var(--color-frost)', textAlign: 'center' }}>
-        <div className="container">
+      <section className="section" style={{ textAlign: 'center', position: 'relative' }}>
+        <div style={{ position: 'absolute', top: '-50%', left: '50%', transform: 'translateX(-50%)', width: '800px', height: '800px', background: 'radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 60%)', filter: 'blur(60px)', zIndex: 0, pointerEvents: 'none' }} />
+        <div className="container" style={{ position: 'relative', zIndex: 1 }}>
           <ScrollAnimator animation="fade-in">
             <span className="section-badge">What We Do</span>
-            <h1 style={{ marginBottom: 'var(--space-4)' }}>Our Specialized Services</h1>
-            <p style={{ maxWidth: '600px', margin: '0 auto' }}>
+            <h1 style={{ marginBottom: 'var(--space-4)', fontSize: 'var(--fs-giant)', letterSpacing: 'var(--ls-tightest)' }}>Our Specialized Services</h1>
+            <p style={{ maxWidth: '600px', margin: '0 auto', fontSize: 'var(--fs-lg)', color: 'var(--text-secondary)' }}>
               We combine creative design with technical excellence to deliver digital 
               products that help your business thrive in the modern world.
             </p>
@@ -100,26 +101,37 @@ const Services = () => {
       </section>
 
       {/* Comparison / Why Us */}
-      <section className="section" style={{ background: 'var(--color-night)', color: 'white' }}>
-        <div className="container">
+      <section className="section" style={{ position: 'relative' }}>
+        <div style={{ position: 'absolute', top: '0', left: '50%', transform: 'translateX(-50%)', width: '100%', height: '100%', background: 'radial-gradient(ellipse at bottom, rgba(59, 130, 246, 0.08) 0%, transparent 70%)', pointerEvents: 'none' }} />
+        <div className="container" style={{ position: 'relative', zIndex: 1 }}>
           <div className="section-header">
-            <h2 style={{ color: 'white' }}>The Pixora Advantage</h2>
-            <p style={{ color: 'var(--color-gray-400)' }}>Why our clients choose us over generic agencies.</p>
+            <span className="section-badge">Why Pixora</span>
+            <h2>The Pixora Advantage</h2>
+            <p style={{ color: 'var(--text-secondary)' }}>Why our clients choose us over generic agencies.</p>
           </div>
           
           <div className="grid-3">
-            <div style={{ textAlign: 'center' }}>
-              <h4 style={{ color: 'var(--color-blue-light)', marginBottom: '10px' }}>Performance First</h4>
-              <p style={{ color: 'var(--color-gray-300)', fontSize: '14px' }}>Every site we build is optimized for speed, scoring 90+ on Google PageSpeed Insights.</p>
-            </div>
-            <div style={{ textAlign: 'center' }}>
-              <h4 style={{ color: 'var(--color-blue-light)', marginBottom: '10px' }}>Conversion Driven</h4>
-              <p style={{ color: 'var(--color-gray-300)', fontSize: '14px' }}>We don't just make it look pretty; we design for results and clear calls to action.</p>
-            </div>
-            <div style={{ textAlign: 'center' }}>
-              <h4 style={{ color: 'var(--color-blue-light)', marginBottom: '10px' }}>Future Proof</h4>
-              <p style={{ color: 'var(--color-gray-300)', fontSize: '14px' }}>We use the latest tech stacks that are scalable and easy to maintain as you grow.</p>
-            </div>
+            <ScrollAnimator animation="from-bottom" delay="delay-1" className="card" style={{ background: 'rgba(255,255,255,0.02)', backdropFilter: 'blur(12px)', border: '1px solid var(--border-subtle)', padding: '32px' }}>
+              <div className="icon-box" style={{ background: 'rgba(59, 130, 246, 0.1)', color: '#60a5fa', marginBottom: '24px' }}>
+                <Zap size={24} />
+              </div>
+              <h4 style={{ fontSize: '20px', marginBottom: '12px' }}>Performance First</h4>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '15px', lineHeight: '1.6' }}>Every site we build is optimized for speed, scoring 90+ on Google PageSpeed Insights.</p>
+            </ScrollAnimator>
+            <ScrollAnimator animation="from-bottom" delay="delay-2" className="card" style={{ background: 'rgba(255,255,255,0.02)', backdropFilter: 'blur(12px)', border: '1px solid var(--border-subtle)', padding: '32px' }}>
+              <div className="icon-box" style={{ background: 'rgba(139, 92, 246, 0.1)', color: 'var(--color-accent)', marginBottom: '24px' }}>
+                <BarChart size={24} />
+              </div>
+              <h4 style={{ fontSize: '20px', marginBottom: '12px' }}>Conversion Driven</h4>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '15px', lineHeight: '1.6' }}>We don't just make it look pretty; we design for results and clear calls to action.</p>
+            </ScrollAnimator>
+            <ScrollAnimator animation="from-bottom" delay="delay-3" className="card" style={{ background: 'rgba(255,255,255,0.02)', backdropFilter: 'blur(12px)', border: '1px solid var(--border-subtle)', padding: '32px' }}>
+              <div className="icon-box" style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#34d399', marginBottom: '24px' }}>
+                <Shield size={24} />
+              </div>
+              <h4 style={{ fontSize: '20px', marginBottom: '12px' }}>Future Proof</h4>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '15px', lineHeight: '1.6' }}>We use the latest tech stacks that are scalable and easy to maintain as you grow.</p>
+            </ScrollAnimator>
           </div>
         </div>
       </section>

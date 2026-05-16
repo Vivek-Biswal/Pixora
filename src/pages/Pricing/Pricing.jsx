@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Check, ArrowRight, Zap, Award, Rocket } from 'lucide-react';
 import ScrollAnimator from '../../components/ScrollAnimator';
+import { motion } from 'framer-motion';
 
 const Pricing = () => {
   const [billing, setBilling] = useState('project'); // project or monthly
@@ -38,38 +39,62 @@ const Pricing = () => {
   return (
     <div className="pricing-page" style={{ paddingTop: 'var(--navbar-height)' }}>
       {/* Hero */}
-      <section className="section bg-frost" style={{ background: 'var(--color-frost)', textAlign: 'center' }}>
-        <div className="container">
+      <section className="section" style={{ textAlign: 'center', position: 'relative' }}>
+        {/* Background glow */}
+        <div style={{ position: 'absolute', top: '-50%', left: '50%', transform: 'translateX(-50%)', width: '800px', height: '800px', background: 'radial-gradient(circle, rgba(139,92,246,0.15) 0%, transparent 60%)', filter: 'blur(60px)', zIndex: 0, pointerEvents: 'none' }} />
+        
+        <div className="container" style={{ position: 'relative', zIndex: 1 }}>
           <ScrollAnimator animation="fade-in">
             <span className="section-badge">Pricing</span>
-            <h1 style={{ marginBottom: 'var(--space-4)' }}>Transparent Pricing</h1>
-            <p style={{ maxWidth: '600px', margin: '0 auto', marginBottom: 'var(--space-8)' }}>
+            <h1 style={{ marginBottom: 'var(--space-4)', fontSize: 'var(--fs-giant)', letterSpacing: 'var(--ls-tightest)' }}>Transparent Pricing</h1>
+            <p style={{ maxWidth: '600px', margin: '0 auto', marginBottom: 'var(--space-10)', fontSize: 'var(--fs-lg)', color: 'var(--text-secondary)' }}>
               No hidden fees. Choose the plan that fits your business stage.
             </p>
             
-            {/* Toggle */}
+            {/* Premium Toggle */}
             <div style={{ 
               display: 'inline-flex', 
-              background: 'var(--color-white)', 
+              background: 'rgba(255,255,255,0.03)', 
               padding: '6px', 
-              borderRadius: 'var(--radius-full)',
-              boxShadow: 'var(--shadow-sm)',
-              border: '1px solid var(--color-gray-200)'
+              borderRadius: '999px',
+              border: '1px solid rgba(255,255,255,0.05)',
+              position: 'relative'
             }}>
-              <button 
-                onClick={() => setBilling('project')}
-                className={`btn btn--sm ${billing === 'project' ? 'btn--primary' : ''}`}
-                style={{ borderRadius: 'var(--radius-full)', background: billing === 'project' ? '' : 'transparent', color: billing === 'project' ? '' : 'var(--color-gray-600)' }}
-              >
-                Project-based
-              </button>
-              <button 
-                onClick={() => setBilling('monthly')}
-                className={`btn btn--sm ${billing === 'monthly' ? 'btn--primary' : ''}`}
-                style={{ borderRadius: 'var(--radius-full)', background: billing === 'monthly' ? '' : 'transparent', color: billing === 'monthly' ? '' : 'var(--color-gray-600)' }}
-              >
-                Monthly Retainer
-              </button>
+              {['project', 'monthly'].map((type) => (
+                <button
+                  key={type}
+                  onClick={() => setBilling(type)}
+                  style={{
+                    position: 'relative',
+                    padding: '10px 24px',
+                    borderRadius: '999px',
+                    border: 'none',
+                    background: 'transparent',
+                    color: billing === type ? '#fff' : 'var(--text-secondary)',
+                    fontWeight: billing === type ? '600' : '500',
+                    fontSize: '14px',
+                    cursor: 'pointer',
+                    zIndex: 1,
+                    transition: 'color 0.2s ease'
+                  }}
+                >
+                  {billing === type && (
+                    <motion.div
+                      layoutId="pricing-toggle"
+                      style={{
+                        position: 'absolute',
+                        inset: 0,
+                        background: 'linear-gradient(135deg, var(--color-accent), #60a5fa)',
+                        borderRadius: '999px',
+                        zIndex: -1,
+                        boxShadow: '0 4px 15px rgba(139,92,246,0.3)'
+                      }}
+                      transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                    />
+                  )}
+                  {type === 'project' ? 'Project-based' : 'Monthly Retainer'}
+                </button>
+              ))}
             </div>
           </ScrollAnimator>
         </div>
@@ -85,29 +110,36 @@ const Pricing = () => {
                 animation="from-bottom" 
                 delay={`delay-${i + 1}`} 
                 className={`card ${plan.popular ? 'popular-card' : ''}`}
-                style={plan.popular ? { border: '2px solid var(--color-blue)', transform: 'scale(1.05)' } : {}}
+                style={{ 
+                  background: 'rgba(255,255,255,0.02)',
+                  borderColor: plan.popular ? 'var(--color-accent)' : 'var(--border-subtle)',
+                  transform: plan.popular ? 'scale(1.05)' : 'scale(1)',
+                  boxShadow: plan.popular ? '0 0 30px rgba(139,92,246,0.1)' : 'none',
+                  backdropFilter: 'blur(10px)',
+                  position: 'relative'
+                }}
               >
                 {plan.popular && (
                   <div style={{ 
-                    position: 'absolute', top: '15px', right: '15px', 
-                    background: 'var(--color-blue)', color: 'white', 
-                    padding: '4px 12px', borderRadius: 'var(--radius-full)',
-                    fontSize: '10px', fontWeight: 'bold'
+                    position: 'absolute', top: '0', left: '50%', transform: 'translate(-50%, -50%)', 
+                    background: 'linear-gradient(135deg, var(--color-accent), #60a5fa)', color: 'white', 
+                    padding: '4px 16px', borderRadius: '999px',
+                    fontSize: '11px', fontWeight: 'bold', letterSpacing: '0.05em'
                   }}>
                     MOST POPULAR
                   </div>
                 )}
-                <div className="icon-box" style={{ background: plan.popular ? 'var(--color-blue)' : '', color: plan.popular ? 'white' : '' }}>
+                <div className="icon-box" style={{ background: plan.popular ? 'rgba(139,92,246,0.15)' : 'rgba(255,255,255,0.05)', color: plan.popular ? 'var(--color-accent)' : 'var(--text-secondary)' }}>
                   {plan.icon}
                 </div>
                 <h3>{plan.name}</h3>
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px', margin: 'var(--space-4) 0' }}>
-                  <span style={{ fontSize: 'var(--fs-h2)', fontWeight: 'bold', color: 'var(--color-night)' }}>${plan.price}</span>
-                  <span style={{ color: 'var(--color-gray-500)' }}>/{plan.period}</span>
+                  <span style={{ fontSize: 'var(--fs-giant)', fontWeight: 'var(--fw-black)', color: 'var(--text-primary)', letterSpacing: 'var(--ls-tightest)' }}>${plan.price}</span>
+                  <span style={{ color: 'var(--text-muted)' }}>/{plan.period}</span>
                 </div>
-                <p style={{ fontSize: '14px', marginBottom: 'var(--space-8)' }}>{plan.desc}</p>
+                <p style={{ fontSize: '14px', marginBottom: 'var(--space-8)', color: 'var(--text-secondary)' }}>{plan.desc}</p>
                 
-                <hr style={{ border: 'none', borderTop: '1px solid var(--color-gray-200)', marginBottom: 'var(--space-8)' }} />
+                <hr style={{ border: 'none', borderTop: '1px solid var(--border-subtle)', marginBottom: 'var(--space-8)' }} />
                 
                 <ul style={{ marginBottom: 'var(--space-10)' }}>
                   {plan.features.map((feat, idx) => (
