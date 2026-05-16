@@ -517,42 +517,62 @@
 .section-header.section-header--left {
   text-align: left;
   margin-bottom: 0;
+  margin-inline: 0;
   max-width: 100%;
 }
 .section-header--left h2 {
   margin-left: 0;
   margin-right: 0;
+  font-size: var(--fs-display);
+  font-weight: var(--fw-extrabold);
+  line-height: 1;
+  letter-spacing: var(--ls-tightest);
+  max-width: 12ch;
+}
+.section-header--left p {
+  font-size: var(--fs-body-lg);
+  max-width: 32ch;
+  line-height: 1.6;
+}
+.stacked-section {
+  padding: var(--space-32) 0;
+  position: relative;
 }
 .stacked-cards {
-  max-width: 900px;
-  margin: 0 auto;
+  max-width: 100%;
+  margin: 0;
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: var(--space-8);
-  padding-bottom: var(--space-16);
+  gap: var(--space-6);
+  padding-bottom: var(--space-20);
 }
 .stacked-card {
   position: sticky;
-  top: 120px; 
+  top: calc(var(--navbar-height) + 40px);
+  padding-top: var(--space-4);
+  transform-origin: top center;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .stacked-card__inner {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid var(--border-subtle);
+  background: rgba(30, 27, 46, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: var(--radius-2xl);
-  padding: var(--space-10) var(--space-12);
+  padding: var(--space-12) var(--space-10);
   display: flex;
   gap: var(--space-8);
   align-items: flex-start;
-  box-shadow: 0 -20px 60px rgba(0,0,0,0.6);
+  box-shadow: 0 -15px 40px rgba(0,0,0,0.4), 0 20px 40px rgba(0,0,0,0.4);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 .stacked-card__inner:hover {
-  border-color: var(--border-accent);
-  box-shadow: 0 -20px 60px rgba(0,0,0,0.6), 0 0 40px rgba(139,92,246,0.08);
-  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.15);
+  border-top-color: rgba(139, 92, 246, 0.5);
+  box-shadow: 0 -20px 60px rgba(0,0,0,0.6), 0 0 40px rgba(139,92,246,0.1);
+  transform: translateY(-4px);
 }
 .stacked-card__icon {
   width: 64px; height: 64px;
