@@ -121,9 +121,9 @@ const Pricing = () => {
               >
                 {plan.popular && (
                   <div style={{ 
-                    position: 'absolute', top: '0', left: '50%', transform: 'translate(-50%, -50%)', 
+                    position: 'absolute', top: '16px', right: '16px', 
                     background: 'linear-gradient(135deg, var(--color-accent), #60a5fa)', color: 'white', 
-                    padding: '4px 16px', borderRadius: '999px',
+                    padding: '4px 12px', borderRadius: '999px',
                     fontSize: '11px', fontWeight: 'bold', letterSpacing: '0.05em'
                   }}>
                     MOST POPULAR

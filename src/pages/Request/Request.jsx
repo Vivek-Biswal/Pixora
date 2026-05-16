@@ -103,12 +103,13 @@ const Request = () => {
   return (
     <div className="request-page" style={{ paddingTop: 'var(--navbar-height)' }}>
       <Toaster position="top-right" />
-      <section className="section bg-frost" style={{ background: 'var(--color-frost)', textAlign: 'center' }}>
-        <div className="container">
+      <section className="section" style={{ textAlign: 'center', position: 'relative' }}>
+        <div style={{ position: 'absolute', top: '-50%', left: '50%', transform: 'translateX(-50%)', width: '800px', height: '800px', background: 'radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 60%)', filter: 'blur(60px)', zIndex: 0, pointerEvents: 'none' }} />
+        <div className="container" style={{ position: 'relative', zIndex: 1 }}>
           <ScrollAnimator animation="fade-in">
             <span className="section-badge">Project Planner</span>
-            <h1>Let's build your vision</h1>
-            <p>Tell us about your project and we'll help you find the best solution.</p>
+            <h1 style={{ fontSize: 'var(--fs-h1)', letterSpacing: 'var(--ls-tightest)' }}>Let's build your vision</h1>
+            <p style={{ color: 'var(--text-secondary)' }}>Tell us about your project and we'll help you find the best solution.</p>
           </ScrollAnimator>
         </div>
       </section>
@@ -121,28 +122,31 @@ const Request = () => {
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 'var(--space-2)' }}>
                 {['Basic Info', 'Project Details', 'Budget & Timeline', 'Review'].map((s, i) => (
                   <span key={i} style={{ 
-                    fontSize: '12px', fontWeight: 'bold', 
-                    color: step > i ? 'var(--color-blue)' : 'var(--color-gray-400)'
+                    fontSize: '13px', fontWeight: '600', letterSpacing: '0.02em',
+                    color: step > i ? 'var(--text-primary)' : 'var(--text-muted)'
                   }}>
                     {s}
                   </span>
                 ))}
               </div>
-              <div style={{ width: '100%', height: '6px', background: 'var(--color-gray-200)', borderRadius: 'var(--radius-full)', overflow: 'hidden' }}>
+              <div style={{ width: '100%', height: '8px', background: 'rgba(255,255,255,0.05)', borderRadius: '999px', overflow: 'hidden', boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.2)' }}>
                 <div style={{ 
                   width: `${(step / 4) * 100}%`, height: '100%', 
-                  background: 'var(--color-blue)', transition: 'width 0.4s ease' 
+                  background: 'linear-gradient(135deg, var(--color-accent), #60a5fa)', 
+                  boxShadow: '0 0 10px rgba(139, 92, 246, 0.5)',
+                  transition: 'width 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                  borderRadius: '999px'
                 }}></div>
               </div>
             </div>
 
-            <div className="card" style={{ padding: 'var(--space-10)' }}>
+            <div className="card" style={{ padding: 'var(--space-10)', background: 'rgba(255, 255, 255, 0.02)', backdropFilter: 'blur(12px)', border: '1px solid var(--border-subtle)', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)' }}>
               <form onSubmit={handleSubmit}>
                 {step === 1 && (
                   <ScrollAnimator animation="fade-in">
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: 'var(--space-6)' }}>
-                      <User className="color-blue" />
-                      <h3 style={{ margin: 0 }}>Step 1: Personal Information</h3>
+                      <User style={{ color: 'var(--color-accent)' }} />
+                      <h3 style={{ margin: 0, fontSize: 'var(--fs-h4)' }}>Step 1: Personal Information</h3>
                     </div>
                     <div className="grid-2">
                       <div className="form-group">
@@ -170,20 +174,25 @@ const Request = () => {
                 {step === 2 && (
                   <ScrollAnimator animation="fade-in">
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: 'var(--space-6)' }}>
-                      <Briefcase className="color-blue" />
-                      <h3 style={{ margin: 0 }}>Step 2: Project Details</h3>
+                      <Briefcase style={{ color: 'var(--color-accent)' }} />
+                      <h3 style={{ margin: 0, fontSize: 'var(--fs-h4)' }}>Step 2: Project Details</h3>
                     </div>
                     <div className="form-group">
-                      <label className="form-label">Project Category</label>
-                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '10px' }}>
+                      <label className="form-label" style={{ color: 'var(--text-secondary)' }}>Project Category</label>
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '12px' }}>
                         {['Business Website', 'E-commerce', 'Portfolio', 'Redesign', 'Other'].map(cat => (
                           <label key={cat} style={{ 
-                            padding: '12px', border: '1px solid var(--color-gray-200)', borderRadius: 'var(--radius-md)',
-                            display: 'flex', gap: '10px', cursor: 'pointer', fontSize: '14px',
-                            background: formData.category === cat ? 'var(--color-frost)' : 'transparent',
-                            borderColor: formData.category === cat ? 'var(--color-blue)' : 'var(--color-gray-200)'
+                            padding: '16px 12px', borderRadius: '12px',
+                            display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center', cursor: 'pointer', fontSize: '14px', fontWeight: '500',
+                            background: formData.category === cat ? 'rgba(139, 92, 246, 0.15)' : 'rgba(255, 255, 255, 0.03)',
+                            border: '1px solid',
+                            borderColor: formData.category === cat ? 'var(--color-accent)' : 'var(--border-subtle)',
+                            color: formData.category === cat ? '#fff' : 'var(--text-secondary)',
+                            transition: 'all 0.2s ease',
+                            boxShadow: formData.category === cat ? '0 0 15px rgba(139, 92, 246, 0.2)' : 'none'
                           }}>
-                            <input type="radio" name="category" value={cat} checked={formData.category === cat} onChange={handleChange} /> {cat}
+                            <input type="radio" name="category" value={cat} checked={formData.category === cat} onChange={handleChange} style={{ display: 'none' }} /> 
+                            {cat}
                           </label>
                         ))}
                       </div>
@@ -212,8 +221,8 @@ const Request = () => {
                 {step === 3 && (
                   <ScrollAnimator animation="fade-in">
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: 'var(--space-6)' }}>
-                      <Calendar className="color-blue" />
-                      <h3 style={{ margin: 0 }}>Step 3: Budget & Timeline</h3>
+                      <Calendar style={{ color: 'var(--color-accent)' }} />
+                      <h3 style={{ margin: 0, fontSize: 'var(--fs-h4)' }}>Step 3: Budget & Timeline</h3>
                     </div>
                     <div className="form-group">
                       <label className="form-label">Estimated Budget</label>
@@ -242,8 +251,8 @@ const Request = () => {
                 {step === 4 && (
                   <ScrollAnimator animation="fade-in">
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: 'var(--space-6)' }}>
-                      <Sparkles className="color-blue" />
-                      <h3 style={{ margin: 0 }}>Step 4: Review & Submit</h3>
+                      <Sparkles style={{ color: 'var(--color-accent)' }} />
+                      <h3 style={{ margin: 0, fontSize: 'var(--fs-h4)' }}>Step 4: Review & Submit</h3>
                     </div>
                     <div style={{ background: 'var(--color-frost)', padding: '20px', borderRadius: 'var(--radius-lg)', marginBottom: 'var(--space-8)' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--color-blue)', marginBottom: '10px' }}>
