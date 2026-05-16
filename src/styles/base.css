@@ -1,5 +1,6 @@
 /* =============================================
    PIXORA — Global Base Styles & Reset
+   Dark Premium Theme
    ============================================= */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
@@ -25,8 +26,8 @@ body {
   font-size: var(--fs-body);
   font-weight: var(--fw-regular);
   line-height: var(--lh-normal);
-  color: var(--color-night);
-  background-color: var(--color-white);
+  color: var(--text-primary);
+  background-color: var(--color-bg);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
@@ -36,7 +37,7 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: var(--fw-bold);
   line-height: var(--lh-tight);
   letter-spacing: var(--ls-tight);
-  color: var(--color-night);
+  color: var(--text-primary);
 }
 
 h1 { font-size: var(--fs-h1); }
@@ -45,18 +46,18 @@ h3 { font-size: var(--fs-h3); }
 h4 { font-size: var(--fs-h4); }
 
 p {
-  color: var(--color-gray-600);
+  color: var(--text-secondary);
   line-height: var(--lh-relaxed);
 }
 
 a {
-  color: var(--color-blue);
+  color: var(--color-purple-light);
   text-decoration: none;
   transition: color var(--transition-fast);
 }
 
 a:hover {
-  color: var(--color-blue-dark);
+  color: var(--text-primary);
 }
 
 img, video, svg {
@@ -79,37 +80,25 @@ button, input, select, textarea {
   background: none;
 }
 
-button {
-  cursor: pointer;
-}
+button { cursor: pointer; }
 
-input, select, textarea {
-  width: 100%;
-}
+input, select, textarea { width: 100%; }
 
 ::selection {
-  background-color: var(--color-blue);
+  background-color: var(--color-purple);
   color: var(--color-white);
 }
 
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--color-frost);
-}
-
+/* ---- Dark Scrollbar ---- */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--color-bg); }
 ::-webkit-scrollbar-thumb {
-  background: var(--color-gray-300);
+  background: var(--color-surface-3);
   border-radius: var(--radius-full);
 }
+::-webkit-scrollbar-thumb:hover { background: var(--color-purple-dark); }
 
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-gray-400);
-}
-
-/* ---- Utility: Container ---- */
+/* ---- Layout Containers ---- */
 .container {
   width: 100%;
   max-width: var(--container-max);
@@ -117,65 +106,73 @@ input, select, textarea {
   padding-inline: var(--container-padding);
 }
 
-.container--wide {
-  max-width: var(--container-wide);
-}
-
-.container--narrow {
-  max-width: var(--container-narrow);
-}
+.container--wide { max-width: var(--container-wide); }
+.container--narrow { max-width: var(--container-narrow); }
 
 /* ---- Section Spacing ---- */
-.section {
-  padding-block: var(--space-20);
-}
-
-.section--lg {
-  padding-block: var(--space-24);
-}
+.section { padding-block: var(--space-24); }
+.section--lg { padding-block: var(--space-32); }
+.section--sm { padding-block: var(--space-16); }
 
 /* ---- Section Header ---- */
 .section-header {
   text-align: center;
-  max-width: 700px;
+  max-width: 760px;
   margin-inline: auto;
-  margin-bottom: var(--space-12);
+  margin-bottom: var(--space-16);
 }
 
 .section-badge {
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
-  padding: var(--space-2) var(--space-4);
-  background: var(--color-frost);
-  color: var(--color-blue);
-  font-size: var(--fs-small);
+  padding: 0.3rem 0.875rem;
+  background: rgba(139, 92, 246, 0.12);
+  color: var(--color-purple-light);
+  font-size: var(--fs-xs);
   font-weight: var(--fw-semibold);
-  letter-spacing: var(--ls-wide);
+  letter-spacing: var(--ls-wider);
   text-transform: uppercase;
   border-radius: var(--radius-full);
-  border: 1px solid var(--color-frost-dark);
-  margin-bottom: var(--space-4);
+  border: 1px solid rgba(139, 92, 246, 0.25);
+  margin-bottom: var(--space-5);
 }
 
 .section-header h2 {
-  margin-bottom: var(--space-4);
+  margin-bottom: var(--space-5);
+  color: var(--text-primary);
 }
 
 .section-header p {
   font-size: var(--fs-body-lg);
-  color: var(--color-gray-500);
+  color: var(--text-secondary);
 }
 
-/* ---- Visually Hidden (a11y) ---- */
+/* ---- Gradient Text Utility ---- */
+.gradient-text {
+  background: var(--gradient-text);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ---- Grid Layouts ---- */
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-6); }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-6); }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-6); }
+
+@media (max-width: 1024px) {
+  .grid-3 { grid-template-columns: repeat(2, 1fr); }
+  .grid-4 { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 640px) {
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+}
+
+/* ---- Visually Hidden ---- */
 .sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
 }

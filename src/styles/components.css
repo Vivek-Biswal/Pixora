@@ -1,14 +1,18 @@
 /* =============================================
    PIXORA — Shared Component Styles
+   Premium Dark Theme
    ============================================= */
 
-/* ---- Buttons ---- */
+/* ===========================
+   BUTTONS
+   =========================== */
+
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: var(--space-2);
-  padding: 0.875rem 1.75rem;
+  padding: 0.8rem 1.75rem;
   font-weight: var(--fw-semibold);
   font-size: var(--fs-body);
   border-radius: var(--radius-md);
@@ -16,152 +20,200 @@
   cursor: pointer;
   white-space: nowrap;
   user-select: none;
+  position: relative;
+  overflow: hidden;
+  letter-spacing: -0.01em;
 }
 
+/* Gradient shimmer on hover */
+.btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.08) 50%, transparent 100%);
+  transform: translateX(-100%);
+  transition: transform 0.5s ease;
+}
+.btn:hover::before { transform: translateX(100%); }
+
+/* Primary — Purple/Blue gradient */
 .btn--primary {
-  background: var(--color-blue);
-  color: var(--color-white);
-  box-shadow: var(--shadow-md);
+  background: var(--gradient-primary);
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(139, 92, 246, 0.3);
+  border: 1px solid rgba(139, 92, 246, 0.3);
 }
-
 .btn--primary:hover {
-  background: var(--color-blue-dark);
-  color: var(--color-white) !important;
+  color: #fff !important;
   transform: translateY(-2px);
-  box-shadow: var(--shadow-lg), var(--shadow-glow-blue);
+  box-shadow: 0 8px 32px rgba(139, 92, 246, 0.5);
 }
+.btn--primary:active { transform: translateY(0); }
 
+/* Secondary — Dark glass */
 .btn--secondary {
-  background: var(--color-frost);
-  color: var(--color-blue);
-  border: 1px solid var(--color-frost-dark);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-primary);
+  border: 1px solid var(--border-default);
 }
-
 .btn--secondary:hover {
-  background: var(--color-frost-dark);
+  background: rgba(255, 255, 255, 0.10);
+  border-color: var(--border-strong);
+  color: var(--text-primary) !important;
   transform: translateY(-2px);
 }
 
-.btn--coral {
-  background: var(--color-coral);
-  color: var(--color-white);
-  box-shadow: var(--shadow-md);
+/* Ghost — Transparent with border */
+.btn--ghost {
+  background: transparent;
+  color: var(--text-primary);
+  border: 1px solid var(--border-default);
 }
-
-.btn--coral:hover {
-  background: var(--color-coral-dark);
-  color: var(--color-white) !important;
+.btn--ghost:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: var(--border-strong);
+  color: var(--text-primary) !important;
   transform: translateY(-2px);
-  box-shadow: var(--shadow-lg), var(--shadow-glow-coral);
 }
 
+/* Outline — Purple border */
 .btn--outline {
   background: transparent;
-  color: var(--color-blue);
-  border: 2px solid var(--color-blue);
+  color: var(--color-purple-light);
+  border: 1px solid rgba(139, 92, 246, 0.4);
 }
-
 .btn--outline:hover {
-  background: var(--color-blue);
-  color: var(--color-white) !important;
+  background: rgba(139, 92, 246, 0.1);
+  border-color: var(--color-purple);
+  color: var(--color-purple-light) !important;
   transform: translateY(-2px);
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.2);
 }
 
+/* Coral → Pink */
+.btn--coral {
+  background: var(--gradient-pink);
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(236, 72, 153, 0.3);
+  border: 1px solid rgba(236, 72, 153, 0.3);
+}
+.btn--coral:hover {
+  color: #fff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(236, 72, 153, 0.5);
+}
+
+/* White (for dark backgrounds) */
 .btn--white {
-  background: var(--color-white);
-  color: var(--color-night);
+  background: rgba(255,255,255,0.95);
+  color: #030014;
+  border: 1px solid transparent;
 }
-
 .btn--white:hover {
-  background: var(--color-frost);
-  color: var(--color-night) !important;
+  background: #fff;
+  color: #030014 !important;
   transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(255,255,255,0.15);
 }
 
+/* Sizes */
 .btn--lg {
-  padding: 1.125rem 2.25rem;
+  padding: 1rem 2.25rem;
   font-size: var(--fs-body-lg);
   border-radius: var(--radius-lg);
 }
-
 .btn--sm {
   padding: 0.5rem 1rem;
   font-size: var(--fs-small);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
 }
 
-/* ---- Cards ---- */
+/* ===========================
+   CARDS
+   =========================== */
+
 .card {
-  background: var(--color-white);
+  background: var(--gradient-card);
   border-radius: var(--radius-xl);
   padding: var(--space-8);
-  border: 1px solid var(--color-gray-200);
-  transition: all var(--transition-spring);
+  border: 1px solid var(--border-subtle);
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
   position: relative;
   overflow: hidden;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--shadow-inner);
+  pointer-events: none;
+  border-radius: inherit;
 }
 
 .card:hover {
-  transform: translateY(-8px);
-  box-shadow: var(--shadow-xl);
-  border-color: var(--color-blue-light);
+  transform: translateY(-6px);
+  border-color: var(--border-accent);
+  box-shadow: var(--shadow-card-hover);
 }
 
+/* Glass variant */
 .card--glass {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-subtle);
 }
 
+/* Dark solid */
 .card--dark {
-  background: var(--color-night);
-  color: var(--color-white);
-  border-color: var(--color-night-light);
+  background: var(--color-surface-2);
+  border-color: var(--border-subtle);
 }
 
-.card--dark h3, .card--dark p {
-  color: inherit;
-}
+/* ===========================
+   FORM ELEMENTS
+   =========================== */
 
-/* ---- Form Elements ---- */
-.form-group {
-  margin-bottom: var(--space-6);
-}
+.form-group { margin-bottom: var(--space-6); }
 
 .form-label {
   display: block;
   font-weight: var(--fw-semibold);
   margin-bottom: var(--space-2);
   font-size: var(--fs-small);
-  color: var(--color-night);
+  color: var(--text-secondary);
+  letter-spacing: 0.02em;
 }
 
 .form-control {
   width: 100%;
-  padding: 0.75rem 1rem;
-  background: var(--color-white);
-  border: 2px solid var(--color-gray-200);
+  padding: 0.875rem 1.125rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-default);
   border-radius: var(--radius-md);
   font-size: var(--fs-body);
+  color: var(--text-primary);
   transition: all var(--transition-base);
+  backdrop-filter: blur(8px);
 }
 
 .form-control:focus {
-  border-color: var(--color-blue);
-  box-shadow: 0 0 0 4px rgba(79, 110, 247, 0.1);
+  border-color: var(--color-purple);
+  background: rgba(139, 92, 246, 0.06);
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.12);
 }
 
-.form-control::placeholder {
-  color: var(--color-gray-400);
-}
+.form-control::placeholder { color: var(--text-muted); }
 
-textarea.form-control {
-  min-height: 120px;
-  resize: vertical;
-}
+textarea.form-control { min-height: 120px; resize: vertical; }
 
-/* ---- Badges & Tags ---- */
+/* ===========================
+   BADGES
+   =========================== */
+
 .badge {
   display: inline-flex;
   align-items: center;
@@ -173,11 +225,15 @@ textarea.form-control {
   letter-spacing: var(--ls-wider);
 }
 
-.badge--blue { background: var(--color-frost); color: var(--color-blue); }
-.badge--coral { background: #FFEAEA; color: var(--color-coral); }
-.badge--green { background: #E6F6EB; color: #2D9D78; }
+.badge--purple { background: rgba(139,92,246,0.15); color: var(--color-purple-light); }
+.badge--blue   { background: rgba(59,130,246,0.15);  color: var(--color-blue-light); }
+.badge--pink   { background: rgba(236,72,153,0.15);  color: var(--color-pink-light); }
+.badge--green  { background: rgba(34,197,94,0.15);   color: #4ADE80; }
 
-/* ---- Icons ---- */
+/* ===========================
+   ICON BOX
+   =========================== */
+
 .icon-box {
   display: flex;
   align-items: center;
@@ -185,27 +241,39 @@ textarea.form-control {
   width: 3rem;
   height: 3rem;
   border-radius: var(--radius-lg);
-  background: var(--color-frost);
-  color: var(--color-blue);
+  background: rgba(139, 92, 246, 0.12);
+  color: var(--color-purple-light);
   margin-bottom: var(--space-4);
   transition: all var(--transition-base);
+  border: 1px solid rgba(139, 92, 246, 0.2);
 }
 
 .card:hover .icon-box {
-  background: var(--color-blue);
-  color: var(--color-white);
+  background: var(--gradient-primary);
+  color: #fff;
+  border-color: transparent;
   transform: scale(1.1) rotate(5deg);
+  box-shadow: var(--shadow-glow-purple);
 }
 
-/* ---- Grid Layouts ---- */
-.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-8); }
-.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-8); }
-.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-8); }
-
-@media (max-width: 992px) {
-  .grid-3, .grid-4 { grid-template-columns: repeat(2, 1fr); }
+/* ===========================
+   ICON-BTN (navbar logout etc.)
+   =========================== */
+.icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-md);
+  background: rgba(255,255,255,0.05);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-subtle);
+  transition: all var(--transition-base);
+  cursor: pointer;
 }
-
-@media (max-width: 640px) {
-  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+.icon-btn:hover {
+  background: rgba(236,72,153,0.12);
+  color: var(--color-pink-light);
+  border-color: rgba(236,72,153,0.3);
 }
