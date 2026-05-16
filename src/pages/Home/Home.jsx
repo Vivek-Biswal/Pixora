@@ -354,27 +354,33 @@ const Home = () => {
 
       {/* ==================== CAPABILITIES (STACKED CARDS) ==================== */}
       <section className="stacked-section" id="capabilities">
-        <div className="container">
-          <motion.div className="section-header" initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-80px' }} variants={fadeUp}>
-            <span className="section-badge">Capabilities</span>
-            <h2>Built for Growth</h2>
-            <p>We don't just build websites; we build scalable digital engines for your business.</p>
-          </motion.div>
+        <div className="container stacked-layout">
+          {/* Left Column - Sticky Header */}
+          <div className="stacked-layout__left">
+            <motion.div className="section-header section-header--left" initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-80px' }} variants={fadeUp}>
+              <span className="section-badge">Capabilities</span>
+              <h2>Built for Growth</h2>
+              <p>We don't just build websites; we build scalable digital engines for your business.</p>
+            </motion.div>
+          </div>
 
-          <div className="stacked-cards">
-            {capabilities.map((cap, i) => (
-              <div key={i} className="stacked-card" style={{ top: `calc(120px + ${i * 30}px)` }}>
-                <div className="stacked-card__inner">
-                  <div className="stacked-card__icon" style={{ color: cap.color, backgroundColor: `color-mix(in srgb, ${cap.color} 15%, transparent)` }}>
-                    {cap.icon}
-                  </div>
-                  <div className="stacked-card__content">
-                    <h3>{cap.title}</h3>
-                    <p>{cap.desc}</p>
+          {/* Right Column - Scrolling Cards */}
+          <div className="stacked-layout__right">
+            <div className="stacked-cards">
+              {capabilities.map((cap, i) => (
+                <div key={i} className="stacked-card" style={{ top: `calc(120px + ${i * 30}px)` }}>
+                  <div className="stacked-card__inner">
+                    <div className="stacked-card__icon" style={{ color: cap.color, backgroundColor: `color-mix(in srgb, ${cap.color} 15%, transparent)` }}>
+                      {cap.icon}
+                    </div>
+                    <div className="stacked-card__content">
+                      <h3>{cap.title}</h3>
+                      <p>{cap.desc}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </section>
