@@ -1,6 +1,6 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import {
   ArrowRight, Check, Monitor, ShoppingCart, Search, Settings, Zap, Layout,
   Star, Plus, Sparkles, BarChart3, Shield, Clock, Users, HeartHandshake,
@@ -64,6 +64,41 @@ const SpotlightCard = ({ children, className = '' }) => {
 
 const Home = () => {
   const [activeFaq, setActiveFaq] = useState(null);
+
+  /* ---- Interactive Parallax Hooks ---- */
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const springConfig = { damping: 30, stiffness: 100, mass: 0.5 };
+  const smoothMouseX = useSpring(mouseX, springConfig);
+  const smoothMouseY = useSpring(mouseY, springConfig);
+
+  // Background layers (slow, opposite direction)
+  const blobX = useTransform(smoothMouseX, [-500, 500], [25, -25]);
+  const blobY = useTransform(smoothMouseY, [-500, 500], [25, -25]);
+  const blobXReverse = useTransform(smoothMouseX, [-500, 500], [-25, 25]);
+  const blobYReverse = useTransform(smoothMouseY, [-500, 500], [-25, 25]);
+
+  // Foreground layers (faster, 3D tilt)
+  const mockupX = useTransform(smoothMouseX, [-500, 500], [-15, 15]);
+  const mockupY = useTransform(smoothMouseY, [-500, 500], [-15, 15]);
+  const mockupRotateX = useTransform(smoothMouseY, [-500, 500], [2.5, -2.5]);
+  const mockupRotateY = useTransform(smoothMouseX, [-500, 500], [-2.5, 2.5]);
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      // Only apply on desktop to avoid weird mobile behavior
+      if (window.innerWidth < 768) return;
+      const { innerWidth, innerHeight } = window;
+      const x = e.clientX - innerWidth / 2;
+      const y = e.clientY - innerHeight / 2;
+      mouseX.set(x);
+      mouseY.set(y);
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, [mouseX, mouseY]);
 
   /* ---- Data ---- */
   const services = [
@@ -152,9 +187,9 @@ const Home = () => {
 
       {/* ==================== HERO ==================== */}
       <section className="hero">
-        <div className="hero__blob hero__blob--1" />
-        <div className="hero__blob hero__blob--2" />
-        <div className="hero__blob hero__blob--3" />
+        <motion.div className="hero__blob hero__blob--1" style={{ x: blobX, y: blobY }} />
+        <motion.div className="hero__blob hero__blob--2" style={{ x: blobXReverse, y: blobYReverse }} />
+        <motion.div className="hero__blob hero__blob--3" style={{ x: blobX, y: blobYReverse }} />
 
         <div className="container">
           <motion.div className="hero__content"
@@ -199,6 +234,13 @@ const Home = () => {
             initial={{ opacity: 0, y: 60, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            style={{ 
+              x: mockupX, 
+              y: mockupY, 
+              rotateX: mockupRotateX, 
+              rotateY: mockupRotateY,
+              transformPerspective: 1200 
+            }}
           >
             <div className="hero__mockup-bar">
               <div className="hero__mockup-dot hero__mockup-dot--r" />
@@ -276,8 +318,8 @@ const Home = () => {
 
       {/* ==================== BIG STATEMENT ==================== */}
       <Section className="statement" id="statement">
-        <div className="statement__blob statement__blob--1" />
-        <div className="statement__blob statement__blob--2" />
+        <motion.div className="statement__blob statement__blob--1" style={{ x: blobX, y: blobY }} />
+        <motion.div className="statement__blob statement__blob--2" style={{ x: blobXReverse, y: blobYReverse }} />
         <div className="container">
           <motion.p className="statement__small" variants={fadeUp} custom={0}>
             Your business deserves more than a template.
@@ -490,8 +532,8 @@ const Home = () => {
 
       {/* ==================== FINAL CTA ==================== */}
       <section className="cta-final">
-        <div className="cta-final__blob cta-final__blob--1" />
-        <div className="cta-final__blob cta-final__blob--2" />
+        <motion.div className="cta-final__blob cta-final__blob--1" style={{ x: blobX, y: blobY }} />
+        <motion.div className="cta-final__blob cta-final__blob--2" style={{ x: blobXReverse, y: blobYReverse }} />
         <div className="container">
           <motion.div
             initial="hidden"
