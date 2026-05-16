@@ -226,23 +226,23 @@ const Request = () => {
                     </div>
                     <div className="form-group">
                       <label className="form-label">Estimated Budget</label>
-                      <select name="budget" value={formData.budget} onChange={handleChange} className="form-control">
-                        <option value="">Select budget</option>
-                        <option>$500 - $1,000</option>
-                        <option>$1,000 - $2,500</option>
-                        <option>$2,500 - $5,000</option>
-                        <option>$5,000 - $10,000</option>
-                        <option>$10,000+</option>
+                      <select name="budget" value={formData.budget} onChange={handleChange} className="form-control" style={{ background: 'var(--color-bg)', color: 'var(--text-primary)' }}>
+                        <option value="" style={{ background: 'var(--color-bg)', color: 'var(--text-primary)' }}>Select budget</option>
+                        <option style={{ background: 'var(--color-bg)', color: 'var(--text-primary)' }}>₹50,000 - ₹1,00,000</option>
+                        <option style={{ background: 'var(--color-bg)', color: 'var(--text-primary)' }}>₹1,00,000 - ₹2,50,000</option>
+                        <option style={{ background: 'var(--color-bg)', color: 'var(--text-primary)' }}>₹2,50,000 - ₹5,00,000</option>
+                        <option style={{ background: 'var(--color-bg)', color: 'var(--text-primary)' }}>₹5,00,000 - ₹10,00,000</option>
+                        <option style={{ background: 'var(--color-bg)', color: 'var(--text-primary)' }}>₹10,00,000+</option>
                       </select>
                     </div>
                     <div className="form-group">
                       <label className="form-label">Desired Deadline</label>
-                      <select name="deadline" value={formData.deadline} onChange={handleChange} className="form-control">
-                        <option value="">Select timeline</option>
-                        <option>ASAP (Within 2 weeks)</option>
-                        <option>Within 1 month</option>
-                        <option>1-3 months</option>
-                        <option>No rush</option>
+                      <select name="deadline" value={formData.deadline} onChange={handleChange} className="form-control" style={{ background: 'var(--color-bg)', color: 'var(--text-primary)' }}>
+                        <option value="" style={{ background: 'var(--color-bg)', color: 'var(--text-primary)' }}>Select timeline</option>
+                        <option style={{ background: 'var(--color-bg)', color: 'var(--text-primary)' }}>ASAP (Within 2 weeks)</option>
+                        <option style={{ background: 'var(--color-bg)', color: 'var(--text-primary)' }}>Within 1 month</option>
+                        <option style={{ background: 'var(--color-bg)', color: 'var(--text-primary)' }}>1-3 months</option>
+                        <option style={{ background: 'var(--color-bg)', color: 'var(--text-primary)' }}>No rush</option>
                       </select>
                     </div>
                   </ScrollAnimator>

@@ -134,7 +134,7 @@ const Pricing = () => {
                 </div>
                 <h3>{plan.name}</h3>
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px', margin: 'var(--space-4) 0' }}>
-                  <span style={{ fontSize: 'var(--fs-h2)', fontWeight: 'var(--fw-black)', color: 'var(--text-primary)', letterSpacing: 'var(--ls-tightest)' }}>${plan.price}</span>
+                  <span style={{ fontSize: 'var(--fs-h2)', fontWeight: 'var(--fw-black)', color: 'var(--text-primary)', letterSpacing: 'var(--ls-tightest)' }}>₹{plan.price}</span>
                   <span style={{ color: 'var(--text-muted)' }}>/{plan.period}</span>
                 </div>
                 <p style={{ fontSize: '14px', marginBottom: 'var(--space-8)', color: 'var(--text-secondary)' }}>{plan.desc}</p>
