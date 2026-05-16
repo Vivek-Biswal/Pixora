@@ -304,6 +304,9 @@
 /* ---- Stats Bar ---- */
 .stats {
   padding: var(--space-16) 0;
+  position: relative;
+  z-index: 10;
+  background: var(--color-bg);
 }
 .stats__grid {
   display: grid;
@@ -459,6 +462,7 @@
   padding: var(--space-32) 0;
   overflow: hidden;
   text-align: center;
+  z-index: 1;
 }
 .statement__blob {
   position: absolute;

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, useInView, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { motion, useInView, useMotionValue, useSpring, useTransform, useScroll } from 'framer-motion';
 import {
   ArrowRight, Check, Monitor, ShoppingCart, Search, Settings, Zap, Layout,
   Star, Plus, Sparkles, BarChart3, Shield, Clock, Users, HeartHandshake,
@@ -89,6 +89,14 @@ const Home = () => {
   const glowSpring = { damping: 20, stiffness: 150, mass: 0.3 };
   const cursorGlowX = useSpring(mouseX, glowSpring);
   const cursorGlowY = useSpring(mouseY, glowSpring);
+
+  // Parallax reveal for statement section
+  const statementRef = useRef(null);
+  const { scrollYProgress: statementScroll } = useScroll({
+    target: statementRef,
+    offset: ["start end", "end start"]
+  });
+  const statementTextY = useTransform(statementScroll, [0, 0.6], [250, 0]);
 
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -339,18 +347,20 @@ const Home = () => {
       </Section>
 
       {/* ==================== BIG STATEMENT ==================== */}
-      <Section className="statement" id="statement">
+      <section className="statement" id="statement" ref={statementRef}>
         <motion.div className="statement__blob statement__blob--1" style={{ x: blobX, y: blobY }} />
         <motion.div className="statement__blob statement__blob--2" style={{ x: blobXReverse, y: blobYReverse }} />
-        <div className="container">
-          <motion.p className="statement__small" variants={fadeUp} custom={0}>
-            Your business deserves more than a template.
-          </motion.p>
-          <motion.h2 className="statement__big gradient-text" variants={fadeUp} custom={1}>
-            We craft websites<br />that convert.
-          </motion.h2>
+        <div className="container" style={{ position: 'relative', zIndex: 2 }}>
+          <motion.div style={{ y: statementTextY }}>
+            <motion.p className="statement__small" variants={fadeUp} custom={0}>
+              Your business deserves more than a template.
+            </motion.p>
+            <motion.h2 className="statement__big gradient-text" variants={fadeUp} custom={1}>
+              We craft websites<br />that convert.
+            </motion.h2>
+          </motion.div>
         </div>
-      </Section>
+      </section>
 
       {/* ==================== CAPABILITIES (STACKED CARDS) ==================== */}
       <section className="stacked-section" id="capabilities">
