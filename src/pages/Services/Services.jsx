@@ -66,7 +66,7 @@ const Services = () => {
         <div className="container" style={{ position: 'relative', zIndex: 1 }}>
           <ScrollAnimator animation="fade-in">
             <span className="section-badge">What We Do</span>
-            <h1 style={{ marginBottom: 'var(--space-4)', fontSize: 'var(--fs-giant)', letterSpacing: 'var(--ls-tightest)' }}>Our Specialized Services</h1>
+            <h1 style={{ marginBottom: 'var(--space-4)', fontSize: 'var(--fs-h1)', letterSpacing: 'var(--ls-tightest)' }}>Our Specialized Services</h1>
             <p style={{ maxWidth: '600px', margin: '0 auto', fontSize: 'var(--fs-lg)', color: 'var(--text-secondary)' }}>
               We combine creative design with technical excellence to deliver digital 
               products that help your business thrive in the modern world.

@@ -46,7 +46,7 @@ const Pricing = () => {
         <div className="container" style={{ position: 'relative', zIndex: 1 }}>
           <ScrollAnimator animation="fade-in">
             <span className="section-badge">Pricing</span>
-            <h1 style={{ marginBottom: 'var(--space-4)', fontSize: 'var(--fs-giant)', letterSpacing: 'var(--ls-tightest)' }}>Transparent Pricing</h1>
+            <h1 style={{ marginBottom: 'var(--space-4)', fontSize: 'var(--fs-h1)', letterSpacing: 'var(--ls-tightest)' }}>Transparent Pricing</h1>
             <p style={{ maxWidth: '600px', margin: '0 auto', marginBottom: 'var(--space-10)', fontSize: 'var(--fs-lg)', color: 'var(--text-secondary)' }}>
               No hidden fees. Choose the plan that fits your business stage.
             </p>

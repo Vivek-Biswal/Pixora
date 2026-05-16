@@ -28,7 +28,7 @@
 }
 
 .legal-header h1 {
-  font-size: var(--fs-giant);
+  font-size: var(--fs-h1);
   font-weight: var(--fw-black);
   margin-bottom: var(--space-4);
   letter-spacing: var(--ls-tightest);
