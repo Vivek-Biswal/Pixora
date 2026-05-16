@@ -85,6 +85,11 @@ const Home = () => {
   const mockupRotateX = useTransform(smoothMouseY, [-500, 500], [2.5, -2.5]);
   const mockupRotateY = useTransform(smoothMouseX, [-500, 500], [-2.5, 2.5]);
 
+  // Cursor glow follows mouse directly (faster spring)
+  const glowSpring = { damping: 20, stiffness: 150, mass: 0.3 };
+  const cursorGlowX = useSpring(mouseX, glowSpring);
+  const cursorGlowY = useSpring(mouseY, glowSpring);
+
   useEffect(() => {
     const handleMouseMove = (e) => {
       // Only apply on desktop to avoid weird mobile behavior
@@ -187,6 +192,17 @@ const Home = () => {
 
       {/* ==================== HERO ==================== */}
       <section className="hero">
+        {/* Cursor-reactive glow */}
+        <motion.div
+          className="hero__cursor-glow"
+          style={{
+            left: '50%',
+            top: '50%',
+            x: cursorGlowX,
+            y: cursorGlowY,
+          }}
+        />
+
         <motion.div className="hero__blob hero__blob--1" style={{ x: blobX, y: blobY }} />
         <motion.div className="hero__blob hero__blob--2" style={{ x: blobXReverse, y: blobYReverse }} />
         <motion.div className="hero__blob hero__blob--3" style={{ x: blobX, y: blobYReverse }} />
@@ -195,7 +211,13 @@ const Home = () => {
           <motion.div className="hero__content"
             initial="hidden" animate="visible" variants={stagger}
           >
-            <motion.div className="hero__badge" variants={fadeUp} custom={0}>
+            <motion.div
+              className="hero__badge"
+              variants={fadeUp}
+              custom={0}
+              whileHover={{ scale: 1.05 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+            >
               <Sparkles size={13} /> Premium Done-For-You Websites
             </motion.div>
 

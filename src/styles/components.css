@@ -16,14 +16,16 @@
   font-weight: var(--fw-semibold);
   font-size: var(--fs-body);
   border-radius: var(--radius-md);
-  transition: all var(--transition-base);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   cursor: pointer;
   white-space: nowrap;
   user-select: none;
   position: relative;
   overflow: hidden;
   letter-spacing: -0.01em;
+  will-change: transform, box-shadow;
 }
+.btn:active { transform: translateY(0) scale(0.97) !important; }
 
 /* Gradient shimmer on hover */
 .btn::before {
@@ -45,10 +47,10 @@
 }
 .btn--primary:hover {
   color: #fff !important;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 32px rgba(139, 92, 246, 0.5);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 32px rgba(139, 92, 246, 0.5), 0 0 0 1px rgba(139, 92, 246, 0.4);
 }
-.btn--primary:active { transform: translateY(0); }
+.btn--primary:active { transform: translateY(0) scale(0.97) !important; }
 
 /* Secondary — Dark glass */
 .btn--secondary {

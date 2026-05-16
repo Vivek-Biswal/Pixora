@@ -14,6 +14,25 @@
   overflow: hidden;
 }
 
+/* Cursor-reactive glow — positioned via JS custom props */
+.hero__cursor-glow {
+  position: absolute;
+  width: 800px;
+  height: 800px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(139, 92, 246, 0.07) 0%,
+    rgba(59, 130, 246, 0.04) 30%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(40px);
+  will-change: transform;
+  transform: translate(-50%, -50%);
+}
+
 /* Dot grid background */
 .hero::before {
   content: '';
@@ -73,6 +92,22 @@
   color: var(--color-purple-light);
   letter-spacing: var(--ls-wide);
   margin-bottom: var(--space-8);
+  position: relative;
+  overflow: hidden;
+}
+.hero__badge::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+  animation: badgeShimmer 3s ease-in-out infinite;
+}
+@keyframes badgeShimmer {
+  0%, 100% { left: -100%; }
+  50% { left: 150%; }
 }
 
 .hero__title {
@@ -133,7 +168,6 @@
 .hero__trust-avatar:first-child { margin-left: 0; }
 .hero__trust-stars { color: #FBBF24; }
 
-/* Dashboard mockup */
 .hero__mockup {
   position: relative;
   z-index: 2;
@@ -144,6 +178,11 @@
   border: 1px solid var(--border-subtle);
   background: var(--color-surface);
   box-shadow: 0 40px 120px rgba(0,0,0,0.7), 0 0 80px rgba(139,92,246,0.08);
+  will-change: transform;
+  transition: box-shadow 0.4s ease;
+}
+.hero__mockup:hover {
+  box-shadow: 0 50px 140px rgba(0,0,0,0.8), 0 0 100px rgba(139,92,246,0.12);
 }
 .hero__mockup-bar {
   display: flex; align-items: center; gap: 6px;
@@ -483,7 +522,12 @@
   box-shadow: 0 -20px 60px rgba(0,0,0,0.6);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.stacked-card__inner:hover {
+  border-color: var(--border-accent);
+  box-shadow: 0 -20px 60px rgba(0,0,0,0.6), 0 0 40px rgba(139,92,246,0.08);
+  transform: translateY(-2px);
 }
 .stacked-card__icon {
   width: 64px; height: 64px;
@@ -587,6 +631,11 @@
   border-color: rgba(139,92,246,0.4);
   background: rgba(139,92,246,0.05);
   box-shadow: 0 0 60px rgba(139,92,246,0.1);
+  transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1);
+}
+.pricing-card--popular:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 0 80px rgba(139,92,246,0.18), 0 20px 60px rgba(0,0,0,0.4);
 }
 .pricing-card__badge {
   position: absolute;
