@@ -456,13 +456,25 @@
   color: var(--text-muted);
 }
 
-/* ---- Big Statement Section ---- */
-.statement {
+/* ---- Big Statement Section (Lovable Parallax Reveal) ---- */
+.statement-wrapper {
   position: relative;
-  padding: var(--space-32) 0;
-  overflow: hidden;
+  height: 80vh;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+.statement-fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  z-index: 1;
+  z-index: -1;
+  pointer-events: none;
 }
 .statement__blob {
   position: absolute;

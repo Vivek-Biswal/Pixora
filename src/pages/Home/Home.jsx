@@ -327,43 +327,46 @@ const Home = () => {
         </div>
       </div>
 
-      {/* ==================== STATS ==================== */}
-      <Section className="stats section" id="stats">
-        <div className="container">
-          <div className="stats__grid">
-            {[
-              { num: '150+', label: 'Projects Delivered', icon: <BarChart3 size={20} /> },
-              { num: '98%', label: 'Client Satisfaction', icon: <HeartHandshake size={20} /> },
-              { num: '50+', label: 'Active Clients', icon: <Users size={20} /> },
-              { num: '24/7', label: 'Expert Support', icon: <Shield size={20} /> },
-            ].map((stat, i) => (
-              <motion.div key={i} className="stats__item" variants={fadeUp} custom={i}>
-                <div className="stats__number gradient-text">{stat.num}</div>
-                <div className="stats__label">{stat.label}</div>
-              </motion.div>
-            ))}
+      <div style={{ position: 'relative', zIndex: 10, background: 'var(--color-bg)' }}>
+        {/* ==================== STATS ==================== */}
+        <Section className="stats section" id="stats">
+          <div className="container">
+            <div className="stats__grid">
+              {[
+                { num: '150+', label: 'Projects Delivered', icon: <BarChart3 size={20} /> },
+                { num: '98%', label: 'Client Satisfaction', icon: <HeartHandshake size={20} /> },
+                { num: '50+', label: 'Active Clients', icon: <Users size={20} /> },
+                { num: '24/7', label: 'Expert Support', icon: <Shield size={20} /> },
+              ].map((stat, i) => (
+                <motion.div key={i} className="stats__item" variants={fadeUp} custom={i}>
+                  <div className="stats__number gradient-text">{stat.num}</div>
+                  <div className="stats__label">{stat.label}</div>
+                </motion.div>
+              ))}
+            </div>
           </div>
-        </div>
-      </Section>
+        </Section>
+      </div>
 
-      {/* ==================== BIG STATEMENT ==================== */}
-      <section className="statement" id="statement" ref={statementRef}>
-        <motion.div className="statement__blob statement__blob--1" style={{ x: blobX, y: blobY }} />
-        <motion.div className="statement__blob statement__blob--2" style={{ x: blobXReverse, y: blobYReverse }} />
-        <div className="container" style={{ position: 'relative', zIndex: 2 }}>
-          <motion.div style={{ y: statementTextY }}>
-            <motion.p className="statement__small" variants={fadeUp} custom={0}>
+      {/* ==================== BIG STATEMENT (LOVABLE REVEAL EFFECT) ==================== */}
+      <div className="statement-wrapper">
+        <section className="statement-fixed" id="statement">
+          <motion.div className="statement__blob statement__blob--1" style={{ x: blobX, y: blobY }} />
+          <motion.div className="statement__blob statement__blob--2" style={{ x: blobXReverse, y: blobYReverse }} />
+          <div className="container" style={{ position: 'relative', zIndex: 2 }}>
+            <p className="statement__small">
               Your business deserves more than a template.
-            </motion.p>
-            <motion.h2 className="statement__big gradient-text" variants={fadeUp} custom={1}>
+            </p>
+            <h2 className="statement__big gradient-text">
               We craft websites<br />that convert.
-            </motion.h2>
-          </motion.div>
-        </div>
-      </section>
+            </h2>
+          </div>
+        </section>
+      </div>
 
-      {/* ==================== CAPABILITIES (STACKED CARDS) ==================== */}
-      <section className="stacked-section" id="capabilities">
+      <div style={{ position: 'relative', zIndex: 10, background: 'var(--color-bg)' }}>
+        {/* ==================== CAPABILITIES (STACKED CARDS) ==================== */}
+        <section className="stacked-section" id="capabilities">
         <div className="container stacked-layout">
           {/* Left Column - Sticky Header */}
           <div className="stacked-layout__left">
