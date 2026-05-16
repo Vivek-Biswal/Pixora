@@ -9,20 +9,21 @@ import {
   Plus,
   CreditCard,
   Search,
-  ArrowUpRight,
   Clock,
   CheckCircle2,
   FileText,
   AlertCircle,
   Activity,
   ChevronRight,
-  MoreHorizontal,
   Menu,
   X,
-  TrendingUp,
-  Calendar,
   Zap,
-  Target
+  Download,
+  UploadCloud,
+  FileBadge,
+  MoreVertical,
+  CalendarDays,
+  Send
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
@@ -33,27 +34,32 @@ import { processPayment } from '../../services/payment';
 import { motion, AnimatePresence } from 'framer-motion';
 import './ClientDashboard.css';
 
-// --- Dummy Data for Premium Feel ---
-const dummyActivities = [
-  { id: 1, action: "Project status updated to", target: "In Progress", time: "2 hours ago", icon: Activity, type: "project" },
-  { id: 2, action: "Invoice #INV-2026-001 generated for", target: "Advance Payment", time: "5 hours ago", icon: FileText, type: "payment" },
-  { id: 3, action: "New message received from", target: "Pixora Team", time: "1 day ago", icon: MessageSquare, type: "message" },
-  { id: 4, action: "Project request submitted", target: "SaaS Dashboard Redesign", time: "2 days ago", icon: FolderGit2, type: "project" },
+// --- Premium Mock Data for UX Demonstration ---
+const MOCK_ACTIVE_PHASE = "Design & Prototyping";
+const MOCK_NEXT_MILESTONE = "Homepage Approval";
+const MOCK_DEADLINE = "May 24, 2026";
+
+const MOCK_TIMELINE = [
+  { id: 1, title: "Discovery & Strategy", status: "done", date: "May 10" },
+  { id: 2, title: "Design & Prototyping", status: "active", date: "In Progress" },
+  { id: 3, title: "Development & Integration", status: "pending", date: "Upcoming" },
+  { id: 4, title: "QA & Handoff", status: "pending", date: "Upcoming" }
 ];
 
-const dummyInvoices = [
-  { id: "INV-2026-001", date: "May 15, 2026", amount: "₹1,000", status: "Pending", desc: "Advance Payment" },
-  { id: "INV-2026-000", date: "May 01, 2026", amount: "₹5,000", status: "Paid", desc: "Discovery Phase" }
+const MOCK_FILES = [
+  { id: 1, name: "Brand_Guidelines.pdf", type: "document", size: "4.2 MB", date: "May 12" },
+  { id: 2, name: "Homepage_v1_Preview.fig", type: "design", size: "12.8 MB", date: "May 15" },
+  { id: 3, name: "Copywriting_Draft.docx", type: "document", size: "1.1 MB", date: "May 14" },
 ];
 
-const dummyReminders = [
-  { id: 1, title: "Kickoff Meeting", date: "May 18, 2026", time: "10:00 AM", icon: Calendar },
-  { id: 2, title: "Design Review", date: "May 22, 2026", time: "2:00 PM", icon: Target },
+const MOCK_MESSAGES = [
+  { id: 1, sender: "Pixora Team", role: "Agency", time: "10:30 AM", text: "Hi! We just uploaded the v1 designs to the File Vault. Please take a look and let us know your thoughts.", isClient: false },
+  { id: 2, sender: "You", role: "Client", time: "11:15 AM", text: "Thanks, looking at them now. The dark theme is exactly what we wanted.", isClient: true },
 ];
 
-const dummySupportTickets = [
-  { id: "TKT-001", title: "Integration Help Needed", status: "open", priority: "high", created: "2 days ago" },
-  { id: "TKT-002", title: "Feature Request: Dark Mode", status: "closed", priority: "low", created: "1 week ago" },
+const MOCK_INVOICES = [
+  { id: "INV-001", amount: "₹1,000", status: "Pending", desc: "Project Kickoff - 50% Advance", date: "May 15, 2026" },
+  { id: "INV-000", amount: "₹500", status: "Paid", desc: "Consultation Retainer", date: "May 01, 2026" }
 ];
 
 const ClientDashboard = () => {
@@ -61,57 +67,32 @@ const ClientDashboard = () => {
   const navigate = useNavigate();
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState('overview');
-  const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [notificationsOpen, setNotificationsOpen] = useState(false);
-  const [activityFilter, setActivityFilter] = useState('all');
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [searchFocused, setSearchFocused] = useState(false);
 
+  // Firebase Fetch for real data
   useEffect(() => {
     if (!user) return;
-    
     const q = query(
       collection(db, 'project_requests'), 
       where('userId', '==', user.uid),
       orderBy('createdAt', 'desc')
     );
-
-    const timeoutId = setTimeout(() => {
-      if (loading) {
-        setLoading(false);
-        setError("Request timed out. Please check your connection.");
-      }
-    }, 8000);
-
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      clearTimeout(timeoutId);
       const docs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       setRequests(docs);
       setLoading(false);
-      setError(null);
-    }, (err) => {
-      clearTimeout(timeoutId);
-      setError("Failed to load projects.");
-      setLoading(false);
     });
-
-    return () => {
-      unsubscribe();
-      clearTimeout(timeoutId);
-    };
+    return () => unsubscribe();
   }, [user]);
 
-  const handlePayment = async () => {
+  const handlePayment = async (amount) => {
     try {
       await processPayment({
         amount: "100000", // 1000 INR
-        prefill: {
-          name: user.name,
-          email: user.email
-        },
-        handler: function(response) {
-          toast.success("Payment successful! Payment ID: " + response.razorpay_payment_id);
-        }
+        prefill: { name: user.name, email: user.email },
+        handler: (response) => toast.success("Payment successful! ID: " + response.razorpay_payment_id)
       });
     } catch (error) {
       toast.error(error.message);
@@ -133,320 +114,300 @@ const ClientDashboard = () => {
     out: { opacity: 0, y: -10, transition: { duration: 0.2, ease: 'easeIn' } }
   };
 
-  // --- Render Tabs ---
-
-  const renderOverview = () => (
+  // ─── Render: Smart Overview ───
+  const renderSmartOverview = () => (
     <motion.div variants={pageVariants} initial="initial" animate="in" exit="out" key="overview">
-      <div className="cd-page-title">Dashboard</div>
-      <div className="cd-page-subtitle">Welcome back, {user?.name?.split(' ')[0]}. Here's your project snapshot.</div>
+      <h1 className="cd-page-title">Good morning, {user?.name?.split(' ')[0]}</h1>
+      <p className="cd-page-desc">Here is the current status of your workspace and active deliverables.</p>
 
-      {/* Stats Row */}
-      <div className="cd-grid-4">
-        <motion.div className="cd-card cd-stat-card" whileHover={{ y: -4 }}>
-          <div className="cd-stat-header">
-            <div className="cd-stat-icon"><FolderGit2 size={18} /></div>
-            Total Projects
+      {/* Hero Status Banner */}
+      <div className="cd-status-banner" style={{ marginBottom: '32px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+          <div>
+            <div className="cd-badge cd-badge-purple" style={{ marginBottom: '16px' }}>
+              <Activity size={12} /> Active Phase
+            </div>
+            <h2 style={{ fontSize: '24px', fontWeight: '700', marginBottom: '8px' }}>{MOCK_ACTIVE_PHASE}</h2>
+            <p style={{ color: 'var(--cd-text-secondary)', maxWidth: '400px', lineHeight: '1.5' }}>
+              Our design team is currently crafting the high-fidelity mockups for your platform. Next review is scheduled soon.
+            </p>
           </div>
-          <div className="cd-stat-value">{loading ? '-' : requests.length}</div>
-          <div className="cd-stat-trend cd-trend-positive"><ArrowUpRight size={14} /> 1 new this week</div>
-        </motion.div>
-
-        <motion.div className="cd-card cd-stat-card" whileHover={{ y: -4 }}>
-          <div className="cd-stat-header">
-            <div className="cd-stat-icon cd-icon-accent"><Activity size={18} /></div>
-            Active Phase
+          <div style={{ textAlign: 'right' }}>
+            <div style={{ fontSize: '12px', color: 'var(--cd-text-muted)', textTransform: 'uppercase', marginBottom: '4px' }}>Target Deadline</div>
+            <div style={{ fontSize: '16px', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <CalendarDays size={16} color="var(--cd-accent)" /> {MOCK_DEADLINE}
+            </div>
           </div>
-          <div className="cd-stat-value">{loading ? '-' : requests.filter(r => r.status === 'active').length}</div>
-          <div className="cd-stat-trend cd-trend-neutral">In progress</div>
-        </motion.div>
-
-        <motion.div className="cd-card cd-stat-card" whileHover={{ y: -4 }}>
-          <div className="cd-stat-header">
-            <div className="cd-stat-icon cd-icon-warning"><CreditCard size={18} /></div>
-            Pending Payments
-          </div>
-          <div className="cd-stat-value">1</div>
-          <div className="cd-stat-trend cd-trend-neutral" style={{ color: 'var(--cd-warning)' }}>Action Required</div>
-        </motion.div>
-
-        <motion.div className="cd-card cd-stat-card" whileHover={{ y: -4 }}>
-          <div className="cd-stat-header">
-            <div className="cd-stat-icon cd-icon-success"><CheckCircle2 size={18} /></div>
-            Completed
-          </div>
-          <div className="cd-stat-value">{loading ? '-' : requests.filter(r => r.status === 'completed').length}</div>
-          <div className="cd-stat-trend cd-trend-positive"><TrendingUp size={14} /> On track</div>
-        </motion.div>
+        </div>
       </div>
 
-      {/* Main Grid: Projects + Activity */}
-      <div className="cd-grid-2-1">
-        <motion.div className="cd-card">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
-            <div style={{ fontWeight: 600, fontSize: '15px' }}>Recent Projects</div>
-            <button className="cd-btn-secondary" style={{ padding: '6px 12px', fontSize: '12px' }} onClick={() => setActiveTab('projects')}>
-              View All
-            </button>
-          </div>
-          
-          {loading ? (
-            <div className="cd-activity-list">
-              <div className="cd-sk-line long"></div>
-              <div className="cd-sk-line medium"></div>
+      <div className="cd-grid-overview">
+        {/* Left Column: Action Items & Recent */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+          <div className="cd-card" style={{ padding: '0' }}>
+            <div style={{ padding: '20px 24px', borderBottom: '1px solid var(--cd-border)', display: 'flex', justifyContent: 'space-between' }}>
+              <h3 style={{ fontSize: '14px', fontWeight: '600' }}>Requires Your Attention</h3>
             </div>
-          ) : requests.length === 0 ? (
-            <div className="cd-empty">
-              <div className="cd-empty-icon"><FolderGit2 size={24} /></div>
-              <div className="cd-empty-title">No projects yet</div>
-              <div className="cd-empty-desc">Create your first project request to get started with Pixora and unlock premium web solutions.</div>
-              <button className="cd-btn-primary" onClick={() => navigate('/request')}><Plus size={16} /> New Request</button>
-            </div>
-          ) : (
-            <div className="cd-table-container">
-              <table className="cd-table" style={{ fontSize: '13px' }}>
-                <thead>
-                  <tr>
-                    <th>Project</th>
-                    <th>Status</th>
-                    <th>Progress</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {requests.slice(0, 3).map(r => (
-                    <tr key={r.id}>
-                      <td style={{ fontWeight: 500 }}>{r.company || 'Personal Project'}</td>
-                      <td>
-                        <span className={`cd-badge cd-badge-${r.status || 'pending'}`}>
-                          {r.status || 'pending'}
-                        </span>
-                      </td>
-                      <td style={{ width: '40%' }}>
-                        <div className="cd-progress-container" style={{ marginTop: 0 }}>
-                          <div className="cd-progress-bar-bg">
-                            <div className="cd-progress-bar-fill" style={{ width: r.status === 'completed' ? '100%' : r.status === 'active' ? '45%' : '15%' }}></div>
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </motion.div>
-
-        <motion.div className="cd-card">
-          <div style={{ fontWeight: 600, fontSize: '15px', marginBottom: '12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span>Recent Activity</span>
-            <div style={{ display: 'flex', gap: '4px' }}>
-              {['all', 'project', 'payment', 'message'].map(filter => (
-                <button
-                  key={filter}
-                  onClick={() => setActivityFilter(filter)}
-                  className={`cd-filter-btn ${activityFilter === filter ? 'active' : ''}`}
-                  style={{ fontSize: '11px', padding: '4px 8px' }}
-                >
-                  {filter}
-                </button>
-              ))}
-            </div>
-          </div>
-          <div className="cd-activity-list" style={{ marginTop: '16px' }}>
-            {dummyActivities
-              .filter(act => activityFilter === 'all' || act.type === activityFilter)
-              .map((act, i) => {
-                const IconComponent = act.icon;
-                return (
-                  <div className="cd-activity-item" key={act.id}>
-                    <div className="cd-activity-icon"><IconComponent size={16} /></div>
-                    <div className="cd-activity-content">
-                      <div className="cd-activity-text">{act.action} <span>{act.target}</span></div>
-                      <div className="cd-activity-time">{act.time}</div>
-                    </div>
+            <div style={{ padding: '24px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'rgba(245, 158, 11, 0.05)', border: '1px solid rgba(245, 158, 11, 0.2)', padding: '16px', borderRadius: '8px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <AlertCircle size={20} color="var(--cd-warning)" />
+                  <div>
+                    <div style={{ fontSize: '14px', fontWeight: '600', color: 'var(--cd-text-primary)' }}>Invoice #INV-001 Pending</div>
+                    <div style={{ fontSize: '13px', color: 'var(--cd-text-secondary)' }}>Advance payment required to lock developer hours.</div>
                   </div>
-                );
-              })}
+                </div>
+                <button className="cd-btn-primary" onClick={() => handlePayment('1000')} style={{ background: 'var(--cd-warning)', color: '#000' }}>
+                  Pay ₹1,000
+                </button>
+              </div>
+            </div>
           </div>
-        </motion.div>
-      </div>
 
-      {/* Bottom Widgets */}
-      <div className="cd-grid-3">
-        <motion.div className="cd-card cd-widget-card" whileHover={{ borderColor: 'var(--cd-border-hover)' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
-            <div className="cd-widget-icon"><Calendar size={18} /></div>
-            <span style={{ fontWeight: 600, fontSize: '14px' }}>Upcoming</span>
+          <div className="cd-card" style={{ padding: '0' }}>
+            <div style={{ padding: '20px 24px', borderBottom: '1px solid var(--cd-border)' }}>
+              <h3 style={{ fontSize: '14px', fontWeight: '600' }}>Recent Project Requests</h3>
+            </div>
+            <table className="cd-table">
+              <thead>
+                <tr>
+                  <th>Project Name</th>
+                  <th>Status</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                {loading ? (
+                  <tr><td colSpan="3" style={{ textAlign: 'center', color: 'var(--cd-text-muted)' }}>Loading...</td></tr>
+                ) : requests.length === 0 ? (
+                  <tr><td colSpan="3" style={{ textAlign: 'center', color: 'var(--cd-text-muted)' }}>No requests found.</td></tr>
+                ) : (
+                  requests.slice(0,3).map(r => (
+                    <tr key={r.id}>
+                      <td style={{ fontWeight: '500' }}>{r.company || 'Personal Project'}</td>
+                      <td><span className={`cd-badge ${r.status === 'completed' ? 'cd-badge-green' : r.status === 'active' ? 'cd-badge-purple' : 'cd-badge-gray'}`}>{r.status || 'Pending'}</span></td>
+                      <td style={{ color: 'var(--cd-text-secondary)' }}>{r.createdAt?.toDate ? r.createdAt.toDate().toLocaleDateString() : 'New'}</td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
           </div>
-          <div style={{ fontSize: '13px', color: 'var(--cd-text-secondary)', lineHeight: '1.6' }}>
-            {dummyReminders.length > 0 ? (
-              <>
-                <div style={{ fontWeight: 500, color: 'var(--cd-text-primary)' }}>{dummyReminders[0].title}</div>
-                <div>{dummyReminders[0].date} at {dummyReminders[0].time}</div>
-              </>
-            ) : 'No upcoming reminders'}
-          </div>
-        </motion.div>
+        </div>
 
-        <motion.div className="cd-card cd-widget-card" whileHover={{ borderColor: 'var(--cd-border-hover)' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
-            <div className="cd-widget-icon"><AlertCircle size={18} /></div>
-            <span style={{ fontWeight: 600, fontSize: '14px' }}>Support Tickets</span>
+        {/* Right Column: Workflow Timeline */}
+        <div className="cd-card">
+          <h3 style={{ fontSize: '14px', fontWeight: '600', marginBottom: '24px' }}>Project Timeline</h3>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
+            {MOCK_TIMELINE.map((stage, idx) => (
+              <div key={stage.id} className="cd-workflow-stage">
+                <div className={`cd-stage-icon ${stage.status === 'done' ? 'cd-stage-done' : stage.status === 'active' ? 'cd-stage-active' : 'cd-stage-pending'}`}>
+                  {stage.status === 'done' ? <CheckCircle2 size={16} /> : stage.status === 'active' ? <Clock size={16} /> : <div style={{width: 8, height: 8, borderRadius: '50%', background: 'currentColor'}} />}
+                </div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontSize: '14px', fontWeight: stage.status === 'active' ? '600' : '500', color: stage.status === 'pending' ? 'var(--cd-text-muted)' : 'var(--cd-text-primary)' }}>{stage.title}</div>
+                  <div style={{ fontSize: '12px', color: 'var(--cd-text-secondary)', marginTop: '2px' }}>{stage.date}</div>
+                </div>
+              </div>
+            ))}
           </div>
-          <div style={{ fontSize: '13px', color: 'var(--cd-text-secondary)', lineHeight: '1.6' }}>
-            <div><span style={{ color: 'var(--cd-text-primary)', fontWeight: 500 }}>{dummySupportTickets.filter(t => t.status === 'open').length}</span> open ticket{dummySupportTickets.filter(t => t.status === 'open').length !== 1 ? 's' : ''}</div>
-            <button className="cd-btn-secondary" style={{ fontSize: '11px', padding: '4px 8px', marginTop: '8px' }}>View All</button>
-          </div>
-        </motion.div>
-
-        <motion.div className="cd-card cd-widget-card" whileHover={{ borderColor: 'var(--cd-border-hover)' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
-            <div className="cd-widget-icon"><Zap size={18} /></div>
-            <span style={{ fontWeight: 600, fontSize: '14px' }}>Quick Actions</span>
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <button className="cd-btn-secondary" style={{ fontSize: '12px', padding: '8px 12px', justifyContent: 'flex-start' }}>
-              <Plus size={14} /> New Request
-            </button>
-            <button className="cd-btn-secondary" style={{ fontSize: '12px', padding: '8px 12px', justifyContent: 'flex-start' }}>
-              <MessageSquare size={14} /> Send Message
-            </button>
-          </div>
-        </motion.div>
+        </div>
       </div>
     </motion.div>
   );
 
-  const renderProjects = () => (
+  // ─── Render: Project Workflow ───
+  const renderProjectWorkflow = () => (
     <motion.div variants={pageVariants} initial="initial" animate="in" exit="out" key="projects">
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px' }}>
         <div>
-          <div className="cd-page-title">Projects</div>
-          <div className="cd-page-subtitle" style={{ marginBottom: 0 }}>Manage your requests and track progress across all phases.</div>
+          <h1 className="cd-page-title">Project Workflow</h1>
+          <p className="cd-page-desc" style={{ marginBottom: 0 }}>Detailed tracking of all milestones, revisions, and deliverables.</p>
         </div>
-        <button className="cd-btn-primary" onClick={() => navigate('/request')}>
-          <Plus size={16} /> New Request
-        </button>
+        <button className="cd-btn-primary" onClick={() => navigate('/request')}><Plus size={16} /> New Request</button>
       </div>
 
-      {loading ? (
-        <div className="cd-card">
-          <div style={{ padding: '24px' }}>
-            <div className="cd-sk-line long"></div>
-            <div className="cd-sk-line medium"></div>
-            <div className="cd-sk-line long"></div>
+      <div className="cd-card" style={{ padding: '0', overflow: 'hidden' }}>
+        <div style={{ padding: '24px', borderBottom: '1px solid var(--cd-border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div>
+            <div style={{ fontSize: '18px', fontWeight: '700', marginBottom: '4px' }}>Pixora Web Platform Rebuild</div>
+            <div style={{ fontSize: '13px', color: 'var(--cd-text-secondary)' }}>Started on May 10, 2026 • Expected Completion: Jun 15, 2026</div>
+          </div>
+          <span className="cd-badge cd-badge-purple">Active</span>
+        </div>
+        
+        <div style={{ padding: '32px 24px', background: 'rgba(255,255,255,0.02)', borderBottom: '1px solid var(--cd-border)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', fontWeight: '600', marginBottom: '12px' }}>
+            <span>Overall Progress</span>
+            <span style={{ color: 'var(--cd-accent-light)' }}>45%</span>
+          </div>
+          <div style={{ width: '100%', height: '8px', background: 'var(--cd-border)', borderRadius: '4px', overflow: 'hidden' }}>
+            <div style={{ width: '45%', height: '100%', background: 'linear-gradient(90deg, var(--cd-accent), var(--cd-accent-light))', borderRadius: '4px' }} />
           </div>
         </div>
-      ) : requests.length === 0 ? (
-        <div className="cd-empty" style={{ minHeight: '300px' }}>
-          <div className="cd-empty-icon"><FolderGit2 size={32} /></div>
-          <div className="cd-empty-title">No projects found</div>
-          <div className="cd-empty-desc">You haven't submitted any project requests yet. Start your journey with Pixora today.</div>
-          <button className="cd-btn-primary" onClick={() => navigate('/request')}><Plus size={16} /> Create First Request</button>
+
+        <div style={{ padding: '24px' }}>
+          <h3 style={{ fontSize: '14px', fontWeight: '600', marginBottom: '24px' }}>Milestone Breakdown</h3>
+          <table className="cd-table">
+            <thead>
+              <tr>
+                <th>Phase</th>
+                <th>Status</th>
+                <th>Deliverables</th>
+                <th>Est. Completion</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style={{ fontWeight: '500' }}>1. Discovery & Architecture</td>
+                <td><span className="cd-badge cd-badge-green">Completed</span></td>
+                <td style={{ color: 'var(--cd-text-secondary)' }}>Sitemap, Wireframes</td>
+                <td style={{ color: 'var(--cd-text-secondary)' }}>May 12, 2026</td>
+              </tr>
+              <tr>
+                <td style={{ fontWeight: '500' }}>2. Design & UI Prototyping</td>
+                <td><span className="cd-badge cd-badge-purple">In Progress</span></td>
+                <td style={{ color: 'var(--cd-text-secondary)' }}>Figma Files, Design System</td>
+                <td style={{ color: 'var(--cd-text-secondary)' }}>May 24, 2026</td>
+              </tr>
+              <tr>
+                <td style={{ fontWeight: '500', color: 'var(--cd-text-muted)' }}>3. Frontend Development</td>
+                <td><span className="cd-badge cd-badge-gray">Pending</span></td>
+                <td style={{ color: 'var(--cd-text-secondary)' }}>React Components</td>
+                <td style={{ color: 'var(--cd-text-secondary)' }}>Jun 05, 2026</td>
+              </tr>
+              <tr>
+                <td style={{ fontWeight: '500', color: 'var(--cd-text-muted)' }}>4. QA & Launch</td>
+                <td><span className="cd-badge cd-badge-gray">Pending</span></td>
+                <td style={{ color: 'var(--cd-text-secondary)' }}>Final Build</td>
+                <td style={{ color: 'var(--cd-text-secondary)' }}>Jun 15, 2026</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-      ) : (
-        <div className="cd-projects-grid">
-          {requests.map(r => (
-            <motion.div key={r.id} className="cd-project-card" whileHover={{ y: -4, borderColor: 'var(--cd-border-hover)' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: '15px', fontWeight: 600, color: 'var(--cd-text-primary)', marginBottom: '4px' }}>
-                    {r.company || 'Personal Project'}
-                  </div>
-                  <div style={{ fontSize: '13px', color: 'var(--cd-text-secondary)' }}>
-                    {r.category || 'General'}
-                  </div>
-                </div>
-                <button className="cd-btn-icon" style={{ width: '32px', height: '32px' }}>
-                  <MoreHorizontal size={16} />
-                </button>
-              </div>
-
-              <div style={{ marginBottom: '16px' }}>
-                <span className={`cd-badge cd-badge-${r.status || 'pending'}`}>
-                  {(r.status || 'pending').charAt(0).toUpperCase() + (r.status || 'pending').slice(1)}
-                </span>
-              </div>
-
-              <div style={{ marginBottom: '16px' }}>
-                <div style={{ fontSize: '12px', color: 'var(--cd-text-secondary)', marginBottom: '8px', display: 'flex', justifyContent: 'space-between' }}>
-                  <span>Progress</span>
-                  <span>{r.status === 'completed' ? '100' : r.status === 'active' ? '45' : '15'}%</span>
-                </div>
-                <div className="cd-progress-bar-bg">
-                  <div className="cd-progress-bar-fill" style={{ width: r.status === 'completed' ? '100%' : r.status === 'active' ? '45%' : '15%' }}></div>
-                </div>
-              </div>
-
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '12px', color: 'var(--cd-text-secondary)', marginBottom: '16px', paddingTop: '16px', borderTop: '1px solid var(--cd-border)' }}>
-                <span>Submitted {r.createdAt?.toDate ? r.createdAt.toDate().toLocaleDateString() : 'recently'}</span>
-              </div>
-
-              <button className="cd-btn-secondary" style={{ width: '100%', justifyContent: 'center' }}>
-                View Details
-              </button>
-            </motion.div>
-          ))}
-        </div>
-      )}
+      </div>
     </motion.div>
   );
 
-  const renderBilling = () => (
-    <motion.div variants={pageVariants} initial="initial" animate="in" exit="out" key="billing">
-      <div className="cd-page-title">Billing & Payments</div>
-      <div className="cd-page-subtitle">Manage your payment methods and view past invoices.</div>
-
-      <div className="cd-grid-2-1">
-        <div className="cd-billing-card">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--cd-accent)', fontWeight: 500, fontSize: '14px' }}>
-            <AlertCircle size={16} /> Action Required
-          </div>
-          <div className="cd-billing-amount">₹1,000.00</div>
-          <p style={{ color: 'var(--cd-text-secondary)', marginBottom: '32px', fontSize: '15px', lineHeight: '1.5', maxWidth: '400px' }}>
-            Secure your project slot with a 50% advance payment. Once paid, our team will begin the discovery phase immediately.
-          </p>
-          <button className="cd-btn-primary" onClick={handlePayment} style={{ width: 'auto', padding: '12px 24px' }}>
-            <CreditCard size={16} /> Pay with Razorpay
-          </button>
+  // ─── Render: File Vault ───
+  const renderFileVault = () => (
+    <motion.div variants={pageVariants} initial="initial" animate="in" exit="out" key="files">
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px' }}>
+        <div>
+          <h1 className="cd-page-title">File Vault</h1>
+          <p className="cd-page-desc" style={{ marginBottom: 0 }}>Secure access to all your project deliverables and brand assets.</p>
         </div>
+        <button className="cd-btn-primary"><UploadCloud size={16} /> Upload Asset</button>
+      </div>
 
-        <div className="cd-card" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          <div style={{ fontWeight: 600, fontSize: '15px' }}>Payment Methods</div>
-          <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--cd-text-muted)', fontSize: '13px', textAlign: 'center', border: '1px dashed var(--cd-border)', borderRadius: 'var(--cd-radius-sm)' }}>
-            No saved payment methods.<br />Cards will be saved securely via Razorpay after first transaction.
+      <div className="cd-files-grid">
+        {MOCK_FILES.map(file => (
+          <div key={file.id} className="cd-file-card">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
+              <div style={{ padding: '10px', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', color: 'var(--cd-accent-light)' }}>
+                {file.type === 'design' ? <FileBadge size={20} /> : <FileText size={20} />}
+              </div>
+              <button style={{ background: 'transparent', border: 'none', color: 'var(--cd-text-muted)', cursor: 'pointer' }}><MoreVertical size={16}/></button>
+            </div>
+            <div style={{ fontSize: '13px', fontWeight: '500', marginBottom: '4px', wordBreak: 'break-all' }}>{file.name}</div>
+            <div style={{ fontSize: '11px', color: 'var(--cd-text-secondary)', display: 'flex', justifyContent: 'space-between' }}>
+              <span>{file.size}</span>
+              <span>{file.date}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </motion.div>
+  );
+
+  // ─── Render: Communication Hub ───
+  const renderCommunicationHub = () => (
+    <motion.div variants={pageVariants} initial="initial" animate="in" exit="out" key="messages">
+      <h1 className="cd-page-title">Communication Hub</h1>
+      <p className="cd-page-desc">Direct line to the Pixora engineering and design teams.</p>
+
+      <div className="cd-card" style={{ padding: 0, display: 'flex', height: '600px', overflow: 'hidden' }}>
+        {/* Chat Area */}
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+          <div style={{ padding: '20px', borderBottom: '1px solid var(--cd-border)', display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div className="cd-avatar" style={{ background: 'var(--cd-accent)', color: '#fff' }}>P</div>
+            <div>
+              <div style={{ fontWeight: '600', fontSize: '14px' }}>Pixora Core Team</div>
+              <div style={{ fontSize: '12px', color: 'var(--cd-success)', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <div style={{ width: 6, height: 6, background: 'var(--cd-success)', borderRadius: '50%' }} /> Usually replies in a few hours
+              </div>
+            </div>
+          </div>
+
+          <div style={{ flex: 1, padding: '24px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            {MOCK_MESSAGES.map(msg => (
+              <div key={msg.id} style={{ display: 'flex', flexDirection: 'column', alignItems: msg.isClient ? 'flex-end' : 'flex-start' }}>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', marginBottom: '4px' }}>
+                  <span style={{ fontSize: '12px', fontWeight: '500', color: 'var(--cd-text-secondary)' }}>{msg.sender}</span>
+                  <span style={{ fontSize: '10px', color: 'var(--cd-text-muted)' }}>{msg.time}</span>
+                </div>
+                <div style={{ 
+                  background: msg.isClient ? 'var(--cd-text-primary)' : 'rgba(255,255,255,0.05)', 
+                  color: msg.isClient ? '#000' : '#fff',
+                  border: msg.isClient ? 'none' : '1px solid var(--cd-border)',
+                  padding: '12px 16px', 
+                  borderRadius: msg.isClient ? '12px 12px 0 12px' : '12px 12px 12px 0',
+                  maxWidth: '70%',
+                  fontSize: '13px',
+                  lineHeight: '1.5'
+                }}>
+                  {msg.text}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div style={{ padding: '20px', borderTop: '1px solid var(--cd-border)', background: 'var(--cd-surface-solid)' }}>
+            <div style={{ display: 'flex', gap: '12px', background: 'rgba(255,255,255,0.03)', border: '1px solid var(--cd-border)', borderRadius: '8px', padding: '8px' }}>
+              <input type="text" placeholder="Type a message..." style={{ flex: 1, background: 'transparent', border: 'none', color: '#fff', outline: 'none', padding: '0 8px', fontSize: '13px' }} />
+              <button className="cd-btn-primary" style={{ padding: '8px', borderRadius: '6px' }}><Send size={16} /></button>
+            </div>
           </div>
         </div>
       </div>
+    </motion.div>
+  );
 
-      <div className="cd-card" style={{ padding: 0, overflow: 'hidden' }}>
-        <div style={{ padding: '24px', borderBottom: '1px solid var(--cd-border)', fontWeight: 600, fontSize: '15px' }}>
-          Invoice History
+  // ─── Render: Billing Center ───
+  const renderBillingCenter = () => (
+    <motion.div variants={pageVariants} initial="initial" animate="in" exit="out" key="billing">
+      <h1 className="cd-page-title">Billing & Payments</h1>
+      <p className="cd-page-desc">Manage your invoices, retainers, and secure payment methods.</p>
+
+      <div className="cd-card" style={{ padding: 0, marginBottom: '32px' }}>
+        <div style={{ padding: '24px', borderBottom: '1px solid var(--cd-border)' }}>
+          <h3 style={{ fontSize: '14px', fontWeight: '600' }}>Invoice History</h3>
         </div>
         <table className="cd-table">
           <thead>
             <tr>
               <th>Invoice</th>
               <th>Description</th>
-              <th>Amount</th>
               <th>Date</th>
+              <th>Amount</th>
               <th>Status</th>
-              <th style={{ textAlign: 'right' }}>Download</th>
+              <th style={{ textAlign: 'right' }}>Action</th>
             </tr>
           </thead>
           <tbody>
-            {dummyInvoices.map(inv => (
+            {MOCK_INVOICES.map(inv => (
               <tr key={inv.id}>
                 <td style={{ fontFamily: 'monospace', color: 'var(--cd-text-secondary)' }}>{inv.id}</td>
-                <td>{inv.desc}</td>
-                <td style={{ fontWeight: 500 }}>{inv.amount}</td>
+                <td style={{ fontWeight: '500' }}>{inv.desc}</td>
                 <td style={{ color: 'var(--cd-text-secondary)' }}>{inv.date}</td>
-                <td>
-                  <span className={`cd-badge ${inv.status === 'Paid' ? 'cd-badge-completed' : 'cd-badge-pending'}`}>
-                    {inv.status}
-                  </span>
-                </td>
+                <td style={{ fontWeight: '600' }}>{inv.amount}</td>
+                <td><span className={`cd-badge ${inv.status === 'Paid' ? 'cd-badge-green' : 'cd-badge-gray'}`}>{inv.status}</span></td>
                 <td style={{ textAlign: 'right' }}>
-                  <button className="cd-btn-secondary" style={{ padding: '6px 12px', fontSize: '12px' }}>PDF</button>
+                  {inv.status === 'Pending' ? (
+                    <button className="cd-btn-primary" onClick={() => handlePayment('1000')} style={{ padding: '6px 12px', fontSize: '11px' }}>Pay Now</button>
+                  ) : (
+                    <button className="cd-btn-secondary" style={{ padding: '6px 12px', fontSize: '11px' }}><Download size={14} /> PDF</button>
+                  )}
                 </td>
               </tr>
             ))}
@@ -456,178 +417,89 @@ const ClientDashboard = () => {
     </motion.div>
   );
 
-  const renderMessages = () => (
-    <motion.div variants={pageVariants} initial="initial" animate="in" exit="out" key="messages">
-      <div className="cd-page-title">Support & Messages</div>
-      <div className="cd-page-subtitle">Communicate directly with the Pixora team.</div>
-
-      <div className="cd-card" style={{ height: '600px', display: 'flex', flexDirection: 'column', padding: 0 }}>
-        <div style={{ padding: '20px', borderBottom: '1px solid var(--cd-border)', display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <div className="cd-avatar" style={{ background: 'var(--cd-accent)', width: '40px', height: '40px' }}>P</div>
-          <div>
-            <div style={{ fontWeight: 600 }}>Pixora Team</div>
-            <div style={{ fontSize: '12px', color: 'var(--cd-success)', display: 'flex', alignItems: 'center', gap: '4px' }}>
-              <div style={{ width: '6px', height: '6px', background: 'var(--cd-success)', borderRadius: '50%' }}></div>
-              Online
-            </div>
-          </div>
-        </div>
-
-        <div style={{ flex: 1, padding: '24px', display: 'flex', flexDirection: 'column', gap: '16px', overflowY: 'auto' }}>
-          <div style={{ alignSelf: 'center', fontSize: '12px', color: 'var(--cd-text-muted)' }}>Today, 10:42 AM</div>
-          <div style={{ background: 'var(--cd-bg)', border: '1px solid var(--cd-border)', padding: '12px 16px', borderRadius: '12px 12px 12px 0', maxWidth: '70%', alignSelf: 'flex-start' }}>
-            Hello {user?.name?.split(' ')[0]}! Welcome to your new dashboard. If you have any questions about your project or need assistance, feel free to drop a message here.
-          </div>
-        </div>
-
-        <div style={{ padding: '20px', borderTop: '1px solid var(--cd-border)' }}>
-          <div style={{ display: 'flex', gap: '12px' }}>
-            <input 
-              type="text" 
-              placeholder="Type your message..." 
-              style={{ flex: 1, background: 'var(--cd-bg)', border: '1px solid var(--cd-border)', borderRadius: 'var(--cd-radius-sm)', padding: '12px 16px', color: 'var(--cd-text-primary)', outline: 'none' }}
-            />
-            <button className="cd-btn-primary">Send</button>
-          </div>
-        </div>
-      </div>
-    </motion.div>
-  );
-
   return (
     <div className="cd-layout">
-      <Toaster position="top-right" toastOptions={{
-        style: { background: '#18181b', color: '#fff', border: '1px solid #27272a' }
-      }} />
+      <Toaster position="top-right" toastOptions={{ style: { background: '#18181b', color: '#fff', border: '1px solid #27272a' } }} />
       
-      {/* Sidebar with mobile toggle */}
-      <aside className={`cd-sidebar ${sidebarOpen ? 'cd-sidebar-open' : 'cd-sidebar-closed'}`}>
-        <div className="cd-sidebar-header">
-          <Link to="/" className="cd-logo">
-            <div className="cd-logo-icon">P</div>
-            <span className="cd-logo-text">Pixora</span>
-          </Link>
-          <button 
-            className="cd-sidebar-toggle cd-mobile-only"
-            onClick={() => setSidebarOpen(false)}
-          >
-            <X size={20} />
-          </button>
-        </div>
+      {/* ─── Sidebar Navigation ─── */}
+      <aside className={`cd-sidebar ${sidebarOpen ? 'open' : ''}`}>
+        <Link to="/" className="cd-logo">
+          <div className="cd-logo-icon">P</div>
+          <span className="cd-logo-text">Pixora</span>
+        </Link>
 
+        <div className="cd-nav-group-title">Workspace</div>
         <nav className="cd-nav">
-          <button 
-            className={`cd-nav-item ${activeTab === 'overview' ? 'active' : ''}`} 
-            onClick={() => { setActiveTab('overview'); setSidebarOpen(false); }}
-          >
-            <LayoutDashboard size={18} /> Overview
+          <button className={`cd-nav-item ${activeTab === 'overview' ? 'active' : ''}`} onClick={() => setActiveTab('overview')}>
+            <LayoutDashboard size={16} /> Overview
           </button>
-          <button 
-            className={`cd-nav-item ${activeTab === 'projects' ? 'active' : ''}`} 
-            onClick={() => { setActiveTab('projects'); setSidebarOpen(false); }}
-          >
-            <FolderGit2 size={18} /> Projects
+          <button className={`cd-nav-item ${activeTab === 'projects' ? 'active' : ''}`} onClick={() => setActiveTab('projects')}>
+            <FolderGit2 size={16} /> Projects
           </button>
-          <button 
-            className={`cd-nav-item ${activeTab === 'billing' ? 'active' : ''}`} 
-            onClick={() => { setActiveTab('billing'); setSidebarOpen(false); }}
-          >
-            <CreditCard size={18} /> Billing
+          <button className={`cd-nav-item ${activeTab === 'files' ? 'active' : ''}`} onClick={() => setActiveTab('files')}>
+            <FileBadge size={16} /> File Vault
           </button>
-          <button 
-            className={`cd-nav-item ${activeTab === 'messages' ? 'active' : ''}`} 
-            onClick={() => { setActiveTab('messages'); setSidebarOpen(false); }}
-          >
-            <MessageSquare size={18} /> Support
+        </nav>
+
+        <div className="cd-nav-group-title">Account & Support</div>
+        <nav className="cd-nav">
+          <button className={`cd-nav-item ${activeTab === 'billing' ? 'active' : ''}`} onClick={() => setActiveTab('billing')}>
+            <CreditCard size={16} /> Billing
+          </button>
+          <button className={`cd-nav-item ${activeTab === 'messages' ? 'active' : ''}`} onClick={() => setActiveTab('messages')}>
+            <MessageSquare size={16} /> Support
           </button>
         </nav>
 
         <div className="cd-sidebar-footer">
-          <div className="cd-user-profile">
+          <div className="cd-user-profile" onClick={() => navigate('/settings')}>
             <div className="cd-avatar">{user?.name?.charAt(0) || 'U'}</div>
-            <div className="cd-user-info">
-              <span className="cd-user-name">{user?.name}</span>
-              <span className="cd-user-plan">Client Portal</span>
+            <div style={{ flex: 1, overflow: 'hidden' }}>
+              <div style={{ fontSize: '13px', fontWeight: '600', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{user?.name}</div>
+              <div style={{ fontSize: '11px', color: 'var(--cd-text-secondary)' }}>Client Portal</div>
             </div>
+            <Settings size={14} color="var(--cd-text-muted)" />
           </div>
-          <button 
-            className="cd-nav-item" 
-            onClick={() => navigate('/settings')} 
-            style={{ color: 'var(--cd-text-secondary)' }}
-          >
-            <Settings size={18} /> Settings
-          </button>
-          <button 
-            className="cd-nav-item" 
-            onClick={handleLogout} 
-            style={{ color: 'var(--cd-text-secondary)' }}
-          >
-            <LogOut size={18} /> Logout
+          <button className="cd-nav-item" onClick={handleLogout} style={{ marginTop: '8px', color: 'var(--cd-danger)' }}>
+            <LogOut size={16} /> Sign Out
           </button>
         </div>
       </aside>
 
-      {/* Main Content */}
+      {/* ─── Main Content ─── */}
       <main className="cd-main">
         <header className="cd-header">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-            <button 
-              className="cd-sidebar-toggle cd-mobile-only"
-              onClick={() => setSidebarOpen(true)}
-              style={{ display: sidebarOpen ? 'none' : 'flex' }}
-            >
-              <Menu size={20} />
-            </button>
-            <div className="cd-breadcrumbs">
-              <span>Pixora</span> <ChevronRight size={14} /> <span style={{ textTransform: 'capitalize' }}>{activeTab}</span>
-            </div>
+          <div className="cd-breadcrumbs">
+            <span>Pixora OS</span> <ChevronRight size={14} /> <span style={{ textTransform: 'capitalize' }}>{activeTab}</span>
           </div>
           
           <div className="cd-header-actions">
-            <div style={{ position: 'relative', flex: 1, maxWidth: '280px' }}>
-              <Search size={14} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--cd-text-muted)' }} />
+            <div className={`cd-search-bar ${searchFocused ? 'focused' : ''}`}>
+              <Search size={14} />
               <input 
                 type="text" 
-                placeholder="Search projects..." 
-                style={{ 
-                  width: '100%', background: 'var(--cd-surface)', border: '1px solid var(--cd-border)', 
-                  padding: '10px 12px 10px 36px', borderRadius: 'var(--cd-radius-sm)', color: 'var(--cd-text-primary)', outline: 'none', fontSize: '13px', transition: 'all 0.2s'
-                }}
-                onFocus={(e) => e.target.style.borderColor = 'var(--cd-border-hover)'}
-                onBlur={(e) => e.target.style.borderColor = 'var(--cd-border)'}
+                placeholder="Search anything..." 
+                onFocus={() => setSearchFocused(true)} 
+                onBlur={() => setSearchFocused(false)} 
               />
+              <span style={{ fontSize: '10px', color: 'var(--cd-text-muted)', border: '1px solid var(--cd-border)', padding: '2px 4px', borderRadius: '4px' }}>⌘K</span>
             </div>
-            
-            <div style={{ position: 'relative' }}>
-              <button 
-                className="cd-btn-icon"
-                onClick={() => setNotificationsOpen(!notificationsOpen)}
-                style={{ position: 'relative' }}
-              >
-                <Bell size={18} />
-                <span style={{ position: 'absolute', top: '2px', right: '2px', width: '6px', height: '6px', background: 'var(--cd-accent)', borderRadius: '50%' }}></span>
-              </button>
-              
-              {notificationsOpen && (
-                <div className="cd-notifications-dropdown">
-                  <div style={{ fontWeight: 600, fontSize: '14px', marginBottom: '12px', paddingBottom: '12px', borderBottom: '1px solid var(--cd-border)' }}>
-                    Notifications
-                  </div>
-                  <div style={{ fontSize: '13px', color: 'var(--cd-text-secondary)', textAlign: 'center', padding: '20px 12px' }}>
-                    No new notifications
-                  </div>
-                </div>
-              )}
-            </div>
+            <button className="cd-btn-secondary" style={{ padding: '6px', borderRadius: '50%' }}>
+              <Bell size={16} />
+            </button>
+            <button className="cd-btn-primary" onClick={() => navigate('/request')}>
+              <Plus size={16} /> New Request
+            </button>
           </div>
         </header>
 
         <div className="cd-content">
           <AnimatePresence mode="wait">
-            {activeTab === 'overview' && renderOverview()}
-            {activeTab === 'projects' && renderProjects()}
-            {activeTab === 'billing' && renderBilling()}
-            {activeTab === 'messages' && renderMessages()}
+            {activeTab === 'overview' && renderSmartOverview()}
+            {activeTab === 'files' && renderFileVault()}
+            {activeTab === 'messages' && renderCommunicationHub()}
+            {activeTab === 'billing' && renderBillingCenter()}
+            {activeTab === 'projects' && renderProjectWorkflow()} 
           </AnimatePresence>
         </div>
       </main>
