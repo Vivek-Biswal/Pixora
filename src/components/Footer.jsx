@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Twitter, Instagram, Linkedin, Github, Send, ArrowUp, Zap } from 'lucide-react';
+import { MessageCircle, Camera, Globe, Code2, Send, ArrowUp, Zap } from 'lucide-react';
 import Logo from './Logo.jsx';
 import './Footer.css';
 
@@ -31,10 +31,10 @@ const Footer = () => {
   };
 
   const socials = [
-    { icon: <Twitter size={16} />, href: '#', label: 'Twitter' },
-    { icon: <Instagram size={16} />, href: '#', label: 'Instagram' },
-    { icon: <Linkedin size={16} />, href: '#', label: 'LinkedIn' },
-    { icon: <Github size={16} />, href: '#', label: 'GitHub' },
+    { icon: <MessageCircle size={16} />, href: '#', label: 'Twitter' },
+    { icon: <Camera size={16} />, href: '#', label: 'Instagram' },
+    { icon: <Globe size={16} />, href: '#', label: 'LinkedIn' },
+    { icon: <Code2 size={16} />, href: '#', label: 'GitHub' },
   ];
 
   return (
