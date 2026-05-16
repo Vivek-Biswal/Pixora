@@ -25,6 +25,7 @@ const AdminDashboard = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [requests, setRequests] = useState([]);
+  const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('requests');
 
@@ -42,7 +43,16 @@ const AdminDashboard = () => {
       setLoading(false);
     });
 
-    return () => unsubscribe();
+    const qMessages = query(collection(db, 'contact_messages'), orderBy('createdAt', 'desc'));
+    const unsubscribeMessages = onSnapshot(qMessages, (snapshot) => {
+      const docs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setMessages(docs);
+    });
+
+    return () => {
+      unsubscribe();
+      unsubscribeMessages();
+    };
   }, [user, navigate]);
 
   const handleStatusUpdate = async (requestId, newStatus) => {
@@ -152,7 +162,7 @@ const AdminDashboard = () => {
                 <div className="stat-icon message"><MessageSquare size={24} /></div>
                 <div className="stat-data">
                   <span className="stat-label">New Messages</span>
-                  <h3 className="stat-value">12</h3>
+                  <h3 className="stat-value">{messages.filter(m => m.status === 'unread').length}</h3>
                 </div>
               </div>
             </div>
@@ -216,6 +226,52 @@ const AdminDashboard = () => {
                               <button className="icon-btn"><MoreVertical size={16} /></button>
                             </div>
                           </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+          )}
+
+          {activeTab === 'messages' && (
+            <div className="content-card">
+              <div className="card-header">
+                <h3>Contact Messages</h3>
+              </div>
+              
+              {messages.length === 0 ? (
+                <div className="empty-state">No messages found.</div>
+              ) : (
+                <div className="table-responsive">
+                  <table className="dashboard-table">
+                    <thead>
+                      <tr>
+                        <th>Sender</th>
+                        <th>Subject</th>
+                        <th>Message</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {messages.map((msg) => (
+                        <tr key={msg.id}>
+                          <td>
+                            <div className="td-client">
+                              <strong>{msg.name}</strong>
+                              <span>{msg.email}</span>
+                            </div>
+                          </td>
+                          <td>{msg.subject || 'N/A'}</td>
+                          <td style={{ maxWidth: '300px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{msg.message}</td>
+                          <td>
+                            <span className={`status-badge ${msg.status || 'unread'}`}>
+                              {msg.status || 'unread'}
+                            </span>
+                          </td>
+                          <td>{msg.createdAt?.toDate ? msg.createdAt.toDate().toLocaleDateString() : 'Just now'}</td>
                         </tr>
                       ))}
                     </tbody>
