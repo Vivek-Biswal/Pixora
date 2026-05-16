@@ -397,6 +397,7 @@ const Home = () => {
           </div>
         </div>
       </section>
+      </div>
 
       {/* ==================== SERVICES ==================== */}
       <Section className="section" id="services">
