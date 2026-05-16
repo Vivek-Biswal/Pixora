@@ -3,14 +3,15 @@
    ============================================= */
 
 .portfolio-filters {
-  display: inline-flex;
+  display: flex;
+  width: fit-content;
+  margin: 0 auto var(--space-12) auto;
   justify-content: center;
   flex-wrap: wrap;
   background: rgba(255, 255, 255, 0.03);
   padding: 6px;
   border-radius: 999px;
   border: 1px solid rgba(255, 255, 255, 0.05);
-  margin-bottom: var(--space-12);
   position: relative;
 }
 
