@@ -140,7 +140,7 @@ const Request = () => {
               </div>
             </div>
 
-            <div className="card" style={{ padding: 'var(--space-10)', background: 'rgba(255, 255, 255, 0.02)', backdropFilter: 'blur(12px)', border: '1px solid var(--border-subtle)', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)' }}>
+            <div className="card" style={{ padding: 'var(--space-10)', background: 'var(--glass-bg)', backdropFilter: 'blur(12px)', border: '1px solid var(--border-subtle)', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)' }}>
               <form onSubmit={handleSubmit}>
                 {step === 1 && (
                   <ScrollAnimator animation="fade-in">
@@ -184,7 +184,7 @@ const Request = () => {
                           <label key={cat} style={{ 
                             padding: '16px 12px', borderRadius: '12px',
                             display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center', cursor: 'pointer', fontSize: '14px', fontWeight: '500',
-                            background: formData.category === cat ? 'rgba(139, 92, 246, 0.15)' : 'rgba(255, 255, 255, 0.03)',
+                            background: formData.category === cat ? 'rgba(139, 92, 246, 0.15)' : 'var(--glass-bg)',
                             border: '1px solid',
                             borderColor: formData.category === cat ? 'var(--color-accent)' : 'var(--border-subtle)',
                             color: formData.category === cat ? '#fff' : 'var(--text-secondary)',

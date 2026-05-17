@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, ArrowRight, LayoutDashboard, LogOut, Zap } from 'lucide-react';
+import { Menu, X, ArrowRight, LayoutDashboard, LogOut, Sun, Moon } from 'lucide-react';
 import Logo from './Logo.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
+import { useTheme } from '../context/ThemeContext.jsx';
 import './Navbar.css';
 
 const Navbar = () => {
@@ -11,6 +12,7 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
   const { isAuthenticated, logout, user } = useAuth();
+  const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 24);
@@ -64,6 +66,10 @@ const Navbar = () => {
 
           {/* Desktop Actions */}
           <div className="nav-actions">
+            <button onClick={toggleTheme} className="icon-btn theme-toggle" title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}>
+              {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
+            </button>
+            
             {isAuthenticated ? (
               <>
                 <Link
@@ -177,6 +183,14 @@ const Navbar = () => {
                   </Link>
                 </>
               )}
+              
+              <button 
+                onClick={toggleTheme} 
+                className="btn btn--secondary"
+                style={{ width: '100%', marginTop: 'var(--space-4)', display: 'flex', justifyContent: 'center', gap: '8px' }}
+              >
+                {theme === 'light' ? <><Moon size={18} /> Dark Mode</> : <><Sun size={18} /> Light Mode</>}
+              </button>
             </div>
           </motion.div>
         )}

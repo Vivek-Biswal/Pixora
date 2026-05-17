@@ -54,12 +54,12 @@
 
 /* Secondary — Dark glass */
 .btn--secondary {
-  background: rgba(255, 255, 255, 0.06);
+  background: var(--glass-bg);
   color: var(--text-primary);
   border: 1px solid var(--border-default);
 }
 .btn--secondary:hover {
-  background: rgba(255, 255, 255, 0.10);
+  background: var(--glass-bg-hover);
   border-color: var(--border-strong);
   color: var(--text-primary) !important;
   transform: translateY(-2px);
@@ -72,7 +72,7 @@
   border: 1px solid var(--border-default);
 }
 .btn--ghost:hover {
-  background: rgba(255, 255, 255, 0.06);
+  background: var(--glass-bg);
   border-color: var(--border-strong);
   color: var(--text-primary) !important;
   transform: translateY(-2px);
@@ -163,7 +163,7 @@
 
 /* Glass variant */
 .card--glass {
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--glass-bg);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--border-subtle);
@@ -193,7 +193,7 @@
 .form-control {
   width: 100%;
   padding: 0.875rem 1.125rem;
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--glass-bg);
   border: 1px solid var(--border-default);
   border-radius: var(--radius-md);
   font-size: var(--fs-body);

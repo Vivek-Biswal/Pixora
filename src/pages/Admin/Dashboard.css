@@ -7,6 +7,18 @@
   --dash-coral: #ff4e6b;
   --dash-text-main: #ffffff;
   --dash-text-sub: #a0a0b0;
+  --dash-text-sub: #a0a0b0;
+}
+
+[data-theme="light"] {
+  --dash-bg: var(--color-bg);
+  --dash-card: rgba(255, 255, 255, 0.9);
+  --dash-border: rgba(0, 0, 0, 0.1);
+  --dash-sidebar: rgba(255, 255, 255, 0.8);
+  --dash-blue: #3b82f6;
+  --dash-coral: #ec4899;
+  --dash-text-main: #0f172a;
+  --dash-text-sub: #64748b;
 }
 
 .dashboard-layout {

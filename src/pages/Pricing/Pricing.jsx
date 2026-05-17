@@ -111,7 +111,7 @@ const Pricing = () => {
                 delay={`delay-${i + 1}`} 
                 className={`card ${plan.popular ? 'popular-card' : ''}`}
                 style={{ 
-                  background: 'rgba(255,255,255,0.02)',
+                  background: 'var(--glass-bg)',
                   borderColor: plan.popular ? 'var(--color-accent)' : 'var(--border-subtle)',
                   transform: plan.popular ? 'scale(1.05)' : 'scale(1)',
                   boxShadow: plan.popular ? '0 0 30px rgba(139,92,246,0.1)' : 'none',
@@ -129,7 +129,7 @@ const Pricing = () => {
                     MOST POPULAR
                   </div>
                 )}
-                <div className="icon-box" style={{ background: plan.popular ? 'rgba(139,92,246,0.15)' : 'rgba(255,255,255,0.05)', color: plan.popular ? 'var(--color-accent)' : 'var(--text-secondary)' }}>
+                <div className="icon-box" style={{ background: plan.popular ? 'rgba(139,92,246,0.15)' : 'var(--glass-bg-hover)', color: plan.popular ? 'var(--color-accent)' : 'var(--text-secondary)' }}>
                   {plan.icon}
                 </div>
                 <h3>{plan.name}</h3>

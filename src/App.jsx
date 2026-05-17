@@ -26,6 +26,7 @@ import TermsConditions from './pages/Legal/TermsConditions.jsx';
 import RefundPolicy from './pages/Legal/RefundPolicy.jsx';
 import ShippingPolicy from './pages/Legal/ShippingPolicy.jsx';
 import { AuthProvider, useAuth } from './context/AuthContext.jsx';
+import { ThemeProvider } from './context/ThemeContext.jsx';
 
 // ─── Protected Route ────────────────────────────────────────────────────────
 const ProtectedRoute = ({ children, adminOnly = false }) => {
@@ -77,9 +78,10 @@ const SiteLayout = ({ children }) => (
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
-        <ScrollToTop />
+    <ThemeProvider>
+      <AuthProvider>
+        <Router>
+          <ScrollToTop />
         <Routes>
           {/* Public site pages — wrapped in Navbar + Footer */}
           <Route path="/" element={<SiteLayout><Home /></SiteLayout>} />
@@ -116,6 +118,7 @@ function App() {
         </Routes>
       </Router>
     </AuthProvider>
+    </ThemeProvider>
   );
 }
 
