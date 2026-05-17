@@ -10,7 +10,8 @@ const ScrollAnimator = ({
   delay = "", // delay-1, delay-2, etc.
   threshold = 0.1,
   once = true,
-  className = ""
+  className = "",
+  style = {}
 }) => {
   const [isVisible, setIsVisible] = useState(false);
   const domRef = useRef();
@@ -43,6 +44,7 @@ const ScrollAnimator = ({
     <div
       ref={domRef}
       className={`animate-on-scroll ${animation} ${delay} ${isVisible ? 'visible' : ''} ${className}`}
+      style={style}
     >
       {children}
     </div>

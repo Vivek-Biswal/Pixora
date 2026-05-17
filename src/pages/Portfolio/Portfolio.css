@@ -8,10 +8,10 @@
   margin: 0 auto var(--space-12) auto;
   justify-content: center;
   flex-wrap: wrap;
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--glass-bg);
   padding: 6px;
   border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-subtle);
   position: relative;
 }
 
@@ -30,13 +30,13 @@
 }
 
 .filter-btn:hover {
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .filter-btn.active {
   color: #fff;
   font-weight: 600;
-  background: linear-gradient(135deg, var(--color-accent), #60a5fa);
+  background: linear-gradient(135deg, var(--color-purple), #60a5fa);
   box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
 }
 

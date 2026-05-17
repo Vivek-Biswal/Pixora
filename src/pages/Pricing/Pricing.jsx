@@ -84,7 +84,7 @@ const Pricing = () => {
                       style={{
                         position: 'absolute',
                         inset: 0,
-                        background: 'linear-gradient(135deg, var(--color-accent), #60a5fa)',
+                        background: 'linear-gradient(135deg, var(--color-purple), #60a5fa)',
                         borderRadius: '999px',
                         zIndex: -1,
                         boxShadow: '0 4px 15px rgba(139,92,246,0.3)'
