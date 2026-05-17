@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { NavLink, Link, useLocation } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import { NavLink, Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, ArrowRight, LayoutDashboard, LogOut, Sun, Moon } from 'lucide-react';
+import {
+  Menu, X, ArrowRight, LayoutDashboard, LogOut, Sun, Moon,
+  User, Settings, Bell, CreditCard, ChevronRight, Zap
+} from 'lucide-react';
 import Logo from './Logo.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useTheme } from '../context/ThemeContext.jsx';
@@ -9,10 +12,13 @@ import './Navbar.css';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   const { isAuthenticated, logout, user } = useAuth();
   const { theme, toggleTheme } = useTheme();
+  const dropdownRef = useRef(null);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 24);
@@ -20,13 +26,35 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  useEffect(() => { setIsOpen(false); }, [location]);
+  useEffect(() => { setIsOpen(false); setProfileOpen(false); }, [location]);
 
   // Prevent body scroll when mobile menu open
   useEffect(() => {
     document.body.style.overflow = isOpen ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
   }, [isOpen]);
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setProfileOpen(false);
+      }
+    };
+    if (profileOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [profileOpen]);
+
+  // Close dropdown on Escape key
+  useEffect(() => {
+    const handleEsc = (e) => {
+      if (e.key === 'Escape') setProfileOpen(false);
+    };
+    document.addEventListener('keydown', handleEsc);
+    return () => document.removeEventListener('keydown', handleEsc);
+  }, []);
 
   const navItems = [
     { name: 'Services', path: '/services' },
@@ -35,6 +63,23 @@ const Navbar = () => {
     { name: 'Pricing', path: '/pricing' },
     { name: 'Contact', path: '/contact' },
   ];
+
+  const getInitials = () => {
+    if (user?.name) {
+      const parts = user.name.split(' ');
+      return parts.length > 1
+        ? (parts[0][0] + parts[1][0]).toUpperCase()
+        : parts[0].substring(0, 2).toUpperCase();
+    }
+    if (user?.email) return user.email.substring(0, 2).toUpperCase();
+    return 'U';
+  };
+
+  const handleLogout = async () => {
+    setProfileOpen(false);
+    await logout();
+    navigate('/');
+  };
 
   return (
     <>
@@ -66,22 +111,117 @@ const Navbar = () => {
 
           {/* Desktop Actions */}
           <div className="nav-actions">
-            <button onClick={toggleTheme} className="icon-btn theme-toggle" title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}>
-              {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
-            </button>
-            
             {isAuthenticated ? (
-              <>
-                <Link
-                  to={user?.role === 'admin' ? '/admin' : '/dashboard'}
-                  className="btn btn--secondary btn--sm"
+              /* ── Premium Profile Menu ── */
+              <div ref={dropdownRef} style={{ position: 'relative' }}>
+                <button
+                  className="profile-avatar-btn"
+                  onClick={() => setProfileOpen(!profileOpen)}
+                  aria-label="Profile menu"
+                  aria-expanded={profileOpen}
                 >
-                  <LayoutDashboard size={15} /> Dashboard
-                </Link>
-                <button onClick={logout} className="icon-btn" title="Logout">
-                  <LogOut size={17} />
+                  {user?.photoURL ? (
+                    <img src={user.photoURL} alt={user.name || 'Profile'} />
+                  ) : (
+                    getInitials()
+                  )}
                 </button>
-              </>
+
+                <AnimatePresence>
+                  {profileOpen && (
+                    <motion.div
+                      className="profile-dropdown"
+                      initial={{ opacity: 0, y: 8, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 8, scale: 0.95 }}
+                      transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
+                    >
+                      {/* Header */}
+                      <div className="profile-dropdown__header">
+                        <div className="profile-dropdown__avatar">{getInitials()}</div>
+                        <div className="profile-dropdown__info">
+                          <div className="profile-dropdown__name">{user?.name || 'User'}</div>
+                          <div className="profile-dropdown__email">{user?.email}</div>
+                        </div>
+                      </div>
+
+                      {/* Body */}
+                      <div className="profile-dropdown__body">
+                        <Link
+                          to={user?.role === 'admin' ? '/admin' : '/dashboard'}
+                          className="profile-dropdown__item"
+                          onClick={() => setProfileOpen(false)}
+                        >
+                          <LayoutDashboard size={16} />
+                          Dashboard
+                          <ChevronRight size={14} style={{ marginLeft: 'auto', opacity: 0.4 }} />
+                        </Link>
+
+                        <Link
+                          to="/dashboard"
+                          className="profile-dropdown__item"
+                          onClick={() => setProfileOpen(false)}
+                        >
+                          <User size={16} />
+                          Profile
+                        </Link>
+
+                        <Link
+                          to="/dashboard"
+                          className="profile-dropdown__item"
+                          onClick={() => setProfileOpen(false)}
+                        >
+                          <Settings size={16} />
+                          Settings
+                        </Link>
+
+                        <div className="profile-dropdown__divider" />
+
+                        <button
+                          className="profile-dropdown__theme-row"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            toggleTheme();
+                          }}
+                        >
+                          {theme === 'light' ? <Moon size={16} /> : <Sun size={16} />}
+                          {theme === 'light' ? 'Dark Mode' : 'Light Mode'}
+                          <div className="profile-dropdown__theme-toggle" />
+                        </button>
+
+                        <Link
+                          to="/dashboard"
+                          className="profile-dropdown__item"
+                          onClick={() => setProfileOpen(false)}
+                        >
+                          <Bell size={16} />
+                          Notifications
+                        </Link>
+
+                        <Link
+                          to="/pricing"
+                          className="profile-dropdown__item"
+                          onClick={() => setProfileOpen(false)}
+                        >
+                          <CreditCard size={16} />
+                          Billing
+                        </Link>
+                      </div>
+
+                      {/* Footer */}
+                      <div className="profile-dropdown__footer">
+                        <button
+                          className="profile-dropdown__item profile-dropdown__item--danger"
+                          onClick={handleLogout}
+                        >
+                          <LogOut size={16} />
+                          Sign Out
+                        </button>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
             ) : (
               <>
                 <Link to="/login" className="btn btn--ghost btn--sm">Login</Link>
@@ -169,7 +309,7 @@ const Navbar = () => {
                   <Link to={user?.role === 'admin' ? '/admin' : '/dashboard'} className="btn btn--secondary" style={{ width: '100%' }}>
                     <LayoutDashboard size={16} /> Dashboard
                   </Link>
-                  <button onClick={logout} className="btn btn--ghost" style={{ width: '100%' }}>
+                  <button onClick={handleLogout} className="btn btn--ghost" style={{ width: '100%' }}>
                     <LogOut size={16} /> Logout
                   </button>
                 </>

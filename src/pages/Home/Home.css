@@ -874,3 +874,119 @@
     gap: var(--space-6);
   }
 }
+
+/* =============================================
+   LIGHT MODE — Hero & Sections Overrides
+   ============================================= */
+
+/* Hero dot grid: dark dots instead of white */
+[data-theme="light"] .hero::before {
+  background-image: radial-gradient(rgba(0, 0, 0, 0.06) 1px, transparent 1px);
+}
+
+/* Cursor glow: more vivid purple/blue */
+[data-theme="light"] .hero__cursor-glow {
+  background: radial-gradient(
+    circle,
+    rgba(139, 92, 246, 0.18) 0%,
+    rgba(59, 130, 246, 0.12) 30%,
+    transparent 70%
+  );
+}
+
+/* Hero badge contrast */
+[data-theme="light"] .hero__badge {
+  background: rgba(139, 92, 246, 0.08);
+  border-color: rgba(139, 92, 246, 0.3);
+  color: var(--color-purple-dark);
+}
+
+[data-theme="light"] .hero__badge::after {
+  background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.08), transparent);
+}
+
+/* Mockup softer shadow in light */
+[data-theme="light"] .hero__mockup {
+  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0, 0, 0, 0.05);
+}
+
+/* Statement blobs lighter in light mode */
+[data-theme="light"] .statement__blob--1 {
+  background: rgba(139, 92, 246, 0.25);
+}
+[data-theme="light"] .statement__blob--2 {
+  background: rgba(59, 130, 246, 0.2);
+}
+
+/* CTA blobs lighter in light mode */
+[data-theme="light"] .cta-final__blob--1 {
+  background: rgba(139, 92, 246, 0.2);
+}
+[data-theme="light"] .cta-final__blob--2 {
+  background: rgba(236, 72, 153, 0.15);
+}
+
+/* Stacked cards light mode */
+[data-theme="light"] .stacked-card__inner {
+  background: #ffffff;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(0, 0, 0, 0.04);
+}
+[data-theme="light"] .stacked-card__inner:hover {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1), 0 0 30px rgba(139, 92, 246, 0.06);
+}
+
+/* Service cards in light mode */
+[data-theme="light"] .service-card {
+  background: #ffffff;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+}
+[data-theme="light"] .service-card:hover {
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(139, 92, 246, 0.15);
+}
+
+/* Process step numbers in light mode */
+[data-theme="light"] .process__number {
+  color: var(--color-purple-dark);
+}
+
+/* Testimonial cards in light mode */
+[data-theme="light"] .testimonial-card {
+  background: #ffffff;
+  border-color: rgba(0, 0, 0, 0.06);
+}
+
+/* FAQ items in light mode */
+[data-theme="light"] .faq__item {
+  background: #ffffff;
+  border-color: rgba(0, 0, 0, 0.06);
+}
+[data-theme="light"] .faq__item:hover {
+  border-color: rgba(139, 92, 246, 0.2);
+}
+
+/* Pricing cards in light mode */
+[data-theme="light"] .pricing-card {
+  background: #ffffff;
+  border-color: rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+}
+[data-theme="light"] .pricing-card--popular {
+  border-color: var(--color-purple);
+  box-shadow: 0 8px 30px rgba(139, 92, 246, 0.12);
+}
+
+/* Logos section in light mode */
+[data-theme="light"] .logos__item {
+  color: var(--text-muted);
+}
+
+/* Stats items in light mode */
+[data-theme="light"] .stats__item {
+  border-color: rgba(0, 0, 0, 0.06);
+}
+
+/* CTA final in light mode */
+[data-theme="light"] .cta-final {
+  background: var(--color-surface);
+}
+
