@@ -7,6 +7,7 @@ import {
   Home as HomeIcon, FileText, MessageSquare, Bell
 } from 'lucide-react';
 import './Home.css';
+import ProfileShowcase from '../../components/ProfileShowcase/ProfileShowcase';
 
 /* ---- Animation Variants ---- */
 const fadeUp = {
@@ -312,6 +313,9 @@ const Home = () => {
           </motion.div>
         </div>
       </section>
+
+      {/* ==================== DEMO PROFILE SHOWCASE ==================== */}
+      <ProfileShowcase />
 
       {/* ==================== LOGOS ==================== */}
       <div className="logos">
