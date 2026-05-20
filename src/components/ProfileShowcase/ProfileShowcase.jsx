@@ -1,88 +1,86 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion';
-import { ChevronLeft, ChevronRight, ArrowUpRight, Play, Maximize2 } from 'lucide-react';
+import { ArrowUpRight, ChevronLeft, ChevronRight, ExternalLink, MousePointer2 } from 'lucide-react';
 import './ProfileShowcase.css';
 
 const profiles = [
   {
     id: 1,
-    title: 'Linear.app Concept',
-    subtitle: 'ISSUE TRACKING REDEFINED',
-    tags: 'WORKSPACE • EFFICIENCY • DESIGN',
-    image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1000&auto=format&fit=crop',
-    videoUrl: 'https://cdn.pixabay.com/video/2021/08/04/83866-584745300_large.mp4',
-    description: 'A visionary approach to software building. Seamless issue tracking, lighting-fast performance, and a dark-mode first aesthetic designed for elite product teams.',
+    title: 'Neuro Dashboard',
+    subtitle: 'AI-POWERED ANALYTICS',
+    tags: ['AI', 'DASHBOARD', 'SAAS'],
+    // Tall screenshot that can auto-scroll
+    screenshot: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=800&auto=format&fit=crop',
+    description: 'An intelligent analytics platform with real-time data visualization, predictive insights, and seamless team collaboration.',
     accent: '#a855f7',
     accentRgb: '168, 85, 247',
-    code: 'LN-01',
+    code: 'NR-01',
+    url: 'neuro-dashboard.app',
     specs: [
-      { label: 'RENDER SPEED', value: '1.2ms' },
-      { label: 'ARCHITECTURE', value: 'EDGE' },
-      { label: 'SYNC ENGINE', value: 'REAL-TIME' }
+      { label: 'RENDER', value: '1.2ms' },
+      { label: 'ARCH', value: 'EDGE' },
+      { label: 'SYNC', value: 'REAL-TIME' }
     ]
   },
   {
     id: 2,
-    title: 'Stripe Checkout',
+    title: 'PayFlow',
     subtitle: 'FINANCIAL INFRASTRUCTURE',
-    tags: 'PAYMENTS • CONVERSION • GLOBAL',
-    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1000&auto=format&fit=crop',
-    videoUrl: 'https://cdn.pixabay.com/video/2020/07/31/46122-446700812_large.mp4',
-    description: "The gold standard of internet economy infrastructure. Maximizing conversion with beautifully designed, fiercely optimized checkout flows and global routing.",
+    tags: ['FINTECH', 'PAYMENTS', 'API'],
+    screenshot: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800&auto=format&fit=crop',
+    description: 'Next-generation payment infrastructure powering millions of transactions with sub-50ms latency across 195 countries.',
     accent: '#3b82f6',
     accentRgb: '59, 130, 246',
-    code: 'ST-02',
+    code: 'PF-02',
+    url: 'payflow.dev',
     specs: [
       { label: 'UPTIME', value: '99.999%' },
       { label: 'SECURITY', value: 'PCI-DSS' },
-      { label: 'GLOBAL REACH', value: '195 COUNTRIES' }
+      { label: 'REACH', value: '195 COUNTRIES' }
     ]
   },
   {
     id: 3,
-    title: 'Vercel Deployment',
-    subtitle: 'THE FRONTEND CLOUD',
-    tags: 'HOSTING • PERFORMANCE • DX',
-    image: 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=1000&auto=format&fit=crop',
-    videoUrl: 'https://cdn.pixabay.com/video/2023/10/22/186064-876935292_large.mp4',
-    description: 'Empowering developers to create at the speed of thought. Zero-configuration deployments, global edge networks, and an unparalleled developer experience.',
+    title: 'Velox Cloud',
+    subtitle: 'DEPLOYMENT PLATFORM',
+    tags: ['DEVOPS', 'CLOUD', 'EDGE'],
+    screenshot: 'https://images.unsplash.com/photo-1559028012-481c04fa702d?q=80&w=800&auto=format&fit=crop',
+    description: 'Zero-config deployments on a global edge network. Ship faster with instant rollbacks, preview environments, and real-time logs.',
     accent: '#ec4899',
     accentRgb: '236, 72, 153',
-    code: 'VC-03',
+    code: 'VX-03',
+    url: 'velox.cloud',
     specs: [
       { label: 'LATENCY', value: '<50ms' },
-      { label: 'EDGE NODES', value: '200+' },
-      { label: 'FRAMEWORKS', value: 'AGNOSTIC' }
+      { label: 'NODES', value: '200+' },
+      { label: 'DEPLOY', value: '<3s' }
     ]
   }
 ];
 
 const ProfileShowcase = () => {
   const [index, setIndex] = useState(0);
+  const [isHoveringScreen, setIsHoveringScreen] = useState(false);
   const containerRef = useRef(null);
+  const screenRefs = useRef([]);
 
-  // Advanced Mouse tilt physics for the active card (faster, smoother)
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
-  const springConfig = { damping: 20, stiffness: 150, mass: 0.5 }; // Snappier Apple-like feel
-  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [8, -8]), springConfig);
-  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-10, 10]), springConfig);
-  const glowX = useSpring(useTransform(mouseX, [-0.5, 0.5], ['20%', '80%']), springConfig);
-  const glowY = useSpring(useTransform(mouseY, [-0.5, 0.5], ['20%', '80%']), springConfig);
+  const springConfig = { damping: 20, stiffness: 150, mass: 0.5 };
+  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [6, -6]), springConfig);
+  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-8, 8]), springConfig);
 
-  const next = () => setIndex((i) => (i + 1) % profiles.length);
-  const prev = () => setIndex((i) => (i - 1 + profiles.length) % profiles.length);
+  const next = useCallback(() => setIndex((i) => (i + 1) % profiles.length), []);
+  const prev = useCallback(() => setIndex((i) => (i - 1 + profiles.length) % profiles.length), []);
 
   const currentProject = profiles[index];
 
   const handleMouseMove = (e) => {
     if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-    const x = (e.clientX - rect.left) / width - 0.5;
-    const y = (e.clientY - rect.top) / height - 0.5;
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
     mouseX.set(x);
     mouseY.set(y);
   };
@@ -99,148 +97,125 @@ const ProfileShowcase = () => {
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+  }, [next, prev]);
+
+  // Auto-scroll logic for the active screenshot
+  useEffect(() => {
+    if (isHoveringScreen) return;
+
+    const activeScreen = screenRefs.current[index];
+    if (!activeScreen) return;
+
+    let animFrame;
+    let scrollDir = 1;
+    const scrollSpeed = 0.6;
+
+    const autoScroll = () => {
+      if (!activeScreen) return;
+      const maxScroll = activeScreen.scrollHeight - activeScreen.clientHeight;
+      
+      if (activeScreen.scrollTop >= maxScroll - 1) {
+        scrollDir = -1;
+      } else if (activeScreen.scrollTop <= 0) {
+        scrollDir = 1;
+      }
+
+      activeScreen.scrollTop += scrollSpeed * scrollDir;
+      animFrame = requestAnimationFrame(autoScroll);
+    };
+
+    // Small delay before starting auto-scroll
+    const timeout = setTimeout(() => {
+      animFrame = requestAnimationFrame(autoScroll);
+    }, 800);
+
+    return () => {
+      clearTimeout(timeout);
+      cancelAnimationFrame(animFrame);
+    };
+  }, [index, isHoveringScreen]);
 
   const particles = useMemo(() => {
-    return Array.from({ length: 40 }).map((_, i) => ({
+    return Array.from({ length: 35 }).map((_, i) => ({
       id: i,
       left: `${Math.random() * 100}%`,
       top: `${Math.random() * 100}%`,
-      size: Math.random() * 2 + 1,
-      delay: Math.random() * 5,
-      duration: Math.random() * 10 + 10,
-      opacity: Math.random() * 0.5 + 0.2
+      size: Math.random() * 2.5 + 1,
+      delay: Math.random() * 6,
+      duration: Math.random() * 12 + 10,
+      opacity: Math.random() * 0.4 + 0.15
     }));
   }, []);
 
-  // Compute 3D stage layout coordinates
   const getCardTransform = (cardIndex) => {
     let diff = cardIndex - index;
     if (diff < -1) diff += profiles.length;
     if (diff > 1) diff -= profiles.length;
 
     if (diff === 0) {
-      return {
-        active: true,
-        zIndex: 10,
-        opacity: 1,
-        scale: 1,
-        x: '0%',
-        z: 0,
-        rotateY: 0,
-        filter: 'blur(0px)',
-        pointerEvents: 'auto'
-      };
+      return { active: true, zIndex: 10, opacity: 1, scale: 1, x: '0%', z: 0, rotateY: 0, filter: 'blur(0px)', pointerEvents: 'auto' };
     } else if (diff === -1 || diff === profiles.length - 1) {
-      return {
-        active: false,
-        zIndex: 5,
-        opacity: 0.15,
-        scale: 0.85,
-        x: '-45%',
-        z: -150,
-        rotateY: 25,
-        filter: 'blur(8px)',
-        pointerEvents: 'none'
-      };
+      return { active: false, zIndex: 5, opacity: 0.12, scale: 0.82, x: '-50%', z: -200, rotateY: 30, filter: 'blur(6px)', pointerEvents: 'none' };
     } else {
-      return {
-        active: false,
-        zIndex: 5,
-        opacity: 0.15,
-        scale: 0.85,
-        x: '45%',
-        z: -150,
-        rotateY: -25,
-        filter: 'blur(8px)',
-        pointerEvents: 'none'
-      };
+      return { active: false, zIndex: 5, opacity: 0.12, scale: 0.82, x: '50%', z: -200, rotateY: -30, filter: 'blur(6px)', pointerEvents: 'none' };
     }
   };
 
-  // Cinematic staggered text reveals
   const textContainerVariants = {
     hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.04, delayChildren: 0.15 }
-    }
+    visible: { opacity: 1, transition: { staggerChildren: 0.05, delayChildren: 0.1 } }
   };
 
   const textItemVariants = {
-    hidden: { opacity: 0, y: 15, filter: 'blur(4px)' },
-    visible: {
-      opacity: 1,
-      y: 0,
-      filter: 'blur(0px)',
-      transition: { type: 'spring', stiffness: 120, damping: 14 }
-    }
+    hidden: { opacity: 0, y: 12, filter: 'blur(6px)' },
+    visible: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { type: 'spring', stiffness: 100, damping: 14 } }
   };
 
-  // Word-by-word reveal for description
-  const descriptionWords = currentProject.description.split(' ');
-
   return (
-    <section 
+    <section
       ref={containerRef}
-      className="profile-showcase" 
-      style={{ 
+      className="profile-showcase"
+      style={{
         '--room-color': currentProject.accent,
         '--room-color-rgb': currentProject.accentRgb
       }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
-      {/* Background Mesh & Depth */}
       <div className="ps-grid-overlay" />
       <div className="ps-grid-mask" />
-      
-      {/* Cinematic Particles */}
+
       <div className="ps-particles">
         {particles.map((p) => (
           <div
             key={p.id}
             className="ps-particle"
             style={{
-              left: p.left,
-              top: p.top,
-              width: p.size,
-              height: p.size,
+              left: p.left, top: p.top,
+              width: p.size, height: p.size,
               opacity: p.opacity,
               animationDelay: `${p.delay}s`,
               animationDuration: `${p.duration}s`,
-              boxShadow: `0 0 12px rgba(${currentProject.accentRgb}, 0.8)`
+              boxShadow: `0 0 10px rgba(${currentProject.accentRgb}, 0.7)`
             }}
           />
         ))}
       </div>
 
-      {/* Dynamic Moving Orbs */}
       <AnimatePresence>
-        <motion.div
-          key={`orb-1-${index}`}
-          className="ps-ambient-glow ps-glow-1"
-          initial={{ opacity: 0, scale: 0.8, x: '-5%', y: '-5%' }}
-          animate={{ opacity: 0.35, scale: 1.3, x: '5%', y: '5%' }}
-          exit={{ opacity: 0, scale: 0.8 }}
-          transition={{ duration: 2, ease: "easeOut" }}
-          style={{
-            background: `radial-gradient(circle, rgba(${currentProject.accentRgb}, 0.4) 0%, transparent 65%)`
-          }}
+        <motion.div key={`orb-1-${index}`} className="ps-ambient-glow ps-glow-1"
+          initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 0.3, scale: 1.2 }}
+          exit={{ opacity: 0, scale: 0.8 }} transition={{ duration: 2 }}
+          style={{ background: `radial-gradient(circle, rgba(${currentProject.accentRgb}, 0.35) 0%, transparent 65%)` }}
         />
-        <motion.div
-          key={`orb-2-${index}`}
-          className="ps-ambient-glow ps-glow-2"
-          initial={{ opacity: 0, scale: 0.7, x: '10%', y: '10%' }}
-          animate={{ opacity: 0.25, scale: 1.1, x: '-5%', y: '-5%' }}
-          exit={{ opacity: 0, scale: 0.7 }}
-          transition={{ duration: 2.5, ease: "easeOut" }}
-          style={{
-            background: `radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 60%)`
-          }}
+        <motion.div key={`orb-2-${index}`} className="ps-ambient-glow ps-glow-2"
+          initial={{ opacity: 0, scale: 0.7 }} animate={{ opacity: 0.2, scale: 1.1 }}
+          exit={{ opacity: 0, scale: 0.7 }} transition={{ duration: 2.5 }}
+          style={{ background: `radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 55%)` }}
         />
       </AnimatePresence>
 
+      {/* Header */}
       <div className="ps-header">
         <div className="ps-logo-container">
           <span className="ps-logo-scan-dot" />
@@ -248,213 +223,163 @@ const ProfileShowcase = () => {
         </div>
       </div>
 
-      {/* Main 3D Carousel Stage */}
+      {/* Navigation Arrows */}
+      <button className="ps-arrow ps-arrow-left" onClick={prev} aria-label="Previous">
+        <ChevronLeft size={22} />
+      </button>
+      <button className="ps-arrow ps-arrow-right" onClick={next} aria-label="Next">
+        <ChevronRight size={22} />
+      </button>
+
+      {/* 3D Carousel Stage */}
       <div className="ps-stage">
         {profiles.map((project, idx) => {
           const layout = getCardTransform(idx);
-          
+
           return (
             <motion.div
               key={project.id}
               className={`ps-card-container ${layout.active ? 'active' : ''}`}
-              style={{
-                zIndex: layout.zIndex,
-                pointerEvents: layout.pointerEvents,
-              }}
+              style={{ zIndex: layout.zIndex, pointerEvents: layout.pointerEvents }}
               animate={{
-                x: layout.x,
-                z: layout.z,
-                rotateY: layout.rotateY,
-                opacity: layout.opacity,
-                scale: layout.scale,
-                filter: layout.filter
+                x: layout.x, z: layout.z, rotateY: layout.rotateY,
+                opacity: layout.opacity, scale: layout.scale, filter: layout.filter
               }}
-              transition={{
-                type: 'spring',
-                stiffness: 80,
-                damping: 20,
-                mass: 0.8
-              }}
+              transition={{ type: 'spring', stiffness: 70, damping: 18, mass: 0.8 }}
             >
               <motion.div
                 className="ps-card-inner"
-                style={
-                  layout.active
-                    ? {
-                        rotateX,
-                        rotateY,
-                        transformStyle: 'preserve-3d',
-                      }
-                    : { transformStyle: 'preserve-3d' }
-                }
-                whileHover={layout.active ? { scale: 1.015, translateZ: 20 } : {}}
+                style={layout.active ? { rotateX, rotateY, transformStyle: 'preserve-3d' } : { transformStyle: 'preserve-3d' }}
+                whileHover={layout.active ? { scale: 1.01 } : {}}
                 transition={{ duration: 0.3, ease: 'easeOut' }}
                 drag={layout.active ? 'x' : false}
                 dragConstraints={{ left: 0, right: 0 }}
-                dragElastic={0.2}
+                dragElastic={0.15}
                 onDragEnd={(e, info) => {
                   if (info.offset.x < -50) next();
                   else if (info.offset.x > 50) prev();
                 }}
               >
-                {/* Mouse-reactive inner glow */}
-                {layout.active && (
-                  <motion.div 
-                    className="ps-card-mouse-glow"
-                    style={{
-                      background: `radial-gradient(800px circle at ${glowX} ${glowY}, rgba(${project.accentRgb}, 0.15), transparent 40%)`
-                    }}
-                  />
-                )}
-                
-                <div 
-                  className="ps-card-glow-border" 
-                  style={{ borderColor: `rgba(${project.accentRgb}, 0.4)` }}
-                />
-                
-                <div className="ps-card-content">
-                  
-                  {/* VISUAL COLUMN (Device Frame) */}
-                  <div className="ps-card-visual">
-                    <div className="ps-device-frame">
-                      {/* macOS style window controls */}
-                      <div className="ps-device-topbar">
-                        <div className="ps-device-dots">
-                          <span className="dot close" />
-                          <span className="dot min" />
-                          <span className="dot max" />
-                        </div>
-                        <div className="ps-device-url">pixora.dev/projects/{project.code.toLowerCase()}</div>
-                      </div>
-                      
-                      {/* Video/Iframe Container */}
-                      <div className="ps-device-screen">
-                        {/* Fallback poster image or loading state can be added, using video for now */}
-                        <video 
-                          className="ps-device-video" 
-                          src={project.videoUrl} 
-                          poster={project.image}
-                          autoPlay 
-                          loop 
-                          muted 
-                          playsInline 
-                        />
-                        <div className="ps-device-reflection" />
-                        {/* Hover Overlay elements */}
-                        <div className="ps-device-hover-ui">
-                          <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }} className="ps-play-btn">
-                            <Play size={20} fill="currentColor" />
-                          </motion.button>
-                          <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }} className="ps-expand-btn">
-                            <Maximize2 size={16} />
-                          </motion.button>
-                        </div>
-                      </div>
+                <div className="ps-card-glow-border" style={{ borderColor: `rgba(${project.accentRgb}, 0.5)` }} />
+
+                {/* === FULL-WIDTH DEVICE FRAME === */}
+                <div className="ps-device-wrapper">
+                  {/* Browser Chrome */}
+                  <div className="ps-browser-bar">
+                    <div className="ps-browser-dots">
+                      <span className="brdot close" />
+                      <span className="brdot minimize" />
+                      <span className="brdot maximize" />
+                    </div>
+                    <div className="ps-browser-address">
+                      <span className="ps-lock-icon">🔒</span>
+                      <span>{project.url}</span>
+                    </div>
+                    <div className="ps-browser-actions">
+                      <ExternalLink size={12} />
                     </div>
                   </div>
 
-                  {/* DATA COLUMN */}
-                  <div className="ps-card-details">
-                    <AnimatePresence mode="wait">
-                      {layout.active && (
-                        <motion.div
-                          key={`info-${project.id}`}
-                          variants={textContainerVariants}
-                          initial="hidden"
-                          animate="visible"
-                          className="ps-details-wrapper"
-                        >
-                          <motion.span 
-                            variants={textItemVariants} 
-                            className="ps-tag-label"
-                            style={{ color: project.accent, textShadow: `0 0 12px rgba(${project.accentRgb}, 0.5)` }}
-                          >
-                            CASE STUDY // {project.code}
-                          </motion.span>
-
-                          <motion.h2 variants={textItemVariants} className="ps-title">
-                            {project.title}
-                          </motion.h2>
-                          <motion.h3 variants={textItemVariants} className="ps-subtitle">
-                            {project.subtitle}
-                          </motion.h3>
-
-                          {/* Word-by-word staggered description */}
-                          <motion.p variants={textItemVariants} className="ps-description">
-                            {descriptionWords.map((word, wIdx) => (
-                              <motion.span key={wIdx} className="ps-desc-word">
-                                {word}{' '}
-                              </motion.span>
-                            ))}
-                          </motion.p>
-
-                          <motion.div variants={textItemVariants} className="ps-specs-table">
-                            {project.specs.map((spec, sIdx) => (
-                              <div key={sIdx} className="ps-spec-row">
-                                <span className="ps-spec-label">{spec.label}</span>
-                                <span 
-                                  className="ps-spec-value" 
-                                  style={{ color: project.accent, textShadow: `0 0 8px rgba(${project.accentRgb}, 0.4)` }}
-                                >
-                                  {spec.value}
-                                </span>
-                              </div>
-                            ))}
-                          </motion.div>
-
-                          <motion.button 
-                            variants={textItemVariants} 
-                            className="ps-action-btn"
-                            style={{ 
-                              '--btn-accent': project.accent,
-                              '--btn-accent-rgb': project.accentRgb
-                            }}
-                          >
-                            <span>VIEW LIVE PROJECT</span>
-                            <ArrowUpRight size={16} className="ps-action-icon" />
-                          </motion.button>
-
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
+                  {/* Scrollable Website Screenshot */}
+                  <div
+                    className={`ps-screen ${isHoveringScreen && layout.active ? 'manual-scroll' : ''}`}
+                    ref={(el) => { screenRefs.current[idx] = el; }}
+                    onMouseEnter={() => layout.active && setIsHoveringScreen(true)}
+                    onMouseLeave={() => setIsHoveringScreen(false)}
+                  >
+                    <img
+                      src={project.screenshot}
+                      alt={`${project.title} website screenshot`}
+                      className="ps-screenshot"
+                      draggable={false}
+                    />
+                    {/* Scroll hint */}
+                    {layout.active && !isHoveringScreen && (
+                      <div className="ps-scroll-indicator">
+                        <MousePointer2 size={14} />
+                        <span>Hover to scroll manually</span>
+                      </div>
+                    )}
                   </div>
 
+                  {/* Glass Reflection overlay */}
+                  <div className="ps-screen-reflection" />
                 </div>
+
+                {/* === OVERLAY INFO PANEL === */}
+                <AnimatePresence mode="wait">
+                  {layout.active && (
+                    <motion.div
+                      key={`overlay-${project.id}`}
+                      className="ps-info-overlay"
+                      variants={textContainerVariants}
+                      initial="hidden"
+                      animate="visible"
+                    >
+                      <div className="ps-info-left">
+                        <motion.div className="ps-tag-row" variants={textItemVariants}>
+                          {project.tags.map((tag, tIdx) => (
+                            <span key={tIdx} className="ps-tag" style={{ borderColor: `rgba(${project.accentRgb}, 0.5)`, color: project.accent }}>{tag}</span>
+                          ))}
+                        </motion.div>
+
+                        <motion.h2 variants={textItemVariants} className="ps-title">{project.title}</motion.h2>
+                        <motion.p variants={textItemVariants} className="ps-subtitle">{project.subtitle}</motion.p>
+                        <motion.p variants={textItemVariants} className="ps-description">{project.description}</motion.p>
+                      </div>
+
+                      <div className="ps-info-right">
+                        <motion.div variants={textItemVariants} className="ps-specs-col">
+                          {project.specs.map((spec, sIdx) => (
+                            <div key={sIdx} className="ps-spec-item">
+                              <span className="ps-spec-val" style={{ color: project.accent }}>{spec.value}</span>
+                              <span className="ps-spec-lbl">{spec.label}</span>
+                            </div>
+                          ))}
+                        </motion.div>
+
+                        <motion.button
+                          variants={textItemVariants}
+                          className="ps-action-btn"
+                          style={{ '--btn-accent': project.accent, '--btn-accent-rgb': project.accentRgb }}
+                        >
+                          <span>VIEW PROJECT</span>
+                          <ArrowUpRight size={14} className="ps-action-icon" />
+                        </motion.button>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
               </motion.div>
             </motion.div>
           );
         })}
       </div>
 
-      {/* Advanced Magnetic Bottom Navigation */}
-      <div className="ps-adv-timeline">
-        <div className="ps-timeline-track">
+      {/* Bottom Navigation */}
+      <div className="ps-bottom-nav">
+        <div className="ps-nav-track">
           {profiles.map((p, idx) => {
             const isActive = index === idx;
             return (
-              <div 
-                key={p.id} 
-                className={`ps-nav-item ${isActive ? 'active' : ''}`}
+              <div
+                key={p.id}
+                className={`ps-nav-dot ${isActive ? 'active' : ''}`}
                 onClick={() => setIndex(idx)}
-                style={{
-                  '--nav-accent': p.accent,
-                  '--nav-accent-rgb': p.accentRgb
-                }}
+                style={{ '--nav-accent': p.accent, '--nav-accent-rgb': p.accentRgb }}
               >
-                {/* Thumbnail Tooltip */}
-                <div className="ps-nav-tooltip">
-                  <img src={p.image} alt={p.title} className="ps-nav-thumb" />
-                  <span className="ps-nav-tooltip-title">{p.title}</span>
+                <div className="ps-nav-preview">
+                  <img src={p.screenshot} alt={p.title} />
+                  <span>{p.title}</span>
                 </div>
-                
-                <span className="ps-nav-text">0{p.id}</span>
-                
+                <span className="ps-nav-num">0{p.id}</span>
                 {isActive && (
-                  <motion.div 
-                    layoutId="navIndicator"
-                    className="ps-nav-indicator"
+                  <motion.div
+                    layoutId="activeNav"
+                    className="ps-nav-active-bg"
                     initial={false}
-                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                    transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                   />
                 )}
               </div>
@@ -467,4 +392,3 @@ const ProfileShowcase = () => {
 };
 
 export default ProfileShowcase;
-
