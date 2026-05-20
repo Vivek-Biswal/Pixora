@@ -1,55 +1,58 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion';
-import { ChevronLeft, ChevronRight, ArrowUpRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ArrowUpRight, Play, Maximize2 } from 'lucide-react';
 import './ProfileShowcase.css';
 
 const profiles = [
   {
     id: 1,
-    title: 'Virginia Woolf',
-    subtitle: 'THE WAVES',
-    tags: 'CONSCIOUSNESS • MEMORY • IDENTITY',
-    image: 'https://images.unsplash.com/photo-1544502062-f82887f03d1c?auto=format&fit=crop&w=800&q=80',
-    description: 'A pioneering dive into the fluid stream of consciousness. Deciphering the silent dialogues of the soul across the canvas of time, language, and human memory.',
+    title: 'Linear.app Concept',
+    subtitle: 'ISSUE TRACKING REDEFINED',
+    tags: 'WORKSPACE • EFFICIENCY • DESIGN',
+    image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1000&auto=format&fit=crop',
+    videoUrl: 'https://cdn.pixabay.com/video/2021/08/04/83866-584745300_large.mp4',
+    description: 'A visionary approach to software building. Seamless issue tracking, lighting-fast performance, and a dark-mode first aesthetic designed for elite product teams.',
     accent: '#a855f7',
     accentRgb: '168, 85, 247',
-    code: 'VW-1931',
+    code: 'LN-01',
     specs: [
-      { label: 'COGNITIVE RESOLUTION', value: '98.6%' },
-      { label: 'TEMPORAL MATRIX', value: 'FLUID' },
-      { label: 'LITERARY DENSITY', value: 'EXPONENTIAL' }
+      { label: 'RENDER SPEED', value: '1.2ms' },
+      { label: 'ARCHITECTURE', value: 'EDGE' },
+      { label: 'SYNC ENGINE', value: 'REAL-TIME' }
     ]
   },
   {
     id: 2,
-    title: 'Marcus Aurelius',
-    subtitle: 'MEDITATIONS',
-    tags: 'STOICISM • STABILITY • RATIONAL MIND',
-    image: 'https://images.unsplash.com/photo-1560961911-ba7fea0a2a3a?auto=format&fit=crop&w=800&q=80',
-    description: "An emperor's timeless code of mental fortitude and inner peace. An intimate private dialogue on cosmic order, resilience, and the unbreakable human spirit.",
+    title: 'Stripe Checkout',
+    subtitle: 'FINANCIAL INFRASTRUCTURE',
+    tags: 'PAYMENTS • CONVERSION • GLOBAL',
+    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1000&auto=format&fit=crop',
+    videoUrl: 'https://cdn.pixabay.com/video/2020/07/31/46122-446700812_large.mp4',
+    description: "The gold standard of internet economy infrastructure. Maximizing conversion with beautifully designed, fiercely optimized checkout flows and global routing.",
     accent: '#3b82f6',
     accentRgb: '59, 130, 246',
-    code: 'MA-180',
+    code: 'ST-02',
     specs: [
-      { label: 'STOIC RATIO', value: '100%' },
-      { label: 'EQUANIMITY STATE', value: 'STABLE' },
-      { label: 'SOVEREIGN CONTROL', value: 'ACTIVE' }
+      { label: 'UPTIME', value: '99.999%' },
+      { label: 'SECURITY', value: 'PCI-DSS' },
+      { label: 'GLOBAL REACH', value: '195 COUNTRIES' }
     ]
   },
   {
     id: 3,
-    title: 'Frida Kahlo',
-    subtitle: 'THE TWO FRIDAS',
-    tags: 'SURREALISM • CHRONIC FORCE • HERITAGE',
-    image: 'https://images.unsplash.com/photo-1605721911519-3dfeb3be25e7?auto=format&fit=crop&w=800&q=80',
-    description: 'A raw, vibrant translation of physical pain into transcendent surrealist art. Mapping identity, legacy, and the fierce dualities of existence.',
+    title: 'Vercel Deployment',
+    subtitle: 'THE FRONTEND CLOUD',
+    tags: 'HOSTING • PERFORMANCE • DX',
+    image: 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=1000&auto=format&fit=crop',
+    videoUrl: 'https://cdn.pixabay.com/video/2023/10/22/186064-876935292_large.mp4',
+    description: 'Empowering developers to create at the speed of thought. Zero-configuration deployments, global edge networks, and an unparalleled developer experience.',
     accent: '#ec4899',
     accentRgb: '236, 72, 153',
-    code: 'FK-1939',
+    code: 'VC-03',
     specs: [
-      { label: 'VITALITY SPECTRUM', value: 'MAXIMAL' },
-      { label: 'DUAL-SELF EMISSION', value: 'RESONANT' },
-      { label: 'EXPRESSIVE ENERGY', value: '99.4%' }
+      { label: 'LATENCY', value: '<50ms' },
+      { label: 'EDGE NODES', value: '200+' },
+      { label: 'FRAMEWORKS', value: 'AGNOSTIC' }
     ]
   }
 ];
@@ -58,20 +61,21 @@ const ProfileShowcase = () => {
   const [index, setIndex] = useState(0);
   const containerRef = useRef(null);
 
-  // Mouse tilt physics for the active card
+  // Advanced Mouse tilt physics for the active card (faster, smoother)
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
-  const springConfig = { damping: 25, stiffness: 120, mass: 0.8 };
-  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [12, -12]), springConfig);
-  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-15, 15]), springConfig);
+  const springConfig = { damping: 20, stiffness: 150, mass: 0.5 }; // Snappier Apple-like feel
+  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [8, -8]), springConfig);
+  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-10, 10]), springConfig);
+  const glowX = useSpring(useTransform(mouseX, [-0.5, 0.5], ['20%', '80%']), springConfig);
+  const glowY = useSpring(useTransform(mouseY, [-0.5, 0.5], ['20%', '80%']), springConfig);
 
   const next = () => setIndex((i) => (i + 1) % profiles.length);
   const prev = () => setIndex((i) => (i - 1 + profiles.length) % profiles.length);
 
   const currentProject = profiles[index];
 
-  // Mouse move handler for active parallax
   const handleMouseMove = (e) => {
     if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
@@ -88,7 +92,6 @@ const ProfileShowcase = () => {
     mouseY.set(0);
   };
 
-  // Keyboard navigation listener
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'ArrowLeft') prev();
@@ -98,20 +101,19 @@ const ProfileShowcase = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  // Generate background particles once
   const particles = useMemo(() => {
-    return Array.from({ length: 28 }).map((_, i) => ({
+    return Array.from({ length: 40 }).map((_, i) => ({
       id: i,
       left: `${Math.random() * 100}%`,
       top: `${Math.random() * 100}%`,
-      size: Math.random() * 3 + 1.5,
-      delay: Math.random() * 8,
-      duration: Math.random() * 15 + 10,
-      opacity: Math.random() * 0.35 + 0.15
+      size: Math.random() * 2 + 1,
+      delay: Math.random() * 5,
+      duration: Math.random() * 10 + 10,
+      opacity: Math.random() * 0.5 + 0.2
     }));
   }, []);
 
-  // Compute 3D stage layout coordinates for infinite loop
+  // Compute 3D stage layout coordinates
   const getCardTransform = (cardIndex) => {
     let diff = cardIndex - index;
     if (diff < -1) diff += profiles.length;
@@ -133,49 +135,50 @@ const ProfileShowcase = () => {
       return {
         active: false,
         zIndex: 5,
-        opacity: 0.25,
-        scale: 0.78,
-        x: '-36%',
-        z: -250,
-        rotateY: 40,
-        filter: 'blur(4px)',
+        opacity: 0.15,
+        scale: 0.85,
+        x: '-45%',
+        z: -150,
+        rotateY: 25,
+        filter: 'blur(8px)',
         pointerEvents: 'none'
       };
     } else {
       return {
         active: false,
         zIndex: 5,
-        opacity: 0.25,
-        scale: 0.78,
-        x: '36%',
-        z: -250,
-        rotateY: -40,
-        filter: 'blur(4px)',
+        opacity: 0.15,
+        scale: 0.85,
+        x: '45%',
+        z: -150,
+        rotateY: -25,
+        filter: 'blur(8px)',
         pointerEvents: 'none'
       };
     }
   };
 
-  // Text transition stagger animations
+  // Cinematic staggered text reveals
   const textContainerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.06,
-        delayChildren: 0.1
-      }
+      transition: { staggerChildren: 0.04, delayChildren: 0.15 }
     }
   };
 
   const textItemVariants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 0, y: 15, filter: 'blur(4px)' },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { type: 'spring', stiffness: 100, damping: 14 }
+      filter: 'blur(0px)',
+      transition: { type: 'spring', stiffness: 120, damping: 14 }
     }
   };
+
+  // Word-by-word reveal for description
+  const descriptionWords = currentProject.description.split(' ');
 
   return (
     <section 
@@ -188,11 +191,11 @@ const ProfileShowcase = () => {
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
-      {/* Background Neon Grid & Dust */}
+      {/* Background Mesh & Depth */}
       <div className="ps-grid-overlay" />
       <div className="ps-grid-mask" />
       
-      {/* Floating Particles */}
+      {/* Cinematic Particles */}
       <div className="ps-particles">
         {particles.map((p) => (
           <div
@@ -206,39 +209,38 @@ const ProfileShowcase = () => {
               opacity: p.opacity,
               animationDelay: `${p.delay}s`,
               animationDuration: `${p.duration}s`,
-              boxShadow: `0 0 10px rgba(${currentProject.accentRgb}, 0.6)`
+              boxShadow: `0 0 12px rgba(${currentProject.accentRgb}, 0.8)`
             }}
           />
         ))}
       </div>
 
-      {/* Morphing Ambient Background Glowing Blobs */}
+      {/* Dynamic Moving Orbs */}
       <AnimatePresence>
         <motion.div
-          key={`ambient-glow-1-${index}`}
+          key={`orb-1-${index}`}
           className="ps-ambient-glow ps-glow-1"
-          initial={{ opacity: 0, scale: 0.8, x: '-10%', y: '-10%' }}
-          animate={{ opacity: 0.4, scale: 1.25, x: '0%', y: '0%' }}
+          initial={{ opacity: 0, scale: 0.8, x: '-5%', y: '-5%' }}
+          animate={{ opacity: 0.35, scale: 1.3, x: '5%', y: '5%' }}
           exit={{ opacity: 0, scale: 0.8 }}
-          transition={{ duration: 1.8, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 2, ease: "easeOut" }}
           style={{
-            background: `radial-gradient(circle, rgba(${currentProject.accentRgb}, 0.35) 0%, transparent 60%)`
+            background: `radial-gradient(circle, rgba(${currentProject.accentRgb}, 0.4) 0%, transparent 65%)`
           }}
         />
         <motion.div
-          key={`ambient-glow-2-${index}`}
+          key={`orb-2-${index}`}
           className="ps-ambient-glow ps-glow-2"
           initial={{ opacity: 0, scale: 0.7, x: '10%', y: '10%' }}
-          animate={{ opacity: 0.35, scale: 1.15, x: '0%', y: '0%' }}
+          animate={{ opacity: 0.25, scale: 1.1, x: '-5%', y: '-5%' }}
           exit={{ opacity: 0, scale: 0.7 }}
-          transition={{ duration: 2.2, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 2.5, ease: "easeOut" }}
           style={{
-            background: `radial-gradient(circle, rgba(255, 255, 255, 0.12) 0%, transparent 55%)`
+            background: `radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 60%)`
           }}
         />
       </AnimatePresence>
 
-      {/* Futuristic Header */}
       <div className="ps-header">
         <div className="ps-logo-container">
           <span className="ps-logo-scan-dot" />
@@ -246,36 +248,7 @@ const ProfileShowcase = () => {
         </div>
       </div>
 
-      {/* Circular Nav Buttons */}
-      <button className="ps-nav ps-prev" onClick={prev} aria-label="Previous Project">
-        <svg className="ps-nav-svg-ring" viewBox="0 0 100 100">
-          <circle className="ps-nav-circle-bg" cx="50" cy="50" r="45" />
-          <circle 
-            className="ps-nav-circle-glow" 
-            cx="50" 
-            cy="50" 
-            r="45" 
-            style={{ stroke: currentProject.accent }}
-          />
-        </svg>
-        <ChevronLeft size={24} className="ps-nav-icon" />
-      </button>
-
-      <button className="ps-nav ps-next" onClick={next} aria-label="Next Project">
-        <svg className="ps-nav-svg-ring" viewBox="0 0 100 100">
-          <circle className="ps-nav-circle-bg" cx="50" cy="50" r="45" />
-          <circle 
-            className="ps-nav-circle-glow" 
-            cx="50" 
-            cy="50" 
-            r="45" 
-            style={{ stroke: currentProject.accent }}
-          />
-        </svg>
-        <ChevronRight size={24} className="ps-nav-icon" />
-      </button>
-
-      {/* 3D Exhibition Stage */}
+      {/* Main 3D Carousel Stage */}
       <div className="ps-stage">
         {profiles.map((project, idx) => {
           const layout = getCardTransform(idx);
@@ -298,12 +271,11 @@ const ProfileShowcase = () => {
               }}
               transition={{
                 type: 'spring',
-                stiffness: 90,
+                stiffness: 80,
                 damping: 20,
-                mass: 0.9
+                mass: 0.8
               }}
             >
-              {/* Inner card containing holographic interactive elements */}
               <motion.div
                 className="ps-card-inner"
                 style={
@@ -315,40 +287,73 @@ const ProfileShowcase = () => {
                       }
                     : { transformStyle: 'preserve-3d' }
                 }
-                whileHover={layout.active ? { scale: 1.02 } : {}}
-                transition={{ duration: 0.4, ease: 'easeOut' }}
-                // Swipe support via Framer Motion drag gestures
+                whileHover={layout.active ? { scale: 1.015, translateZ: 20 } : {}}
+                transition={{ duration: 0.3, ease: 'easeOut' }}
                 drag={layout.active ? 'x' : false}
                 dragConstraints={{ left: 0, right: 0 }}
-                dragElastic={0.3}
+                dragElastic={0.2}
                 onDragEnd={(e, info) => {
-                  const swipeThreshold = 60;
-                  if (info.offset.x < -swipeThreshold) next();
-                  else if (info.offset.x > swipeThreshold) prev();
+                  if (info.offset.x < -50) next();
+                  else if (info.offset.x > 50) prev();
                 }}
               >
-                {/* Active Glowing Tint Borders */}
+                {/* Mouse-reactive inner glow */}
+                {layout.active && (
+                  <motion.div 
+                    className="ps-card-mouse-glow"
+                    style={{
+                      background: `radial-gradient(800px circle at ${glowX} ${glowY}, rgba(${project.accentRgb}, 0.15), transparent 40%)`
+                    }}
+                  />
+                )}
+                
                 <div 
                   className="ps-card-glow-border" 
-                  style={{ borderColor: `rgba(${project.accentRgb}, 0.25)` }}
+                  style={{ borderColor: `rgba(${project.accentRgb}, 0.4)` }}
                 />
                 
-                {/* Glass Card content */}
                 <div className="ps-card-content">
                   
-                  {/* Visual Portrait Column */}
+                  {/* VISUAL COLUMN (Device Frame) */}
                   <div className="ps-card-visual">
-                    <div className="ps-portrait-container">
-                      <img src={project.image} className="ps-image" alt={project.title} />
-                      <div className="ps-hologram-overlay" />
-                      <div className="ps-scanner-line" style={{ background: `linear-gradient(to bottom, transparent, ${project.accent}, transparent)` }} />
+                    <div className="ps-device-frame">
+                      {/* macOS style window controls */}
+                      <div className="ps-device-topbar">
+                        <div className="ps-device-dots">
+                          <span className="dot close" />
+                          <span className="dot min" />
+                          <span className="dot max" />
+                        </div>
+                        <div className="ps-device-url">pixora.dev/projects/{project.code.toLowerCase()}</div>
+                      </div>
+                      
+                      {/* Video/Iframe Container */}
+                      <div className="ps-device-screen">
+                        {/* Fallback poster image or loading state can be added, using video for now */}
+                        <video 
+                          className="ps-device-video" 
+                          src={project.videoUrl} 
+                          poster={project.image}
+                          autoPlay 
+                          loop 
+                          muted 
+                          playsInline 
+                        />
+                        <div className="ps-device-reflection" />
+                        {/* Hover Overlay elements */}
+                        <div className="ps-device-hover-ui">
+                          <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }} className="ps-play-btn">
+                            <Play size={20} fill="currentColor" />
+                          </motion.button>
+                          <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }} className="ps-expand-btn">
+                            <Maximize2 size={16} />
+                          </motion.button>
+                        </div>
+                      </div>
                     </div>
-                    {/* Sci-fi absolute widgets */}
-                    <div className="ps-widget-coord">{project.code}</div>
-                    <div className="ps-widget-pulse" style={{ backgroundColor: project.accent }} />
                   </div>
 
-                  {/* Informational Data Column */}
+                  {/* DATA COLUMN */}
                   <div className="ps-card-details">
                     <AnimatePresence mode="wait">
                       {layout.active && (
@@ -357,41 +362,39 @@ const ProfileShowcase = () => {
                           variants={textContainerVariants}
                           initial="hidden"
                           animate="visible"
+                          className="ps-details-wrapper"
                         >
-                          {/* Tags / Badges */}
                           <motion.span 
                             variants={textItemVariants} 
                             className="ps-tag-label"
-                            style={{ color: project.accent }}
+                            style={{ color: project.accent, textShadow: `0 0 12px rgba(${project.accentRgb}, 0.5)` }}
                           >
-                            SYSTEM ARCHIVE // 00{project.id}
+                            CASE STUDY // {project.code}
                           </motion.span>
 
-                          {/* Title & Subtitle */}
                           <motion.h2 variants={textItemVariants} className="ps-title">
                             {project.title}
                           </motion.h2>
-                          <motion.h3 
-                            variants={textItemVariants} 
-                            className="ps-subtitle"
-                            style={{ textShadow: `0 0 10px rgba(${project.accentRgb}, 0.3)` }}
-                          >
+                          <motion.h3 variants={textItemVariants} className="ps-subtitle">
                             {project.subtitle}
                           </motion.h3>
 
-                          {/* Short Narrative */}
+                          {/* Word-by-word staggered description */}
                           <motion.p variants={textItemVariants} className="ps-description">
-                            {project.description}
+                            {descriptionWords.map((word, wIdx) => (
+                              <motion.span key={wIdx} className="ps-desc-word">
+                                {word}{' '}
+                              </motion.span>
+                            ))}
                           </motion.p>
 
-                          {/* Digital specs / Readouts */}
                           <motion.div variants={textItemVariants} className="ps-specs-table">
                             {project.specs.map((spec, sIdx) => (
                               <div key={sIdx} className="ps-spec-row">
                                 <span className="ps-spec-label">{spec.label}</span>
                                 <span 
                                   className="ps-spec-value" 
-                                  style={{ color: project.accent }}
+                                  style={{ color: project.accent, textShadow: `0 0 8px rgba(${project.accentRgb}, 0.4)` }}
                                 >
                                   {spec.value}
                                 </span>
@@ -399,7 +402,6 @@ const ProfileShowcase = () => {
                             ))}
                           </motion.div>
 
-                          {/* Interactive Button */}
                           <motion.button 
                             variants={textItemVariants} 
                             className="ps-action-btn"
@@ -408,7 +410,7 @@ const ProfileShowcase = () => {
                               '--btn-accent-rgb': project.accentRgb
                             }}
                           >
-                            <span>EXPLORE EXPERIENCE</span>
+                            <span>VIEW LIVE PROJECT</span>
                             <ArrowUpRight size={16} className="ps-action-icon" />
                           </motion.button>
 
@@ -424,25 +426,40 @@ const ProfileShowcase = () => {
         })}
       </div>
 
-      {/* Immersive Bottom Navigation Timeline */}
-      <div className="ps-timeline">
-        <div className="ps-timeline-label">ARCHIVE MATRIX INDEX</div>
+      {/* Advanced Magnetic Bottom Navigation */}
+      <div className="ps-adv-timeline">
         <div className="ps-timeline-track">
-          {profiles.map((p, idx) => (
-            <button
-              key={p.id}
-              className={`ps-timeline-dash ${index === idx ? 'active' : ''}`}
-              onClick={() => setIndex(idx)}
-              aria-label={`Jump to project ${idx + 1}`}
-              style={{
-                '--dash-accent': p.accent,
-                '--dash-accent-rgb': p.accentRgb
-              }}
-            >
-              <span className="ps-timeline-dash-num">0{p.id}</span>
-              <span className="ps-timeline-dash-line" />
-            </button>
-          ))}
+          {profiles.map((p, idx) => {
+            const isActive = index === idx;
+            return (
+              <div 
+                key={p.id} 
+                className={`ps-nav-item ${isActive ? 'active' : ''}`}
+                onClick={() => setIndex(idx)}
+                style={{
+                  '--nav-accent': p.accent,
+                  '--nav-accent-rgb': p.accentRgb
+                }}
+              >
+                {/* Thumbnail Tooltip */}
+                <div className="ps-nav-tooltip">
+                  <img src={p.image} alt={p.title} className="ps-nav-thumb" />
+                  <span className="ps-nav-tooltip-title">{p.title}</span>
+                </div>
+                
+                <span className="ps-nav-text">0{p.id}</span>
+                
+                {isActive && (
+                  <motion.div 
+                    layoutId="navIndicator"
+                    className="ps-nav-indicator"
+                    initial={false}
+                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  />
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>
