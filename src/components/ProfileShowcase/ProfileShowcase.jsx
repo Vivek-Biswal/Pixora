@@ -9,7 +9,7 @@ const profiles = [
     title: 'Neuro Dashboard',
     subtitle: 'AI-POWERED ANALYTICS',
     tags: ['AI', 'DASHBOARD', 'SAAS'],
-    videoUrl: 'https://cdn.pixabay.com/video/2021/08/04/83866-584745300_large.mp4',
+    imageUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1200&auto=format&fit=crop',
     description: 'An intelligent analytics platform with real-time data visualization, predictive insights, and seamless team collaboration.',
     accent: '#a855f7',
     accentRgb: '168, 85, 247',
@@ -26,7 +26,7 @@ const profiles = [
     title: 'PayFlow',
     subtitle: 'FINANCIAL INFRASTRUCTURE',
     tags: ['FINTECH', 'PAYMENTS', 'API'],
-    videoUrl: 'https://cdn.pixabay.com/video/2020/07/31/46122-446700812_large.mp4',
+    imageUrl: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1200&auto=format&fit=crop',
     description: 'Next-generation payment infrastructure powering millions of transactions with sub-50ms latency across 195 countries.',
     accent: '#3b82f6',
     accentRgb: '59, 130, 246',
@@ -43,7 +43,7 @@ const profiles = [
     title: 'Velox Cloud',
     subtitle: 'DEPLOYMENT PLATFORM',
     tags: ['DEVOPS', 'CLOUD', 'EDGE'],
-    videoUrl: 'https://cdn.pixabay.com/video/2023/10/22/186064-876935292_large.mp4',
+    imageUrl: 'https://images.unsplash.com/photo-1559028012-481c04fa702d?q=80&w=1200&auto=format&fit=crop',
     description: 'Zero-config deployments on a global edge network. Ship faster with instant rollbacks, preview environments, and real-time logs.',
     accent: '#ec4899',
     accentRgb: '236, 72, 153',
@@ -59,7 +59,6 @@ const profiles = [
 
 const ProfileShowcase = () => {
   const [index, setIndex] = useState(0);
-  const [isHoveringScreen, setIsHoveringScreen] = useState(false);
   const containerRef = useRef(null);
 
   const mouseX = useMotionValue(0);
@@ -99,27 +98,12 @@ const ProfileShowcase = () => {
 
   // Auto-rotation logic
   useEffect(() => {
-    // Pause auto-rotation if the user is hovering over the screen (reading/scrolling)
-    if (isHoveringScreen) return;
-
     const timer = setInterval(() => {
       setIndex((prevIndex) => (prevIndex + 1) % profiles.length);
     }, 6000); // Auto-rotate every 6 seconds
 
     return () => clearInterval(timer);
-  }, [index, isHoveringScreen]);
-
-  const particles = useMemo(() => {
-    return Array.from({ length: 35 }).map((_, i) => ({
-      id: i,
-      left: `${Math.random() * 100}%`,
-      top: `${Math.random() * 100}%`,
-      size: Math.random() * 2.5 + 1,
-      delay: Math.random() * 6,
-      duration: Math.random() * 12 + 10,
-      opacity: Math.random() * 0.4 + 0.15
-    }));
-  }, []);
+  }, [index]);
 
   const getCardTransform = (cardIndex) => {
     let diff = cardIndex - index;
@@ -156,26 +140,6 @@ const ProfileShowcase = () => {
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
-      <div className="ps-grid-overlay" />
-      <div className="ps-grid-mask" />
-
-      <div className="ps-particles">
-        {particles.map((p) => (
-          <div
-            key={p.id}
-            className="ps-particle"
-            style={{
-              left: p.left, top: p.top,
-              width: p.size, height: p.size,
-              opacity: p.opacity,
-              animationDelay: `${p.delay}s`,
-              animationDuration: `${p.duration}s`,
-              boxShadow: `0 0 10px rgba(${currentProject.accentRgb}, 0.7)`
-            }}
-          />
-        ))}
-      </div>
-
       <AnimatePresence>
         <motion.div key={`orb-1-${index}`} className="ps-ambient-glow ps-glow-1"
           initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 0.3, scale: 1.2 }}
@@ -254,19 +218,12 @@ const ProfileShowcase = () => {
                     </div>
                   </div>
 
-                  {/* Full-width Website Video */}
-                  <div
-                    className="ps-screen"
-                    onMouseEnter={() => layout.active && setIsHoveringScreen(true)}
-                    onMouseLeave={() => setIsHoveringScreen(false)}
-                  >
-                    <video
-                      src={project.videoUrl}
+                  {/* Full-width Website Image */}
+                  <div className="ps-screen">
+                    <img
+                      src={project.imageUrl}
+                      alt={`${project.title} preview`}
                       className="ps-screenshot"
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
                       style={{ objectFit: 'cover', width: '100%', height: '100%' }}
                     />
                   </div>
