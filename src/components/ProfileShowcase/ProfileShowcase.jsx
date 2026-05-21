@@ -135,6 +135,18 @@ const ProfileShowcase = () => {
     };
   }, [index, isHoveringScreen]);
 
+  // Auto-rotation logic
+  useEffect(() => {
+    // Pause auto-rotation if the user is hovering over the screen (reading/scrolling)
+    if (isHoveringScreen) return;
+
+    const timer = setInterval(() => {
+      setIndex((prevIndex) => (prevIndex + 1) % profiles.length);
+    }, 6000); // Auto-rotate every 6 seconds
+
+    return () => clearInterval(timer);
+  }, [index, isHoveringScreen]);
+
   const particles = useMemo(() => {
     return Array.from({ length: 35 }).map((_, i) => ({
       id: i,
@@ -355,37 +367,6 @@ const ProfileShowcase = () => {
             </motion.div>
           );
         })}
-      </div>
-
-      {/* Bottom Navigation */}
-      <div className="ps-bottom-nav">
-        <div className="ps-nav-track">
-          {profiles.map((p, idx) => {
-            const isActive = index === idx;
-            return (
-              <div
-                key={p.id}
-                className={`ps-nav-dot ${isActive ? 'active' : ''}`}
-                onClick={() => setIndex(idx)}
-                style={{ '--nav-accent': p.accent, '--nav-accent-rgb': p.accentRgb }}
-              >
-                <div className="ps-nav-preview">
-                  <img src={p.screenshot} alt={p.title} />
-                  <span>{p.title}</span>
-                </div>
-                <span className="ps-nav-num">0{p.id}</span>
-                {isActive && (
-                  <motion.div
-                    layoutId="activeNav"
-                    className="ps-nav-active-bg"
-                    initial={false}
-                    transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                  />
-                )}
-              </div>
-            );
-          })}
-        </div>
       </div>
     </section>
   );
