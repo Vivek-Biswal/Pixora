@@ -9,8 +9,7 @@ const profiles = [
     title: 'Neuro Dashboard',
     subtitle: 'AI-POWERED ANALYTICS',
     tags: ['AI', 'DASHBOARD', 'SAAS'],
-    // Tall screenshot that can auto-scroll
-    screenshot: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=800&auto=format&fit=crop',
+    videoUrl: 'https://cdn.pixabay.com/video/2021/08/04/83866-584745300_large.mp4',
     description: 'An intelligent analytics platform with real-time data visualization, predictive insights, and seamless team collaboration.',
     accent: '#a855f7',
     accentRgb: '168, 85, 247',
@@ -27,7 +26,7 @@ const profiles = [
     title: 'PayFlow',
     subtitle: 'FINANCIAL INFRASTRUCTURE',
     tags: ['FINTECH', 'PAYMENTS', 'API'],
-    screenshot: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800&auto=format&fit=crop',
+    videoUrl: 'https://cdn.pixabay.com/video/2020/07/31/46122-446700812_large.mp4',
     description: 'Next-generation payment infrastructure powering millions of transactions with sub-50ms latency across 195 countries.',
     accent: '#3b82f6',
     accentRgb: '59, 130, 246',
@@ -44,7 +43,7 @@ const profiles = [
     title: 'Velox Cloud',
     subtitle: 'DEPLOYMENT PLATFORM',
     tags: ['DEVOPS', 'CLOUD', 'EDGE'],
-    screenshot: 'https://images.unsplash.com/photo-1559028012-481c04fa702d?q=80&w=800&auto=format&fit=crop',
+    videoUrl: 'https://cdn.pixabay.com/video/2023/10/22/186064-876935292_large.mp4',
     description: 'Zero-config deployments on a global edge network. Ship faster with instant rollbacks, preview environments, and real-time logs.',
     accent: '#ec4899',
     accentRgb: '236, 72, 153',
@@ -62,7 +61,6 @@ const ProfileShowcase = () => {
   const [index, setIndex] = useState(0);
   const [isHoveringScreen, setIsHoveringScreen] = useState(false);
   const containerRef = useRef(null);
-  const screenRefs = useRef([]);
 
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -98,42 +96,6 @@ const ProfileShowcase = () => {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [next, prev]);
-
-  // Auto-scroll logic for the active screenshot
-  useEffect(() => {
-    if (isHoveringScreen) return;
-
-    const activeScreen = screenRefs.current[index];
-    if (!activeScreen) return;
-
-    let animFrame;
-    let scrollDir = 1;
-    const scrollSpeed = 0.6;
-
-    const autoScroll = () => {
-      if (!activeScreen) return;
-      const maxScroll = activeScreen.scrollHeight - activeScreen.clientHeight;
-      
-      if (activeScreen.scrollTop >= maxScroll - 1) {
-        scrollDir = -1;
-      } else if (activeScreen.scrollTop <= 0) {
-        scrollDir = 1;
-      }
-
-      activeScreen.scrollTop += scrollSpeed * scrollDir;
-      animFrame = requestAnimationFrame(autoScroll);
-    };
-
-    // Small delay before starting auto-scroll
-    const timeout = setTimeout(() => {
-      animFrame = requestAnimationFrame(autoScroll);
-    }, 800);
-
-    return () => {
-      clearTimeout(timeout);
-      cancelAnimationFrame(animFrame);
-    };
-  }, [index, isHoveringScreen]);
 
   // Auto-rotation logic
   useEffect(() => {
@@ -292,26 +254,21 @@ const ProfileShowcase = () => {
                     </div>
                   </div>
 
-                  {/* Scrollable Website Screenshot */}
+                  {/* Full-width Website Video */}
                   <div
-                    className={`ps-screen ${isHoveringScreen && layout.active ? 'manual-scroll' : ''}`}
-                    ref={(el) => { screenRefs.current[idx] = el; }}
+                    className="ps-screen"
                     onMouseEnter={() => layout.active && setIsHoveringScreen(true)}
                     onMouseLeave={() => setIsHoveringScreen(false)}
                   >
-                    <img
-                      src={project.screenshot}
-                      alt={`${project.title} website screenshot`}
+                    <video
+                      src={project.videoUrl}
                       className="ps-screenshot"
-                      draggable={false}
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      style={{ objectFit: 'cover', width: '100%', height: '100%' }}
                     />
-                    {/* Scroll hint */}
-                    {layout.active && !isHoveringScreen && (
-                      <div className="ps-scroll-indicator">
-                        <MousePointer2 size={14} />
-                        <span>Hover to scroll manually</span>
-                      </div>
-                    )}
                   </div>
 
                   {/* Glass Reflection overlay */}
