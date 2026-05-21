@@ -110,6 +110,7 @@
   font-size: 15px;
   font-weight: 600;
   text-decoration: none;
+  white-space: nowrap;
   transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
   animation: shimmerCTA 5s infinite;
   min-height: 52px;
@@ -141,6 +142,7 @@
   font-size: 15px;
   font-weight: 600;
   text-decoration: none;
+  white-space: nowrap;
   transition: all 0.2s;
   min-height: 52px;
   width: 100%;
@@ -452,6 +454,7 @@
   }
   .hero-ctas {
     flex-direction: row;
+    flex-wrap: wrap;
   }
   .cta-primary, .cta-secondary {
     width: auto;
