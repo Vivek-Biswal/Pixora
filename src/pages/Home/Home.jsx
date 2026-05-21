@@ -332,6 +332,16 @@ const Home = () => {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
           >
+            <motion.div className="floating-badge badge-1" animate={{ y: [0, -10, 0] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}>
+              <Zap size={14} className="text-yellow" /> Lightning Fast
+            </motion.div>
+            <motion.div className="floating-badge badge-2" animate={{ y: [0, 10, 0] }} transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}>
+              <Shield size={14} className="text-green" /> Secure & Scalable
+            </motion.div>
+            <motion.div className="floating-badge badge-3" animate={{ y: [0, -8, 0] }} transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}>
+              <Search size={14} className="text-blue" /> SEO Optimized
+            </motion.div>
+
             <div className="browser-mockup">
               <div className="browser-chrome">
                 <div className="chrome-dot red"></div>
