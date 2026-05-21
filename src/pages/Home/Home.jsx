@@ -1,10 +1,9 @@
-import React, { useState, useRef, useCallback, useEffect } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useInView, useMotionValue, useSpring, useTransform, useScroll } from 'framer-motion';
 import {
   ArrowRight, Check, Monitor, ShoppingCart, Search, Settings, Zap, Layout,
-  Star, Plus, Sparkles, BarChart3, Shield, Clock, Users, HeartHandshake,
-  Home as HomeIcon, FileText, MessageSquare, Bell
+  Star, Plus, Sparkles, BarChart3, Shield, Users, HeartHandshake
 } from 'lucide-react';
 import './Home.css';
 import ProfileShowcase from '../../components/ProfileShowcase/ProfileShowcase';
@@ -63,6 +62,41 @@ const SpotlightCard = ({ children, className = '' }) => {
 
 /* ============================================================ */
 
+const StatCounter = ({ value, label, suffix = "" }) => {
+  const [count, setCount] = useState(0);
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: '-50px' });
+  
+  useEffect(() => {
+    if (inView) {
+      let start = 0;
+      const end = parseInt(value);
+      if (isNaN(end)) return;
+      const duration = 1500;
+      const incrementTime = 16;
+      const step = end / (duration / incrementTime);
+      
+      const timer = setInterval(() => {
+        start += step;
+        if (start >= end) {
+          setCount(end);
+          clearInterval(timer);
+        } else {
+          setCount(Math.ceil(start));
+        }
+      }, incrementTime);
+      return () => clearInterval(timer);
+    }
+  }, [inView, value]);
+
+  return (
+    <div className="stat-item" ref={ref}>
+      <span className="stat-num">{count}{suffix}</span>
+      <span className="stat-label">{label}</span>
+    </div>
+  );
+};
+
 const Home = () => {
   const [activeFaq, setActiveFaq] = useState(null);
 
@@ -80,16 +114,7 @@ const Home = () => {
   const blobXReverse = useTransform(smoothMouseX, [-500, 500], [-25, 25]);
   const blobYReverse = useTransform(smoothMouseY, [-500, 500], [-25, 25]);
 
-  // Foreground layers (faster, 3D tilt)
-  const mockupX = useTransform(smoothMouseX, [-500, 500], [-15, 15]);
-  const mockupY = useTransform(smoothMouseY, [-500, 500], [-15, 15]);
-  const mockupRotateX = useTransform(smoothMouseY, [-500, 500], [2.5, -2.5]);
-  const mockupRotateY = useTransform(smoothMouseX, [-500, 500], [-2.5, 2.5]);
 
-  // Cursor glow follows mouse directly (faster spring)
-  const glowSpring = { damping: 20, stiffness: 150, mass: 0.3 };
-  const cursorGlowX = useSpring(mouseX, glowSpring);
-  const cursorGlowY = useSpring(mouseY, glowSpring);
 
   // Parallax reveal for statement section
   const statementRef = useRef(null);
@@ -97,7 +122,6 @@ const Home = () => {
     target: statementRef,
     offset: ["start end", "end start"]
   });
-  const statementTextY = useTransform(statementScroll, [0, 0.6], [250, 0]);
 
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -201,113 +225,121 @@ const Home = () => {
 
       {/* ==================== HERO ==================== */}
       <section className="hero">
-        {/* Cursor-reactive glow */}
-        <motion.div
-          className="hero__cursor-glow"
-          style={{
-            left: '50%',
-            top: '50%',
-            x: cursorGlowX,
-            y: cursorGlowY,
-          }}
-        />
+        {/* Background Orbs */}
+        <div className="hero-orb hero-orb-1"></div>
+        <div className="hero-orb hero-orb-2"></div>
 
-        <motion.div className="hero__blob hero__blob--1" style={{ x: blobX, y: blobY }} />
-        <motion.div className="hero__blob hero__blob--2" style={{ x: blobXReverse, y: blobYReverse }} />
-        <motion.div className="hero__blob hero__blob--3" style={{ x: blobX, y: blobYReverse }} />
-
-        <div className="container">
-          <motion.div className="hero__content"
-            initial="hidden" animate="visible" variants={stagger}
-          >
-            <motion.div
-              className="hero__badge"
-              variants={fadeUp}
-              custom={0}
-              whileHover={{ scale: 1.05 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+        <div className="container hero-container">
+          <div className="hero-left">
+            <motion.div 
+              className="hero-badge"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
             >
-              <Sparkles size={13} /> Premium Done-For-You Websites
+              <Sparkles size={13} style={{ marginRight: '6px' }} /> ⚡ 7-Day Delivery Guarantee
             </motion.div>
 
-            <motion.h1 className="hero__title" variants={fadeUp} custom={1}>
-              We Build Websites{' '}
-              <span>So You Don't Have To</span>
+            <motion.h1 
+              className="hero-headline"
+              initial="hidden"
+              animate="visible"
+              variants={{
+                visible: { transition: { staggerChildren: 0.06 } }
+              }}
+            >
+              {"Your Business Deserves a Website That ".split(" ").map((word, i) => (
+                <motion.span
+                  key={i}
+                  style={{ display: "inline-block", marginRight: "0.25em" }}
+                  variants={{
+                    hidden: { opacity: 0, y: 20 },
+                    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
+                  }}
+                >
+                  {word}
+                </motion.span>
+              ))}
+              <motion.span 
+                className="highlight"
+                style={{ display: "inline-block" }}
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
+                }}
+              >
+                Converts.
+              </motion.span>
             </motion.h1>
 
-            <motion.p className="hero__subtitle" variants={fadeUp} custom={2}>
-              From doctors to restaurants, salons to startups — we design, build, and manage
-              stunning websites for businesses that want to grow — without the tech headache.
+            <motion.p 
+              className="hero-subheadline"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 + 7 * 0.06 }}
+            >
+              We design, build, and deliver premium websites for Indian businesses — fully managed, no tech skills needed, ownership 100% yours.
             </motion.p>
 
-            <motion.div className="hero__actions" variants={fadeUp} custom={3}>
-              <Link to="/request" className="btn btn--primary btn--lg">
-                Start Your Project <ArrowRight size={18} />
+            <motion.div 
+              className="hero-ctas"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.5 + 0.3 + 7 * 0.06 }}
+            >
+              <Link to="/request" className="cta-primary">
+                Get My Free Website Quote <ArrowRight size={16} style={{ marginLeft: '8px' }} />
               </Link>
-              <Link to="/portfolio" className="btn btn--ghost btn--lg">
-                See Our Work
+              <Link to="/portfolio" className="cta-secondary">
+                View Our Work ↓
               </Link>
             </motion.div>
 
-            <motion.div className="hero__trust" variants={fadeUp} custom={4}>
-              <div className="hero__trust-avatars">
-                {['PS','RM','AD','VP'].map((init, i) => (
-                  <div key={i} className="hero__trust-avatar">{init}</div>
-                ))}
+            <motion.div 
+              className="hero-trust-strip"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.7 + 0.3 + 7 * 0.06 }}
+            >
+              <div className="trust-marquee-content">
+                <span>✓ Delivered in 7 Days</span>
+                <span className="dot">·</span>
+                <span>✓ Full Ownership</span>
+                <span className="dot">·</span>
+                <span>✓ Free Revisions</span>
+                <span className="dot">·</span>
+                <span>✓ GST Invoice</span>
               </div>
-              <span className="hero__trust-stars">★★★★★</span>
-              <span>Trusted by 150+ businesses</span>
             </motion.div>
-          </motion.div>
 
-          {/* Dashboard Mockup */}
-          <motion.div className="hero__mockup"
-            initial={{ opacity: 0, y: 60, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            style={{ 
-              x: mockupX, 
-              y: mockupY, 
-              rotateX: mockupRotateX, 
-              rotateY: mockupRotateY,
-              transformPerspective: 1200 
-            }}
+            <motion.div 
+              className="hero-stats"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.9 + 0.3 + 7 * 0.06 }}
+            >
+              <StatCounter value="50" label="Websites Delivered" suffix="+" />
+              <div className="stat-divider"></div>
+              <StatCounter value="7" label="Avg. Delivery Time" suffix=" Days" />
+              <div className="stat-divider"></div>
+              <StatCounter value="100" label="Client Satisfaction" suffix="%" />
+            </motion.div>
+          </div>
+
+          <motion.div 
+            className="hero-right"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
           >
-            <div className="hero__mockup-bar">
-              <div className="hero__mockup-dot hero__mockup-dot--r" />
-              <div className="hero__mockup-dot hero__mockup-dot--y" />
-              <div className="hero__mockup-dot hero__mockup-dot--g" />
-              <span style={{ marginLeft: 'auto', fontSize: '11px', color: 'var(--text-muted)' }}>dashboard.pixora.in</span>
-            </div>
-            <div className="hero__mockup-content">
-              <div className="hero__mockup-sidebar">
-                <div className="hero__mockup-nav-item active"><HomeIcon size={14} /> Overview</div>
-                <div className="hero__mockup-nav-item"><FileText size={14} /> Projects</div>
-                <div className="hero__mockup-nav-item"><MessageSquare size={14} /> Messages</div>
-                <div className="hero__mockup-nav-item"><Bell size={14} /> Updates</div>
-                <div className="hero__mockup-nav-item"><Settings size={14} /> Settings</div>
+            <div className="browser-mockup">
+              <div className="browser-chrome">
+                <div className="chrome-dot red"></div>
+                <div className="chrome-dot yellow"></div>
+                <div className="chrome-dot green"></div>
               </div>
-              <div className="hero__mockup-main">
-                <div className="hero__mockup-card">
-                  <h4>Your Website — Sharma Dental Clinic</h4>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                    <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Progress</span>
-                    <span style={{ fontSize: '11px', color: 'var(--color-purple-light)' }}>78%</span>
-                  </div>
-                  <div className="hero__mockup-progress">
-                    <div className="hero__mockup-progress-fill" style={{ width: '78%' }} />
-                  </div>
-                </div>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                  <div className="hero__mockup-card">
-                    <h4>Status</h4>
-                    <span className="hero__mockup-status hero__mockup-status--active">● In Development</span>
-                  </div>
-                  <div className="hero__mockup-card">
-                    <h4>Next Milestone</h4>
-                    <span style={{ fontSize: '12px', color: 'var(--text-primary)' }}>Design Review — May 22</span>
-                  </div>
-                </div>
+              <div className="browser-content">
+                <div className="mockup-placeholder"></div>
               </div>
             </div>
           </motion.div>
