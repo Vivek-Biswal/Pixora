@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion, useInView, useMotionValue, useSpring, useTransform, useScroll } from 'framer-motion';
 import {
   ArrowRight, Check, Monitor, ShoppingCart, Search, Settings, Zap, Layout,
-  Star, Plus, Sparkles, BarChart3, Shield, Users, HeartHandshake
+  Star, Plus, BarChart3, Shield, Users, HeartHandshake
 } from 'lucide-react';
 import './Home.css';
 import ProfileShowcase from '../../components/ProfileShowcase/ProfileShowcase';
@@ -99,6 +99,29 @@ const StatCounter = ({ value, label, suffix = "" }) => {
 
 const Home = () => {
   const [activeFaq, setActiveFaq] = useState(null);
+  const [mockupIndex, setMockupIndex] = useState(0);
+
+  const mockupSlides = [
+    {
+      url: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=900&auto=format&fit=crop',
+      label: '🍽 Restaurant'
+    },
+    {
+      url: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=900&auto=format&fit=crop',
+      label: '🏥 Clinic'
+    },
+    {
+      url: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=900&auto=format&fit=crop',
+      label: '💪 Gym'
+    }
+  ];
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setMockupIndex(prev => (prev + 1) % mockupSlides.length);
+    }, 3500);
+    return () => clearInterval(timer);
+  }, []);
 
   /* ---- Interactive Parallax Hooks ---- */
   const mouseX = useMotionValue(0);
@@ -237,7 +260,7 @@ const Home = () => {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.4, ease: "easeOut" }}
             >
-              <Sparkles size={13} style={{ marginRight: '6px' }} /> ⚡ 7-Day Delivery Guarantee
+              ⚡ 7-Day Delivery Guarantee
             </motion.div>
 
             <motion.h1 
@@ -349,52 +372,18 @@ const Home = () => {
                 <div className="chrome-dot green"></div>
               </div>
               <div className="browser-content">
-                <div className="mockup-ui">
-                  {/* Sidebar Skeleton */}
-                  <div className="mockup-sidebar">
-                    <div className="mockup-logo"></div>
-                    <div className="mockup-nav">
-                      <div className="mockup-nav-item active"></div>
-                      <div className="mockup-nav-item"></div>
-                      <div className="mockup-nav-item"></div>
-                      <div className="mockup-nav-item short"></div>
-                    </div>
-                  </div>
-                  {/* Main Content Skeleton */}
-                  <div className="mockup-main">
-                    <div className="mockup-header">
-                      <div className="mockup-search"></div>
-                      <div className="mockup-profile"></div>
-                    </div>
-                    <div className="mockup-cards">
-                      <div className="mockup-card">
-                        <div className="mockup-card-title"></div>
-                        <div className="mockup-card-value"></div>
-                      </div>
-                      <div className="mockup-card">
-                        <div className="mockup-card-title"></div>
-                        <div className="mockup-card-value"></div>
-                      </div>
-                      <div className="mockup-card highlight">
-                        <div className="mockup-card-title"></div>
-                        <div className="mockup-card-value"></div>
-                      </div>
-                    </div>
-                    <div className="mockup-chart-container">
-                      <div className="mockup-chart-header"></div>
-                      <div className="mockup-chart">
-                        {[40, 70, 50, 90, 60, 100, 80].map((h, i) => (
-                          <motion.div 
-                            key={i} 
-                            className="mockup-bar" 
-                            initial={{ scaleY: 0 }}
-                            animate={{ scaleY: 1 }}
-                            transition={{ duration: 1, delay: 0.5 + (i * 0.1), ease: "easeOut" }}
-                            style={{ height: `${h}%`, transformOrigin: "bottom" }}
-                          />
-                        ))}
-                      </div>
-                    </div>
+                <div className="mockup-slideshow">
+                  {mockupSlides.map((slide, i) => (
+                    <img
+                      key={i}
+                      src={slide.url}
+                      alt={slide.label}
+                      className="mockup-slide-img"
+                      style={{ opacity: mockupIndex === i ? 1 : 0 }}
+                    />
+                  ))}
+                  <div className="mockup-industry-label">
+                    {mockupSlides[mockupIndex].label}
                   </div>
                 </div>
               </div>
