@@ -348,65 +348,54 @@ const Home = () => {
                 <div className="chrome-dot yellow"></div>
                 <div className="chrome-dot green"></div>
               </div>
-              <div className="browser-content">
-                <div className="mockup-landing">
-                  <motion.div 
-                    className="ml-header"
-                    initial={{ y: -20, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{ duration: 0.6, delay: 0.5 }}
-                  >
-                    <div className="ml-logo"></div>
-                    <div className="ml-nav">
-                      <div className="ml-nav-item"></div>
-                      <div className="ml-nav-item"></div>
-                      <div className="ml-nav-item"></div>
+                <div className="mockup-ui">
+                  {/* Sidebar Skeleton */}
+                  <div className="mockup-sidebar">
+                    <div className="mockup-logo"></div>
+                    <div className="mockup-nav">
+                      <div className="mockup-nav-item active"></div>
+                      <div className="mockup-nav-item"></div>
+                      <div className="mockup-nav-item"></div>
+                      <div className="mockup-nav-item short"></div>
                     </div>
-                    <div className="ml-btn"></div>
-                  </motion.div>
-                  
-                  <div className="ml-hero">
-                    <motion.div 
-                      className="ml-hero-text"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 0.8, delay: 1 }}
-                    >
-                      <motion.div className="ml-h1" initial={{ width: 0 }} animate={{ width: '80%' }} transition={{ duration: 0.8, delay: 1.2, ease: "easeOut" }}></motion.div>
-                      <motion.div className="ml-h1 short" initial={{ width: 0 }} animate={{ width: '50%' }} transition={{ duration: 0.8, delay: 1.4, ease: "easeOut" }}></motion.div>
-                      <motion.div className="ml-p" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 1.8 }}></motion.div>
-                      <motion.div className="ml-p" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 1.9 }}></motion.div>
-                      
-                      <motion.div className="ml-ctas" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: 2.2 }}>
-                        <div className="ml-cta-primary"></div>
-                        <div className="ml-cta-secondary"></div>
-                      </motion.div>
-                    </motion.div>
-                    
-                    <motion.div 
-                      className="ml-hero-img"
-                      initial={{ opacity: 0, scale: 0.9, rotate: -2 }}
-                      animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                      transition={{ duration: 1, delay: 1.5, type: "spring" }}
-                    >
-                      <div className="ml-img-placeholder">
-                         <div className="ml-img-badge"></div>
-                      </div>
-                    </motion.div>
                   </div>
-                  
-                  <motion.div 
-                    className="ml-features"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 2.5 }}
-                  >
-                    <div className="ml-feature-card"></div>
-                    <div className="ml-feature-card"></div>
-                    <div className="ml-feature-card"></div>
-                  </motion.div>
+                  {/* Main Content Skeleton */}
+                  <div className="mockup-main">
+                    <div className="mockup-header">
+                      <div className="mockup-search"></div>
+                      <div className="mockup-profile"></div>
+                    </div>
+                    <div className="mockup-cards">
+                      <div className="mockup-card">
+                        <div className="mockup-card-title"></div>
+                        <div className="mockup-card-value"></div>
+                      </div>
+                      <div className="mockup-card">
+                        <div className="mockup-card-title"></div>
+                        <div className="mockup-card-value"></div>
+                      </div>
+                      <div className="mockup-card highlight">
+                        <div className="mockup-card-title"></div>
+                        <div className="mockup-card-value"></div>
+                      </div>
+                    </div>
+                    <div className="mockup-chart-container">
+                      <div className="mockup-chart-header"></div>
+                      <div className="mockup-chart">
+                        {[40, 70, 50, 90, 60, 100, 80].map((h, i) => (
+                          <motion.div 
+                            key={i} 
+                            className="mockup-bar" 
+                            initial={{ scaleY: 0 }}
+                            animate={{ scaleY: 1 }}
+                            transition={{ duration: 1, delay: 0.5 + (i * 0.1), ease: "easeOut" }}
+                            style={{ height: `${h}%`, transformOrigin: "bottom" }}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </div>
             </div>
           </motion.div>
         </div>
