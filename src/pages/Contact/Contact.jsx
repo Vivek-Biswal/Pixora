@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Mail, Phone, MapPin, MessageSquare, Send, Camera, MessageCircle, Briefcase } from 'lucide-react';
+import { Mail, Phone, MapPin, MessageSquare, Send } from 'lucide-react';
+import { XIcon, InstagramIcon, GithubIcon, GmailIcon } from '../../components/SocialIcons.jsx';
 import toast, { Toaster } from 'react-hot-toast';
 import ScrollAnimator from '../../components/ScrollAnimator';
 import { submitContactMessage } from '../../services/db';
@@ -103,7 +104,7 @@ const Contact = () => {
             <ScrollAnimator animation="from-right">
               <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-8)' }}>
                 <div className="contact-info-item" style={{ display: 'flex', gap: '20px' }}>
-                  <div className="icon-box" style={{ flexShrink: 0 }}><Mail /></div>
+                  <div className="icon-box" style={{ flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}><GmailIcon size={24} /></div>
                   <div>
                     <h4 style={{ marginBottom: '5px' }}>Official Support</h4>
                     <p style={{ color: 'var(--color-blue)', fontWeight: '600' }}>hi.pixora.studio@gmail.com</p>
@@ -134,9 +135,9 @@ const Contact = () => {
                 <div>
                   <h4 style={{ marginBottom: 'var(--space-4)' }}>Follow Our Journey</h4>
                   <div style={{ display: 'flex', gap: '15px' }}>
-                    <a href="https://www.instagram.com/hi.pixora.studio?igsh=cWJ5Y2Z6OGQzZGw2" target="_blank" rel="noopener noreferrer" className="social-link" style={{ width: '45px', height: '45px' }}><Camera /></a>
-                    <a href="https://x.com/Pixora_Studio" target="_blank" rel="noopener noreferrer" className="social-link" style={{ width: '45px', height: '45px' }}><MessageCircle /></a>
-                    <a href="https://github.com/Vivek-Biswal/Pixora.git" target="_blank" rel="noopener noreferrer" className="social-link" style={{ width: '45px', height: '45px' }}><Briefcase /></a>
+                    <a href="https://www.instagram.com/hi.pixora.studio?igsh=cWJ5Y2Z6OGQzZGw2" target="_blank" rel="noopener noreferrer" className="social-link" style={{ width: '45px', height: '45px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><InstagramIcon size={20} /></a>
+                    <a href="https://x.com/Pixora_Studio" target="_blank" rel="noopener noreferrer" className="social-link" style={{ width: '45px', height: '45px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><XIcon size={20} /></a>
+                    <a href="https://github.com/Vivek-Biswal/Pixora.git" target="_blank" rel="noopener noreferrer" className="social-link" style={{ width: '45px', height: '45px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><GithubIcon size={20} /></a>
                   </div>
                 </div>
 
