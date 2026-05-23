@@ -14,6 +14,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [showNavCta, setShowNavCta] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const { isAuthenticated, logout, user } = useAuth();
@@ -21,7 +22,11 @@ const Navbar = () => {
   const dropdownRef = useRef(null);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 24);
+    const handleScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 24);
+      setShowNavCta(y > 300);
+    };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -225,10 +230,27 @@ const Navbar = () => {
             ) : (
               <>
                 <Link to="/login" className="btn btn--ghost btn--sm">Login</Link>
+                <div className="nav-actions-divider" aria-hidden="true" />
                 <Link to="/request" className="btn btn--primary btn--sm">
-                  Get Started <ArrowRight size={15} />
+                  Get a Quote <ArrowRight size={15} />
                 </Link>
               </>
+            )}
+
+            {!isAuthenticated && (
+              <Link
+                to="/request"
+                className="nav-scroll-cta"
+                style={{
+                  opacity: showNavCta ? 1 : 0,
+                  transform: showNavCta ? 'translateX(0)' : 'translateX(8px)',
+                  pointerEvents: showNavCta ? 'auto' : 'none',
+                  transition: 'opacity 300ms ease, transform 300ms ease',
+                }}
+                aria-hidden={!showNavCta}
+              >
+                Get a Quote →
+              </Link>
             )}
 
             {/* Mobile Toggle */}
@@ -324,12 +346,13 @@ const Navbar = () => {
                 </>
               )}
               
-              <button 
-                onClick={toggleTheme} 
-                className="btn btn--secondary"
-                style={{ width: '100%', marginTop: 'var(--space-4)', display: 'flex', justifyContent: 'center', gap: '8px' }}
+              <button
+                onClick={toggleTheme}
+                className="nav-drawer__theme-mini"
+                aria-label={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}
               >
-                {theme === 'light' ? <><Moon size={18} /> Dark Mode</> : <><Sun size={18} /> Light Mode</>}
+                {theme === 'light' ? <Moon size={15} /> : <Sun size={15} />}
+                <span>{theme === 'light' ? 'Dark Mode' : 'Light Mode'}</span>
               </button>
             </div>
           </motion.div>

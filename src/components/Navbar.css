@@ -20,8 +20,26 @@
 
 .navbar--scrolled {
   background: rgba(3, 0, 20, 0.85);
-  border-bottom-color: rgba(139, 92, 246, 0.15);
+  border-bottom: none;
   box-shadow: 0 1px 40px rgba(0, 0, 0, 0.5);
+}
+
+.navbar--scrolled::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(139, 92, 246, 0.5) 25%,
+    rgba(59, 130, 246, 0.4) 60%,
+    rgba(236, 72, 153, 0.3) 80%,
+    transparent 100%
+  );
+  pointer-events: none;
 }
 
 /* ---- Light mode navbar ---- */
@@ -31,9 +49,18 @@
 }
 
 [data-theme="light"] .navbar--scrolled {
-  background: rgba(255, 255, 255, 0.85);
-  border-bottom-color: rgba(139, 92, 246, 0.2);
+  background: rgba(255, 255, 255, 0.92);
   box-shadow: 0 1px 30px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .navbar--scrolled::after {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(139, 92, 246, 0.35) 30%,
+    rgba(59, 130, 246, 0.25) 60%,
+    transparent 100%
+  );
 }
 
 .navbar__inner {
@@ -47,6 +74,12 @@
 .nav-brand {
   flex-shrink: 0;
   text-decoration: none;
+  transition: opacity 200ms ease, transform 200ms ease;
+}
+
+.nav-brand:hover {
+  opacity: 0.82;
+  transform: scale(0.975);
 }
 
 /* ---- Desktop Links ---- */
@@ -59,47 +92,34 @@
 
 .nav-link {
   display: inline-block;
-  padding: 0.4rem 0.75rem;
+  padding: 0.4rem 0.875rem;
   font-weight: var(--fw-medium);
-  font-size: var(--fs-small);
+  font-size: 0.9rem;
   color: var(--text-secondary);
-  border-radius: var(--radius-md);
-  transition: all var(--transition-fast);
+  border-radius: 8px;
+  transition: background 150ms ease, color 150ms ease;
   text-decoration: none;
   position: relative;
 }
 
-/* Animated underline effect */
-.nav-link::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  width: 0;
-  height: 2px;
-  background: var(--gradient-primary);
-  border-radius: 1px;
-  transform: translateX(-50%);
-  transition: width 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-.nav-link:hover::after {
-  width: 60%;
-}
-
-.nav-link.active::after {
-  width: 60%;
-}
-
 .nav-link:hover {
   color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.06);
 }
 
 .nav-link.active {
-  color: var(--color-purple-light);
+  color: #ffffff;
+  font-weight: var(--fw-semibold);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="light"] .nav-link:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: var(--text-primary);
 }
 
 [data-theme="light"] .nav-link.active {
+  background: rgba(139, 92, 246, 0.10);
   color: var(--color-purple-dark);
 }
 
@@ -109,6 +129,33 @@
   align-items: center;
   gap: var(--space-3);
   flex-shrink: 0;
+}
+
+.nav-actions-divider {
+  width: 1px;
+  height: 20px;
+  background: var(--border-subtle);
+  flex-shrink: 0;
+}
+
+.nav-scroll-cta {
+  display: none;
+  padding: 0.45rem 1rem;
+  background: var(--gradient-primary);
+  color: #fff;
+  font-size: 13px;
+  font-weight: var(--fw-semibold);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: 0 2px 12px rgba(139, 92, 246, 0.3);
+}
+
+@media (min-width: 1025px) {
+  .nav-scroll-cta {
+    display: inline-flex;
+    align-items: center;
+  }
 }
 
 /* ---- Profile Avatar ---- */
@@ -434,7 +481,32 @@
 }
 .nav-drawer__link.active {
   color: var(--color-purple-light);
-  background: rgba(139, 92, 246, 0.10);
+  background: rgba(139, 92, 246, 0.08);
+  border-left: 2px solid var(--color-purple);
+  padding-left: calc(1rem - 2px);
+  font-weight: var(--fw-semibold);
+}
+
+.nav-drawer__theme-mini {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: var(--fw-medium);
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: var(--radius-md);
+  width: 100%;
+  margin-top: var(--space-2);
+  transition: color var(--transition-fast), background var(--transition-fast);
+}
+
+.nav-drawer__theme-mini:hover {
+  color: var(--text-secondary);
+  background: var(--glass-bg);
 }
 
 .nav-drawer__actions {
