@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import './Home.css';
 import ProfileShowcase from '../../components/ProfileShowcase/ProfileShowcase';
+import HeroMockup from '../../components/HeroMockup/HeroMockup';
 
 /* ---- Animation Variants ---- */
 const fadeUp = {
@@ -342,61 +343,7 @@ const Home = () => {
               <Search size={14} className="text-blue" /> SEO Optimized
             </motion.div>
 
-            <div className="browser-mockup">
-              <div className="browser-chrome">
-                <div className="chrome-dot red"></div>
-                <div className="chrome-dot yellow"></div>
-                <div className="chrome-dot green"></div>
-              </div>
-                <div className="mockup-ui">
-                  {/* Sidebar Skeleton */}
-                  <div className="mockup-sidebar">
-                    <div className="mockup-logo"></div>
-                    <div className="mockup-nav">
-                      <div className="mockup-nav-item active"></div>
-                      <div className="mockup-nav-item"></div>
-                      <div className="mockup-nav-item"></div>
-                      <div className="mockup-nav-item short"></div>
-                    </div>
-                  </div>
-                  {/* Main Content Skeleton */}
-                  <div className="mockup-main">
-                    <div className="mockup-header">
-                      <div className="mockup-search"></div>
-                      <div className="mockup-profile"></div>
-                    </div>
-                    <div className="mockup-cards">
-                      <div className="mockup-card">
-                        <div className="mockup-card-title"></div>
-                        <div className="mockup-card-value"></div>
-                      </div>
-                      <div className="mockup-card">
-                        <div className="mockup-card-title"></div>
-                        <div className="mockup-card-value"></div>
-                      </div>
-                      <div className="mockup-card highlight">
-                        <div className="mockup-card-title"></div>
-                        <div className="mockup-card-value"></div>
-                      </div>
-                    </div>
-                    <div className="mockup-chart-container">
-                      <div className="mockup-chart-header"></div>
-                      <div className="mockup-chart">
-                        {[40, 70, 50, 90, 60, 100, 80].map((h, i) => (
-                          <motion.div 
-                            key={i} 
-                            className="mockup-bar" 
-                            initial={{ scaleY: 0 }}
-                            animate={{ scaleY: 1 }}
-                            transition={{ duration: 1, delay: 0.5 + (i * 0.1), ease: "easeOut" }}
-                            style={{ height: `${h}%`, transformOrigin: "bottom" }}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-            </div>
+            <HeroMockup />
           </motion.div>
         </div>
       </section>
