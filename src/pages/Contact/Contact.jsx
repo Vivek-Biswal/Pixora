@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Mail, Phone, MapPin, MessageSquare, Send, Camera, MessageCircle, Briefcase, Twitter, Instagram, Github } from 'lucide-react';
+import { Mail, Phone, MapPin, MessageSquare, Send, Camera, MessageCircle, Briefcase } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
 import ScrollAnimator from '../../components/ScrollAnimator';
 import { submitContactMessage } from '../../services/db';
@@ -134,9 +134,9 @@ const Contact = () => {
                 <div>
                   <h4 style={{ marginBottom: 'var(--space-4)' }}>Follow Our Journey</h4>
                   <div style={{ display: 'flex', gap: '15px' }}>
-                    <a href="https://www.instagram.com/hi.pixora.studio?igsh=cWJ5Y2Z6OGQzZGw2" target="_blank" rel="noopener noreferrer" className="social-link" style={{ width: '45px', height: '45px' }}><Instagram /></a>
-                    <a href="https://x.com/Pixora_Studio" target="_blank" rel="noopener noreferrer" className="social-link" style={{ width: '45px', height: '45px' }}><Twitter /></a>
-                    <a href="https://github.com/Vivek-Biswal/Pixora.git" target="_blank" rel="noopener noreferrer" className="social-link" style={{ width: '45px', height: '45px' }}><Github /></a>
+                    <a href="https://www.instagram.com/hi.pixora.studio?igsh=cWJ5Y2Z6OGQzZGw2" target="_blank" rel="noopener noreferrer" className="social-link" style={{ width: '45px', height: '45px' }}><Camera /></a>
+                    <a href="https://x.com/Pixora_Studio" target="_blank" rel="noopener noreferrer" className="social-link" style={{ width: '45px', height: '45px' }}><MessageCircle /></a>
+                    <a href="https://github.com/Vivek-Biswal/Pixora.git" target="_blank" rel="noopener noreferrer" className="social-link" style={{ width: '45px', height: '45px' }}><Briefcase /></a>
                   </div>
                 </div>
 

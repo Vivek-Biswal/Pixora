@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { MessageCircle, Camera, Globe, Code2, Send, ArrowUp, Zap, Twitter, Instagram, Github, Mail } from 'lucide-react';
+import { MessageCircle, Camera, Globe, Code2, Send, ArrowUp, Zap, Mail } from 'lucide-react';
 import Logo from './Logo.jsx';
 import './Footer.css';
 
@@ -32,9 +32,9 @@ const Footer = () => {
 
   const socials = [
     { icon: <Mail size={16} />, href: 'mailto:hi.pixora.studio@gmail.com', label: 'Email' },
-    { icon: <Twitter size={16} />, href: 'https://x.com/Pixora_Studio', label: 'X (Twitter)' },
-    { icon: <Instagram size={16} />, href: 'https://www.instagram.com/hi.pixora.studio?igsh=cWJ5Y2Z6OGQzZGw2', label: 'Instagram' },
-    { icon: <Github size={16} />, href: 'https://github.com/Vivek-Biswal/Pixora.git', label: 'GitHub' },
+    { icon: <MessageCircle size={16} />, href: 'https://x.com/Pixora_Studio', label: 'X (Twitter)' },
+    { icon: <Camera size={16} />, href: 'https://www.instagram.com/hi.pixora.studio?igsh=cWJ5Y2Z6OGQzZGw2', label: 'Instagram' },
+    { icon: <Code2 size={16} />, href: 'https://github.com/Vivek-Biswal/Pixora.git', label: 'GitHub' },
   ];
 
   return (
