@@ -99,29 +99,6 @@ const StatCounter = ({ value, label, suffix = "" }) => {
 
 const Home = () => {
   const [activeFaq, setActiveFaq] = useState(null);
-  const [mockupIndex, setMockupIndex] = useState(0);
-
-  const mockupSlides = [
-    {
-      url: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=900&auto=format&fit=crop',
-      label: '🍽 Restaurant'
-    },
-    {
-      url: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=900&auto=format&fit=crop',
-      label: '🏥 Clinic'
-    },
-    {
-      url: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=900&auto=format&fit=crop',
-      label: '💪 Gym'
-    }
-  ];
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setMockupIndex(prev => (prev + 1) % mockupSlides.length);
-    }, 3500);
-    return () => clearInterval(timer);
-  }, []);
 
   /* ---- Interactive Parallax Hooks ---- */
   const mouseX = useMotionValue(0);
@@ -372,19 +349,62 @@ const Home = () => {
                 <div className="chrome-dot green"></div>
               </div>
               <div className="browser-content">
-                <div className="mockup-slideshow">
-                  {mockupSlides.map((slide, i) => (
-                    <img
-                      key={i}
-                      src={slide.url}
-                      alt={slide.label}
-                      className="mockup-slide-img"
-                      style={{ opacity: mockupIndex === i ? 1 : 0 }}
-                    />
-                  ))}
-                  <div className="mockup-industry-label">
-                    {mockupSlides[mockupIndex].label}
+                <div className="mockup-landing">
+                  <motion.div 
+                    className="ml-header"
+                    initial={{ y: -20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ duration: 0.6, delay: 0.5 }}
+                  >
+                    <div className="ml-logo"></div>
+                    <div className="ml-nav">
+                      <div className="ml-nav-item"></div>
+                      <div className="ml-nav-item"></div>
+                      <div className="ml-nav-item"></div>
+                    </div>
+                    <div className="ml-btn"></div>
+                  </motion.div>
+                  
+                  <div className="ml-hero">
+                    <motion.div 
+                      className="ml-hero-text"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.8, delay: 1 }}
+                    >
+                      <motion.div className="ml-h1" initial={{ width: 0 }} animate={{ width: '80%' }} transition={{ duration: 0.8, delay: 1.2, ease: "easeOut" }}></motion.div>
+                      <motion.div className="ml-h1 short" initial={{ width: 0 }} animate={{ width: '50%' }} transition={{ duration: 0.8, delay: 1.4, ease: "easeOut" }}></motion.div>
+                      <motion.div className="ml-p" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 1.8 }}></motion.div>
+                      <motion.div className="ml-p" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 1.9 }}></motion.div>
+                      
+                      <motion.div className="ml-ctas" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: 2.2 }}>
+                        <div className="ml-cta-primary"></div>
+                        <div className="ml-cta-secondary"></div>
+                      </motion.div>
+                    </motion.div>
+                    
+                    <motion.div 
+                      className="ml-hero-img"
+                      initial={{ opacity: 0, scale: 0.9, rotate: -2 }}
+                      animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                      transition={{ duration: 1, delay: 1.5, type: "spring" }}
+                    >
+                      <div className="ml-img-placeholder">
+                         <div className="ml-img-badge"></div>
+                      </div>
+                    </motion.div>
                   </div>
+                  
+                  <motion.div 
+                    className="ml-features"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 2.5 }}
+                  >
+                    <div className="ml-feature-card"></div>
+                    <div className="ml-feature-card"></div>
+                    <div className="ml-feature-card"></div>
+                  </motion.div>
                 </div>
               </div>
             </div>
