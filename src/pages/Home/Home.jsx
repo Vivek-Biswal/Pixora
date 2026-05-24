@@ -141,12 +141,60 @@ const Home = () => {
 
   /* ---- Data ---- */
   const services = [
-    { icon: <Monitor size={22} />, title: 'Business Websites', desc: 'Custom-designed corporate websites that establish authority, capture leads, and grow with your brand.' },
-    { icon: <ShoppingCart size={22} />, title: 'E-Commerce Stores', desc: 'Fully functional online stores with secure payments, inventory management, and seamless checkout flows.' },
-    { icon: <Search size={22} />, title: 'SEO Optimization', desc: 'Data-driven SEO strategies that get your site ranking on Google\'s first page and drive organic traffic.' },
-    { icon: <Settings size={22} />, title: 'Maintenance & Support', desc: '24/7 monitoring, security updates, performance optimization, and content updates to keep your site perfect.' },
-    { icon: <Zap size={22} />, title: 'Landing Pages', desc: 'High-converting single-page sites designed specifically for marketing campaigns and lead generation.' },
-    { icon: <Layout size={22} />, title: 'Dashboard & CMS', desc: 'Custom admin panels and content management systems so you can manage your site without any technical knowledge.' },
+    {
+      icon: <Monitor size={22} />,
+      title: 'Business Websites',
+      desc: 'A premium site that builds trust, captures leads, and ranks on Google.',
+      from: '₹24,999',
+      color: '#8B5CF6',
+      colorRgb: '139, 92, 246',
+      featured: true,
+    },
+    {
+      icon: <ShoppingCart size={22} />,
+      title: 'E-Commerce Stores',
+      desc: 'Full online store with payments, inventory, and seamless checkout.',
+      from: '₹49,999',
+      color: '#3B82F6',
+      colorRgb: '59, 130, 246',
+      featured: false,
+    },
+    {
+      icon: <Search size={22} />,
+      title: 'SEO Optimization',
+      desc: 'Rank on page 1 of Google. More traffic, more leads, zero guesswork.',
+      from: '₹9,999/mo',
+      color: '#10B981',
+      colorRgb: '16, 185, 129',
+      featured: false,
+    },
+    {
+      icon: <Settings size={22} />,
+      title: 'Maintenance & Support',
+      desc: '24/7 monitoring, updates, and fixes so your site never breaks.',
+      from: '₹4,999/mo',
+      color: '#F59E0B',
+      colorRgb: '245, 158, 11',
+      featured: false,
+    },
+    {
+      icon: <Zap size={22} />,
+      title: 'Landing Pages',
+      desc: 'Single-page conversion machines built for ads and campaigns.',
+      from: '₹14,999',
+      color: '#EC4899',
+      colorRgb: '236, 72, 153',
+      featured: false,
+    },
+    {
+      icon: <Layout size={22} />,
+      title: 'Dashboard & CMS',
+      desc: 'Manage your content yourself — no developer needed, ever.',
+      from: '₹34,999',
+      color: '#06B6D4',
+      colorRgb: '6, 182, 212',
+      featured: false,
+    },
   ];
 
   const processSteps = [
@@ -511,17 +559,51 @@ const Home = () => {
 
           <div className="services__grid">
             {services.map((s, i) => (
-              <SpotlightCard key={i} className="service-card">
-                <div className="service-card__icon">{s.icon}</div>
+              <SpotlightCard
+                key={i}
+                className={`service-card ${s.featured ? 'service-card--featured' : ''}`}
+                style={{
+                  '--service-color': s.color,
+                  '--service-color-rgb': s.colorRgb,
+                }}
+              >
+                {s.featured && (
+                  <div className="service-card__badge">Most Popular</div>
+                )}
+                <div
+                  className="service-card__icon"
+                  style={{
+                    background: `rgba(${s.colorRgb}, 0.12)`,
+                    border: `1px solid rgba(${s.colorRgb}, 0.25)`,
+                    color: s.color,
+                  }}
+                >
+                  {s.icon}
+                </div>
                 <h3>{s.title}</h3>
+                <span className="service-card__price">from {s.from}</span>
                 <p>{s.desc}</p>
+                <Link
+                  to="/request"
+                  className="service-card__cta"
+                  aria-label={`Get started with ${s.title}`}
+                >
+                  Get Started
+                  <ArrowRight
+                    size={14}
+                    className="service-card__cta-arrow"
+                  />
+                </Link>
               </SpotlightCard>
             ))}
           </div>
 
-          <motion.div variants={fadeUp} style={{ textAlign: 'center', marginTop: 'var(--space-12)' }}>
-            <Link to="/services" className="btn btn--outline">
-              Explore All Services <ArrowRight size={16} />
+          <motion.div
+            variants={fadeUp}
+            style={{ textAlign: 'center', marginTop: 'var(--space-12)' }}
+          >
+            <Link to="/request" className="btn btn--primary">
+              Start Your Project <ArrowRight size={16} />
             </Link>
           </motion.div>
         </div>
