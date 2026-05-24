@@ -99,11 +99,16 @@ const AdminDashboard = () => {
       <Toaster position="top-right" toastOptions={{ style: { background: theme === 'light' ? '#fff' : '#14141e', color: theme === 'light' ? '#0f172a' : '#f1f5f9', border: '1px solid rgba(99,102,241,0.2)', fontSize: '13px' }}} />
 
       <aside className="dashboard-sidebar">
-        <div className="sidebar-logo">
-          <Link to="/" style={{ textDecoration: 'none', color: 'inherit', display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <div className="logo-icon">P</div>
-            <span className="logo-text">Pixora</span>
-          </Link>
+        <div className="sidebar-logo" style={{ marginBottom: '12px' }}>
+          <div style={{ textDecoration: 'none', color: 'inherit', display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div className="logo-icon" style={{ background: 'var(--dash-blue)', color: '#fff' }}>P</div>
+            <span className="logo-text">Pixora Admin</span>
+          </div>
+        </div>
+        <div style={{ padding: '0 24px', marginBottom: '24px' }}>
+          <button className="nav-item" onClick={() => navigate('/')} style={{ width: '100%', background: 'rgba(255,255,255,0.03)', border: '1px solid var(--dash-border)' }}>
+            <Home size={18} /><span>Back to Site</span>
+          </button>
         </div>
         <div className="sidebar-section-label">Menu</div>
         <nav className="sidebar-nav">
@@ -116,7 +121,6 @@ const AdminDashboard = () => {
         </nav>
         <div className="sidebar-footer">
           <button className="nav-item" onClick={toggleTheme}>{theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}<span>{theme === 'light' ? 'Dark' : 'Light'} Mode</span></button>
-          <button className="nav-item" onClick={() => navigate('/')}><Home size={18} /><span>Back to Site</span></button>
           <button className="nav-item logout" onClick={handleLogout}><LogOut size={18} /><span>Sign Out</span></button>
         </div>
       </aside>
@@ -129,6 +133,9 @@ const AdminDashboard = () => {
             <span className="search-shortcut">⌘K</span>
           </div>
           <div className="header-actions">
+            <button className="header-icon-btn" onClick={() => navigate('/')} title="Back to Site">
+              <Home size={18} />
+            </button>
             <button className="header-icon-btn">
               <Bell size={18} />
               {(pending + unread) > 0 && <span className="notification-dot" />}

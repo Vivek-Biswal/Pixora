@@ -423,10 +423,17 @@ const ClientDashboard = () => {
       
       {/* ─── Sidebar Navigation ─── */}
       <aside className={`cd-sidebar ${sidebarOpen ? 'open' : ''}`}>
-        <Link to="/" className="cd-logo">
-          <div className="cd-logo-icon">P</div>
-          <span className="cd-logo-text">Pixora</span>
-        </Link>
+        <div style={{ padding: '0 0 12px 0' }}>
+          <div className="cd-logo">
+            <div className="cd-logo-icon">P</div>
+            <span className="cd-logo-text">Pixora</span>
+          </div>
+        </div>
+        <div style={{ padding: '0 24px', marginBottom: '24px' }}>
+          <button className="cd-nav-item" onClick={() => navigate('/')} style={{ width: '100%', justifyContent: 'center', background: 'rgba(255,255,255,0.03)', border: '1px solid var(--cd-border)' }}>
+            <Activity size={16} style={{ display: 'none' }} /> Back to Site
+          </button>
+        </div>
 
         <div className="cd-nav-group-title">Workspace</div>
         <nav className="cd-nav">
@@ -484,6 +491,9 @@ const ClientDashboard = () => {
               />
               <span style={{ fontSize: '10px', color: 'var(--cd-text-muted)', border: '1px solid var(--cd-border)', padding: '2px 4px', borderRadius: '4px' }}>⌘K</span>
             </div>
+            <button className="cd-btn-secondary" onClick={() => navigate('/')} style={{ padding: '6px', borderRadius: '50%' }} title="Back to Site">
+              <LogOut size={16} />
+            </button>
             <button className="cd-btn-secondary" style={{ padding: '6px', borderRadius: '50%' }}>
               <Bell size={16} />
             </button>
