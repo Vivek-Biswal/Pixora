@@ -348,22 +348,85 @@ const Home = () => {
         </div>
       </section>
 
-      {/* ==================== DEMO PROFILE SHOWCASE ==================== */}
-      <ProfileShowcase />
-
       {/* ==================== LOGOS ==================== */}
       <div className="logos">
         <div className="container">
-          <p className="logos__label">Trusted by businesses across industries</p>
+          <p className="logos__label">
+            50+ Indian businesses already launched with Pixora
+          </p>
         </div>
-        <div className="logos__track">
-          {['Sharma Dental', 'FitZone Gym', 'Spice Garden', 'GlowUp Salon', 'UrbanNest Realty', 'TechLaunch', 'PureBliss Spa', 'CloudKitchen Co',
-            'Sharma Dental', 'FitZone Gym', 'Spice Garden', 'GlowUp Salon', 'UrbanNest Realty', 'TechLaunch', 'PureBliss Spa', 'CloudKitchen Co'
-          ].map((name, i) => (
-            <span key={i} className="logos__item">{name}</span>
-          ))}
+
+        <div className="logos__rows-wrapper">
+
+          {/* Row 1 — scrolls left */}
+          <div className="logos__row logos__row--left">
+            {[
+              { icon: '🏥', name: 'Sharma Dental'     },
+              { icon: '💪', name: 'FitZone Gym'        },
+              { icon: '🍽', name: 'Spice Garden'       },
+              { icon: '💅', name: 'GlowUp Salon'       },
+              { icon: '🏠', name: 'UrbanNest Realty'   },
+              { icon: '🚀', name: 'TechLaunch'         },
+              { icon: '🧘', name: 'PureBliss Spa'      },
+              { icon: '☁️', name: 'CloudKitchen Co'   },
+              { icon: '👨‍⚕️', name: 'CareFirst Clinic' },
+              { icon: '🛒', name: 'QuickMart Store'    },
+            ].concat([
+              { icon: '🏥', name: 'Sharma Dental'     },
+              { icon: '💪', name: 'FitZone Gym'        },
+              { icon: '🍽', name: 'Spice Garden'       },
+              { icon: '💅', name: 'GlowUp Salon'       },
+              { icon: '🏠', name: 'UrbanNest Realty'   },
+              { icon: '🚀', name: 'TechLaunch'         },
+              { icon: '🧘', name: 'PureBliss Spa'      },
+              { icon: '☁️', name: 'CloudKitchen Co'   },
+              { icon: '👨‍⚕️', name: 'CareFirst Clinic' },
+              { icon: '🛒', name: 'QuickMart Store'    },
+            ]).map((item, i) => (
+              <span key={i} className="logos__pill">
+                <span className="logos__pill-icon">{item.icon}</span>
+                <span className="logos__pill-name">{item.name}</span>
+              </span>
+            ))}
+          </div>
+
+          {/* Row 2 — scrolls right */}
+          <div className="logos__row logos__row--right">
+            {[
+              { icon: '⚡', name: 'Delivered in 7 Days'   },
+              { icon: '✦',  name: '100% Code Ownership'   },
+              { icon: '📱', name: 'Mobile First Design'   },
+              { icon: '🔍', name: 'SEO Built-In'          },
+              { icon: '🔒', name: 'Secure & Fast'         },
+              { icon: '🧾', name: 'GST Invoice Included'  },
+              { icon: '🔄', name: 'Free Revisions'        },
+              { icon: '🇮🇳', name: 'Made for India'       },
+              { icon: '💬', name: 'WhatsApp Support'      },
+              { icon: '🏆', name: '98% Client Satisfaction'},
+            ].concat([
+              { icon: '⚡', name: 'Delivered in 7 Days'   },
+              { icon: '✦',  name: '100% Code Ownership'   },
+              { icon: '📱', name: 'Mobile First Design'   },
+              { icon: '🔍', name: 'SEO Built-In'          },
+              { icon: '🔒', name: 'Secure & Fast'         },
+              { icon: '🧾', name: 'GST Invoice Included'  },
+              { icon: '🔄', name: 'Free Revisions'        },
+              { icon: '🇮🇳', name: 'Made for India'       },
+              { icon: '💬', name: 'WhatsApp Support'      },
+              { icon: '🏆', name: '98% Client Satisfaction'},
+            ]).map((item, i) => (
+              <span key={i} className="logos__pill logos__pill--feature">
+                <span className="logos__pill-icon">{item.icon}</span>
+                <span className="logos__pill-name">{item.name}</span>
+              </span>
+            ))}
+          </div>
+
         </div>
       </div>
+
+      {/* ==================== DEMO PROFILE SHOWCASE ==================== */}
+      <ProfileShowcase />
 
       <div style={{ position: 'relative', zIndex: 10, background: 'var(--color-bg)' }}>
         {/* ==================== STATS ==================== */}

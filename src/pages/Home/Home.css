@@ -313,49 +313,194 @@
   100% { transform: perspective(1200px) rotateY(-8deg) rotateX(3deg) translateY(-8px); }
 }
 
-/* ---- Logo Cloud ---- */
+/* ---- Trust Strip ---- */
 .logos {
-  padding: var(--space-16) 0;
+  padding: var(--space-12) 0;
   border-top: 1px solid var(--border-subtle);
   border-bottom: 1px solid var(--border-subtle);
   overflow: hidden;
   position: relative;
+  background: transparent;
 }
-.logos::before, .logos::after {
+
+/* Edge fade masks */
+.logos::before,
+.logos::after {
   content: '';
-  position: absolute; top: 0; bottom: 0; width: 100px;
-  z-index: 2; pointer-events: none;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 180px;
+  z-index: 2;
+  pointer-events: none;
 }
 .logos::before {
   left: 0;
-  background: linear-gradient(90deg, var(--color-bg) 0%, transparent 100%);
+  background: linear-gradient(
+    90deg,
+    var(--color-bg) 0%,
+    transparent 100%
+  );
 }
 .logos::after {
   right: 0;
-  background: linear-gradient(270deg, var(--color-bg) 0%, transparent 100%);
+  background: linear-gradient(
+    270deg,
+    var(--color-bg) 0%,
+    transparent 100%
+  );
 }
+
 .logos__label {
   text-align: center;
-  font-size: var(--fs-xs);
+  font-size: 13px;
   color: var(--text-muted);
-  letter-spacing: var(--ls-wider);
-  text-transform: uppercase;
-  font-weight: var(--fw-semibold);
-  margin-bottom: var(--space-8);
+  letter-spacing: 0.04em;
+  font-weight: var(--fw-medium);
+  margin-bottom: var(--space-6);
+  padding: 0 var(--container-padding);
 }
-.logos__track {
+
+/* Wrapper for both rows */
+.logos__rows-wrapper {
   display: flex;
-  gap: var(--space-16);
-  width: max-content;
-  animation: ticker 35s linear infinite;
+  flex-direction: column;
+  gap: var(--space-3);
 }
-.logos__item {
-  font-size: clamp(1rem, 2vw, 1.3rem);
-  font-weight: var(--fw-bold);
-  color: var(--text-muted);
-  opacity: 0.5;
+
+/* Each scrolling row */
+.logos__row {
+  display: flex;
+  gap: var(--space-3);
+  width: max-content;
+  padding: var(--space-1) 0;
+}
+
+.logos__row--left {
+  animation: ticker 40s linear infinite;
+}
+
+.logos__row--right {
+  animation: tickerReverse 45s linear infinite;
+}
+
+/* Pause on hover — polished micro-interaction */
+.logos__rows-wrapper:hover .logos__row {
+  animation-play-state: paused;
+}
+
+/* Pill chip style */
+.logos__pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 999px;
   white-space: nowrap;
-  letter-spacing: var(--ls-wide);
+  opacity: 0.72;
+  transition: opacity 200ms ease, border-color 200ms ease,
+              background 200ms ease;
+  cursor: default;
+  flex-shrink: 0;
+}
+
+.logos__pill:hover {
+  opacity: 1;
+  border-color: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* Feature row pills get a subtle accent tint */
+.logos__pill--feature {
+  background: rgba(139, 92, 246, 0.04);
+  border-color: rgba(139, 92, 246, 0.12);
+}
+
+.logos__pill--feature:hover {
+  background: rgba(139, 92, 246, 0.08);
+  border-color: rgba(139, 92, 246, 0.25);
+  opacity: 1;
+}
+
+.logos__pill-icon {
+  font-size: 14px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.logos__pill-name {
+  font-size: 13px;
+  font-weight: var(--fw-medium);
+  color: var(--text-secondary);
+  letter-spacing: 0.01em;
+}
+
+/* Light mode overrides */
+[data-theme="light"] .logos__pill {
+  background: rgba(0, 0, 0, 0.03);
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .logos__pill:hover {
+  background: rgba(0, 0, 0, 0.06);
+  border-color: rgba(0, 0, 0, 0.14);
+}
+
+[data-theme="light"] .logos__pill--feature {
+  background: rgba(139, 92, 246, 0.06);
+  border-color: rgba(139, 92, 246, 0.18);
+}
+
+[data-theme="light"] .logos__pill--feature:hover {
+  background: rgba(139, 92, 246, 0.1);
+  border-color: rgba(139, 92, 246, 0.3);
+}
+
+[data-theme="light"] .logos::before {
+  background: linear-gradient(90deg, var(--color-bg) 0%, transparent 100%);
+}
+
+[data-theme="light"] .logos::after {
+  background: linear-gradient(270deg, var(--color-bg) 0%, transparent 100%);
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .logos::before,
+  .logos::after {
+    width: 60px;
+  }
+
+  .logos__label {
+    font-size: 12px;
+  }
+
+  /* Hide second row on mobile to save space */
+  .logos__row--right {
+    display: none;
+  }
+
+  .logos__pill {
+    padding: 6px 11px;
+  }
+
+  .logos__pill-name {
+    font-size: 12px;
+  }
+
+  .logos__pill-icon {
+    font-size: 13px;
+  }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .logos__row--left,
+  .logos__row--right {
+    animation: none;
+  }
 }
 
 /* ---- Stats Bar ---- */
