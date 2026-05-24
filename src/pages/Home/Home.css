@@ -627,11 +627,15 @@
   justify-content: center;
   flex-shrink: 0;
   margin-bottom: var(--space-1);
-  transition: transform 200ms ease;
+  transition: transform 200ms ease, box-shadow 200ms ease;
+  box-shadow: 0 0 18px rgba(var(--service-color-rgb, 139, 92, 246), 0.35),
+              0 0 40px rgba(var(--service-color-rgb, 139, 92, 246), 0.15);
 }
 
 .service-card:hover .service-card__icon {
   transform: scale(1.08);
+  box-shadow: 0 0 24px rgba(var(--service-color-rgb, 139, 92, 246), 0.5),
+              0 0 56px rgba(var(--service-color-rgb, 139, 92, 246), 0.2);
 }
 
 /* Title */
