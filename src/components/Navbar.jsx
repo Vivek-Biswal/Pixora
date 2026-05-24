@@ -3,7 +3,7 @@ import { NavLink, Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Menu, X, ArrowRight, LayoutDashboard, LogOut, Sun, Moon,
-  User, Settings, Bell, CreditCard, ChevronRight, Zap
+  User, Settings, Bell, CreditCard, ChevronRight, Zap, Home
 } from 'lucide-react';
 import Logo from './Logo.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
@@ -116,6 +116,26 @@ const Navbar = () => {
 
           {/* Desktop Actions */}
           <div className="nav-actions">
+            <button 
+              className="icon-btn" 
+              onClick={() => navigate('/')} 
+              aria-label="Home"
+              style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'center', 
+                width: '38px', height: '38px', 
+                borderRadius: '8px', 
+                background: 'rgba(255,255,255,0.03)', 
+                border: '1px solid var(--border-subtle)',
+                color: 'var(--text-secondary)',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                marginRight: '12px'
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.color = '#fff'; e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--text-secondary)'; e.currentTarget.style.background = 'rgba(255,255,255,0.03)'; }}
+            >
+              <Home size={20} strokeWidth={2} />
+            </button>
             {isAuthenticated ? (
               /* ── Premium Profile Menu ── */
               <div ref={dropdownRef} style={{ position: 'relative' }}>

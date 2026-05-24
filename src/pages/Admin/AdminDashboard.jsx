@@ -99,15 +99,18 @@ const AdminDashboard = () => {
       <Toaster position="top-right" toastOptions={{ style: { background: theme === 'light' ? '#fff' : '#14141e', color: theme === 'light' ? '#0f172a' : '#f1f5f9', border: '1px solid rgba(99,102,241,0.2)', fontSize: '13px' }}} />
 
       <aside className="dashboard-sidebar">
-        <div className="sidebar-logo" style={{ marginBottom: '12px' }}>
+        <div className="sidebar-logo" style={{ marginBottom: '24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingRight: '24px' }}>
           <div style={{ textDecoration: 'none', color: 'inherit', display: 'flex', alignItems: 'center', gap: '12px' }}>
             <div className="logo-icon" style={{ background: 'var(--dash-blue)', color: '#fff' }}>P</div>
             <span className="logo-text">Pixora Admin</span>
           </div>
-        </div>
-        <div style={{ padding: '0 24px', marginBottom: '24px' }}>
-          <button className="nav-item" onClick={() => navigate('/')} style={{ width: '100%', background: 'rgba(255,255,255,0.03)', border: '1px solid var(--dash-border)' }}>
-            <Home size={18} /><span>Back to Site</span>
+          <button 
+            className="icon-btn" 
+            onClick={() => navigate('/')} 
+            title="Back to Site"
+            style={{ border: '1px solid var(--dash-border)', background: 'var(--dash-surface-2)', width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '6px' }}
+          >
+            <Home size={16} strokeWidth={2} />
           </button>
         </div>
         <div className="sidebar-section-label">Menu</div>

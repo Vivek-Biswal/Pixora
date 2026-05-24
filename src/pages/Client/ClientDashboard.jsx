@@ -23,7 +23,8 @@ import {
   FileBadge,
   MoreVertical,
   CalendarDays,
-  Send
+  Send,
+  Home
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
@@ -423,15 +424,21 @@ const ClientDashboard = () => {
       
       {/* ─── Sidebar Navigation ─── */}
       <aside className={`cd-sidebar ${sidebarOpen ? 'open' : ''}`}>
-        <div style={{ padding: '0 0 12px 0' }}>
-          <div className="cd-logo">
+        <div style={{ padding: '0 24px 24px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div className="cd-logo" style={{ padding: 0 }}>
             <div className="cd-logo-icon">P</div>
             <span className="cd-logo-text">Pixora</span>
           </div>
-        </div>
-        <div style={{ padding: '0 24px', marginBottom: '24px' }}>
-          <button className="cd-nav-item" onClick={() => navigate('/')} style={{ width: '100%', justifyContent: 'center', background: 'rgba(255,255,255,0.03)', border: '1px solid var(--cd-border)' }}>
-            <Activity size={16} style={{ display: 'none' }} /> Back to Site
+          <button 
+            onClick={() => navigate('/')} 
+            title="Back to Site"
+            style={{ 
+              border: '1px solid var(--cd-border)', background: 'rgba(255,255,255,0.05)', 
+              width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center', 
+              borderRadius: '6px', color: 'var(--cd-text-secondary)', cursor: 'pointer' 
+            }}
+          >
+            <Home size={16} strokeWidth={2} />
           </button>
         </div>
 
