@@ -14,7 +14,6 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [showNavCta, setShowNavCta] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const { isAuthenticated, logout, user } = useAuth();
@@ -25,7 +24,6 @@ const Navbar = () => {
     const handleScroll = () => {
       const y = window.scrollY;
       setScrolled(y > 24);
-      setShowNavCta(y > 300);
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
@@ -256,23 +254,7 @@ const Navbar = () => {
                 </Link>
               </>
             )}
-
-            {!isAuthenticated && (
-              <Link
-                to="/request"
-                className="nav-scroll-cta"
-                style={{
-                  opacity: showNavCta ? 1 : 0,
-                  transform: showNavCta ? 'translateX(0)' : 'translateX(8px)',
-                  pointerEvents: showNavCta ? 'auto' : 'none',
-                  transition: 'opacity 300ms ease, transform 300ms ease',
-                }}
-                aria-hidden={!showNavCta}
-              >
-                Get a Quote →
-              </Link>
-            )}
-
+            
             {/* Mobile Toggle */}
             <button
               className="mobile-toggle"
