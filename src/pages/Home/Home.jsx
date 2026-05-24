@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import { motion, useInView, useMotionValue, useSpring, useTransform, useScroll } from 'framer-motion';
 import {
   ArrowRight, Check, Monitor, ShoppingCart, Search, Settings, Zap, Layout,
-  Star, Plus, BarChart3, Shield, Users, HeartHandshake
+  Star, Plus, BarChart3, Shield, Users, HeartHandshake,
+  MessageCircle, Palette, Code, Rocket
 } from 'lucide-react';
 import './Home.css';
 import ProfileShowcase from '../../components/ProfileShowcase/ProfileShowcase';
@@ -198,10 +199,42 @@ const Home = () => {
   ];
 
   const processSteps = [
-    { num: '01', title: 'Tell Us Your Vision', desc: 'Share your goals, brand, and audience.' },
-    { num: '02', title: 'We Design & Build', desc: 'Our team creates a stunning, fast website.' },
-    { num: '03', title: 'Review & Refine', desc: 'You give feedback, we perfect every detail.' },
-    { num: '04', title: 'Launch & Grow', desc: 'Your site goes live with ongoing support.' },
+    {
+      num: '01',
+      icon: <MessageCircle size={20} />,
+      timeframe: 'Day 1–2',
+      title: 'Discovery Call',
+      desc: 'We learn your goals, audience, and brand in a 30-min call. You receive a full project quote within 24 hours.',
+      color: '#8B5CF6',
+      colorRgb: '139, 92, 246',
+    },
+    {
+      num: '02',
+      icon: <Palette size={20} />,
+      timeframe: 'Day 2–4',
+      title: 'Design & Prototype',
+      desc: 'Our designer builds your full website mockup. You see exactly how it looks before a single line of code is written.',
+      color: '#3B82F6',
+      colorRgb: '59, 130, 246',
+    },
+    {
+      num: '03',
+      icon: <Code size={20} />,
+      timeframe: 'Day 4–6',
+      title: 'Build & Review',
+      desc: 'We develop the approved design into a fast, responsive website. You review and request changes — we refine until perfect.',
+      color: '#EC4899',
+      colorRgb: '236, 72, 153',
+    },
+    {
+      num: '04',
+      icon: <Rocket size={20} />,
+      timeframe: 'Day 7',
+      title: 'Launch & Handoff',
+      desc: 'Your website goes live on your domain. You get full ownership, login credentials, and 3 months of free support.',
+      color: '#10B981',
+      colorRgb: '16, 185, 129',
+    },
   ];
 
   const testimonials = [
@@ -614,19 +647,56 @@ const Home = () => {
         <div className="container">
           <motion.div className="section-header" variants={fadeUp}>
             <span className="section-badge">How It Works</span>
-            <h2>From Idea to Launch in 4 Simple Steps</h2>
-            <p>We handle the complexity so you can focus on what you do best — running your business.</p>
+            <h2>Your Website Live in 7 Days — Guaranteed</h2>
+            <p>
+              A clear 4-step process designed around your schedule.
+              No jargon, no delays, no surprises.
+            </p>
           </motion.div>
 
           <div className="process__grid">
             {processSteps.map((step, i) => (
-              <motion.div key={i} className="process__step" variants={fadeUp} custom={i}>
-                <div className="process__number">{step.num}</div>
+              <motion.div
+                key={i}
+                className="process__step"
+                variants={fadeUp}
+                custom={i}
+                style={{
+                  '--step-color': step.color,
+                  '--step-color-rgb': step.colorRgb,
+                }}
+              >
+                <span className="process__timeframe">{step.timeframe}</span>
+
+                <div className="process__icon-row">
+                  <div className="process__number">{step.num}</div>
+                  <div
+                    className="process__icon"
+                    style={{
+                      color: step.color,
+                      background: `rgba(${step.colorRgb}, 0.12)`,
+                      border: `1px solid rgba(${step.colorRgb}, 0.25)`,
+                    }}
+                  >
+                    {step.icon}
+                  </div>
+                </div>
+
                 <h4>{step.title}</h4>
                 <p>{step.desc}</p>
               </motion.div>
             ))}
           </div>
+
+          <motion.div
+            variants={fadeUp}
+            custom={4}
+            style={{ textAlign: 'center', marginTop: 'var(--space-12)' }}
+          >
+            <Link to="/request" className="btn btn--primary btn--lg">
+              Start Your 7-Day Build <ArrowRight size={18} />
+            </Link>
+          </motion.div>
         </div>
       </Section>
 
