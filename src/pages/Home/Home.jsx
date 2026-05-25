@@ -647,7 +647,7 @@ const Home = () => {
         <div className="container">
           <motion.div className="section-header" variants={fadeUp}>
             <span className="section-badge">How It Works</span>
-            <h2>Your Website Live in 7 Days — Guaranteed</h2>
+            <h2>Your Website Live in 7 Days <br />— Guaranteed</h2>
             <p>
               A clear 4-step process designed around your schedule.
               No jargon, no delays, no surprises.
