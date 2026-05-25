@@ -271,22 +271,54 @@ const Home = () => {
 
   const pricingPlans = [
     {
-      name: 'Starter', price: '₹24,999', period: 'project',
-      desc: 'Perfect for small businesses & personal brands.',
-      features: ['Up to 5 Pages', 'Mobile Responsive', 'Basic SEO Setup', 'Contact Form', '3 Months Support'],
+      name: 'Basic',
+      tagline: 'Perfect for local businesses',
+      price: '₹24,999',
+      delivery: '5–7 days',
+      features: [
+        'Up to 5 pages',
+        'Mobile responsive',
+        'Contact form',
+        'Basic SEO setup',
+        'Google Maps embed',
+        '3 months support',
+      ],
       popular: false,
+      cta: 'Get Started',
     },
     {
-      name: 'Professional', price: '₹49,999', period: 'project',
-      desc: 'Ideal for growing businesses needing a complete site.',
-      features: ['Up to 12 Pages', 'Advanced SEO & Analytics', 'CMS Integration', 'E-commerce Ready', '1 Year Support', 'Speed Optimization'],
+      name: 'Business',
+      tagline: 'Most chosen by growing brands',
+      price: '₹49,999',
+      delivery: '7–10 days',
+      features: [
+        'Up to 12 pages',
+        'CMS (edit yourself)',
+        'Advanced SEO + Analytics',
+        'WhatsApp chat button',
+        'Blog or news section',
+        '1 year support',
+        'Speed optimization',
+      ],
       popular: true,
+      cta: 'Get Started',
     },
     {
-      name: 'Premium', price: '₹99,999', period: 'project',
-      desc: 'Enterprise-grade solution with unlimited potential.',
-      features: ['Unlimited Pages', 'Custom App Features', 'Full E-commerce System', 'Priority Support Forever', 'Marketing Integration', 'Dedicated Account Manager'],
+      name: 'E-Commerce',
+      tagline: 'Sell online from day one',
+      price: '₹89,999',
+      delivery: '10–14 days',
+      features: [
+        'Unlimited products',
+        'Razorpay / UPI payments',
+        'Order management panel',
+        'Inventory tracking',
+        'Coupon & discount system',
+        'Lifetime support',
+        'Full ownership',
+      ],
       popular: false,
+      cta: 'Get Started',
     },
   ];
 
@@ -754,8 +786,11 @@ const Home = () => {
         <div className="container">
           <motion.div className="section-header" variants={fadeUp}>
             <span className="section-badge">Pricing</span>
-            <h2>Transparent Pricing. No Surprises.</h2>
-            <p>Simple project-based pricing designed for businesses of every size.</p>
+            <h2>Simple Pricing. You Own It Forever.</h2>
+            <p>
+              One-time payment. No monthly fees. No hidden costs.
+              Your website, your code, your ownership — always.
+            </p>
           </motion.div>
 
           <div className="pricing-preview__grid">
@@ -766,32 +801,76 @@ const Home = () => {
                 variants={fadeUp}
                 custom={i}
               >
-                {plan.popular && <div className="pricing-card__badge">MOST POPULAR</div>}
-                <div className="pricing-card__name">{plan.name}</div>
-                <div className="pricing-card__price">{plan.price} <span>/{plan.period}</span></div>
-                <p className="pricing-card__desc">{plan.desc}</p>
+                {plan.popular && (
+                  <div className="pricing-card__badge">Most Popular</div>
+                )}
+
+                <div className="pricing-card__header">
+                  <div className="pricing-card__name">{plan.name}</div>
+                  <p className="pricing-card__tagline">{plan.tagline}</p>
+                </div>
+
+                <div className="pricing-card__price-row">
+                  <span className="pricing-card__price">{plan.price}</span>
+                  <span className="pricing-card__onetime">one-time</span>
+                </div>
+
+                <div className="pricing-card__delivery">
+                  🚀 Delivered in {plan.delivery}
+                </div>
+
                 <ul className="pricing-card__features">
                   {plan.features.map((f, j) => (
-                    <li key={j}><Check size={15} /> {f}</li>
+                    <li key={j}>
+                      <Check size={14} />
+                      {f}
+                    </li>
                   ))}
                 </ul>
+
                 <Link
                   to="/request"
-                  className={`btn ${plan.popular ? 'btn--primary' : 'btn--ghost'}`}
-                  style={{ width: '100%' }}
+                  className={`btn ${plan.popular
+                    ? 'btn--primary'
+                    : 'btn--ghost'} pricing-card__btn`}
                 >
-                  Get Started <ArrowRight size={15} />
+                  {plan.cta} <ArrowRight size={15} />
                 </Link>
               </motion.div>
             ))}
           </div>
 
-          <motion.p variants={fadeUp}
-            style={{ textAlign: 'center', marginTop: 'var(--space-8)', fontSize: 'var(--fs-small)', color: 'var(--text-muted)' }}
+          <motion.div
+            variants={fadeUp}
+            custom={3}
+            style={{
+              textAlign: 'center',
+              marginTop: 'var(--space-8)',
+            }}
           >
-            Need a custom quote?{' '}
-            <Link to="/contact" style={{ color: 'var(--color-purple-light)', textDecoration: 'underline' }}>Contact us</Link>
-          </motion.p>
+            <p style={{
+              fontSize: 'var(--fs-small)',
+              color: 'var(--text-muted)',
+              marginBottom: 'var(--space-4)',
+            }}>
+              Need something custom?{' '}
+              <Link
+                to="/contact"
+                style={{
+                  color: 'var(--color-purple-light)',
+                  textDecoration: 'underline',
+                }}
+              >
+                Let's talk →
+              </Link>
+            </p>
+            <div className="pricing-trust-row">
+              <span>✓ GST Invoice</span>
+              <span>✓ 100% Code Ownership</span>
+              <span>✓ Free Revisions Included</span>
+              <span>✓ No Monthly Fees</span>
+            </div>
+          </motion.div>
         </div>
       </Section>
 
