@@ -6,55 +6,55 @@ import './ProfileShowcase.css';
 const profiles = [
   {
     id: 1,
-    title: 'Neuro Dashboard',
-    subtitle: 'AI-POWERED ANALYTICS',
-    tags: ['AI', 'DASHBOARD', 'SAAS'],
-    imageUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1200&auto=format&fit=crop',
-    description: 'An intelligent analytics platform with real-time data visualization, predictive insights, and seamless team collaboration.',
-    accent: '#a855f7',
-    accentRgb: '168, 85, 247',
-    code: 'NR-01',
-    url: 'neuro-dashboard.app',
+    title: 'Sharma Dental Clinic',
+    subtitle: 'HEALTHCARE · BHUBANESWAR',
+    tags: ['BUSINESS SITE', 'BOOKING', 'SEO'],
+    imageUrl: 'https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=1200&auto=format&fit=crop',
+    description: 'A premium dental clinic website with online appointment booking, patient portal, and Google-first SEO. Bookings increased 3x within 30 days of launch.',
+    accent: '#8B5CF6',
+    accentRgb: '139, 92, 246',
+    code: 'SD-01',
+    url: 'sharmadental.in',
     specs: [
-      { label: 'RENDER', value: '1.2ms' },
-      { label: 'ARCH', value: 'EDGE' },
-      { label: 'SYNC', value: 'REAL-TIME' }
+      { label: 'DELIVERY', value: '6 Days' },
+      { label: 'BOOKINGS', value: '+3x' },
+      { label: 'SCORE', value: '98/100' }
     ]
   },
   {
     id: 2,
-    title: 'PayFlow',
-    subtitle: 'FINANCIAL INFRASTRUCTURE',
-    tags: ['FINTECH', 'PAYMENTS', 'API'],
-    imageUrl: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1200&auto=format&fit=crop',
-    description: 'Next-generation payment infrastructure powering millions of transactions with sub-50ms latency across 195 countries.',
-    accent: '#3b82f6',
-    accentRgb: '59, 130, 246',
-    code: 'PF-02',
-    url: 'payflow.dev',
+    title: 'FitZone Gym',
+    subtitle: 'FITNESS · DELHI',
+    tags: ['LANDING PAGE', 'PAYMENTS', 'LEADS'],
+    imageUrl: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1200&auto=format&fit=crop',
+    description: 'High-converting gym membership landing page with Razorpay integration, trial booking flow, and WhatsApp lead capture. 40+ new members in week one.',
+    accent: '#10B981',
+    accentRgb: '16, 185, 129',
+    code: 'FZ-02',
+    url: 'fitzonegym.in',
     specs: [
-      { label: 'UPTIME', value: '99.999%' },
-      { label: 'SECURITY', value: 'PCI-DSS' },
-      { label: 'REACH', value: '195 COUNTRIES' }
+      { label: 'DELIVERY', value: '5 Days' },
+      { label: 'MEMBERS', value: '+40' },
+      { label: 'CVR', value: '8.5%' }
     ]
   },
   {
     id: 3,
-    title: 'Velox Cloud',
-    subtitle: 'DEPLOYMENT PLATFORM',
-    tags: ['DEVOPS', 'CLOUD', 'EDGE'],
-    imageUrl: 'https://images.unsplash.com/photo-1559028012-481c04fa702d?q=80&w=1200&auto=format&fit=crop',
-    description: 'Zero-config deployments on a global edge network. Ship faster with instant rollbacks, preview environments, and real-time logs.',
-    accent: '#ec4899',
-    accentRgb: '236, 72, 153',
-    code: 'VX-03',
-    url: 'velox.cloud',
+    title: 'Spice Garden Restaurant',
+    subtitle: 'F&B · MUMBAI',
+    tags: ['E-COMMERCE', 'ORDERING', 'MENU'],
+    imageUrl: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1200&auto=format&fit=crop',
+    description: 'A full restaurant website with online ordering, table reservations, digital menu, and Instagram integration. Revenue from online orders up 220% in month one.',
+    accent: '#F59E0B',
+    accentRgb: '245, 158, 11',
+    code: 'SG-03',
+    url: 'spicegarden.in',
     specs: [
-      { label: 'LATENCY', value: '<50ms' },
-      { label: 'NODES', value: '200+' },
-      { label: 'DEPLOY', value: '<3s' }
+      { label: 'DELIVERY', value: '7 Days' },
+      { label: 'REVENUE', value: '+220%' },
+      { label: 'ORDERS', value: 'DAILY' }
     ]
-  }
+  },
 ];
 
 const ProfileShowcase = () => {
@@ -157,7 +157,7 @@ const ProfileShowcase = () => {
       <div className="ps-header">
         <div className="ps-logo-container">
           <span className="ps-logo-scan-dot" />
-          <div className="ps-logo">PIXORA DIGITAL GALLERY</div>
+          <div className="ps-logo">PIXORA — FEATURED WORK</div>
         </div>
       </div>
 
@@ -269,7 +269,7 @@ const ProfileShowcase = () => {
                           className="ps-action-btn"
                           style={{ '--btn-accent': project.accent, '--btn-accent-rgb': project.accentRgb }}
                         >
-                          <span>VIEW PROJECT</span>
+                          <span>VIEW CASE STUDY</span>
                           <ArrowUpRight size={14} className="ps-action-icon" />
                         </motion.button>
                       </div>
