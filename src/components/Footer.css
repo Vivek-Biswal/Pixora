@@ -167,6 +167,19 @@
   flex-shrink: 0;
 }
 
+.newsletter-success {
+  padding: 0.75rem 1rem;
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  border-radius: var(--radius-md);
+  color: #10b981;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-medium);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 /* ---- Bottom Bar ---- */
 .footer__bottom {
   padding-top: var(--space-6);

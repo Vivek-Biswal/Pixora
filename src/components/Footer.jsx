@@ -1,12 +1,20 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Globe, Send, ArrowUp, Zap, Mail, Phone, MapPin, MessageCircle, Camera, Code2 } from 'lucide-react';
+import { Globe, Send, ArrowUp, Zap } from 'lucide-react';
 import { XIcon, InstagramIcon, GithubIcon, GmailIcon } from './SocialIcons.jsx';
 import Logo from './Logo.jsx';
 import './Footer.css';
 
 const Footer = () => {
+  const [subscribed, setSubscribed] = React.useState(false);
+
+  const handleSubscribe = (e) => {
+    e.preventDefault();
+    setSubscribed(true);
+    setTimeout(() => setSubscribed(false), 3000);
+  };
+
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
   const footerLinks = {
@@ -33,26 +41,10 @@ const Footer = () => {
   };
 
   const socials = [
-    {
-      icon: <MessageCircle size={16} />,
-      href: 'https://wa.me/919876543210',
-      label: 'WhatsApp',
-    },
-    {
-      icon: <Camera size={16} />,
-      href: 'https://instagram.com/pixora.studio',
-      label: 'Instagram',
-    },
-    {
-      icon: <Globe size={16} />,
-      href: 'https://linkedin.com/company/pixora',
-      label: 'LinkedIn',
-    },
-    {
-      icon: <Code2 size={16} />,
-      href: 'https://github.com/pixora',
-      label: 'GitHub',
-    },
+    { icon: <GmailIcon size={16} />, href: 'mailto:hi.pixora.studio@gmail.com', label: 'Email' },
+    { icon: <XIcon size={16} />, href: 'https://x.com/Pixora_Studio', label: 'X (Twitter)' },
+    { icon: <InstagramIcon size={16} />, href: 'https://www.instagram.com/hi.pixora.studio?igsh=cWJ5Y2Z6OGQzZGw2', label: 'Instagram' },
+    { icon: <GithubIcon size={16} />, href: 'https://github.com/Vivek-Biswal/Pixora.git', label: 'GitHub' },
   ];
 
   return (
@@ -61,22 +53,6 @@ const Footer = () => {
       <div className="footer__gradient-line" />
 
       <div className="container">
-        <div className="footer__contact-strip">
-          <div className="footer__contact-item">
-            <Mail size={15} />
-            <a href="mailto:hello@pixora.studio">hello@pixora.studio</a>
-          </div>
-          <div className="footer__contact-divider" />
-          <div className="footer__contact-item">
-            <Phone size={15} />
-            <a href="tel:+919876543210">+91 98765 43210</a>
-          </div>
-          <div className="footer__contact-divider" />
-          <div className="footer__contact-item">
-            <MapPin size={15} />
-            <span>Bhubaneswar, Odisha, India</span>
-          </div>
-        </div>
         {/* Main Grid */}
         <div className="footer__grid">
           {/* Brand Column */}
@@ -117,17 +93,27 @@ const Footer = () => {
           <div className="footer__newsletter">
             <h4 className="footer__heading">Stay Updated</h4>
             <p>Get design tips, case studies, and Pixora updates.</p>
-            <form className="newsletter-form" onSubmit={(e) => e.preventDefault()}>
-              <input
-                type="email"
-                className="newsletter-input"
-                placeholder="your@email.com"
-                required
-              />
-              <button type="submit" className="btn btn--primary btn--sm newsletter-btn">
-                <Send size={14} />
-              </button>
-            </form>
+            {subscribed ? (
+              <motion.div
+                className="newsletter-success"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+              >
+                <span>🎉 Thanks for subscribing!</span>
+              </motion.div>
+            ) : (
+              <form className="newsletter-form" onSubmit={handleSubscribe}>
+                <input
+                  type="email"
+                  className="newsletter-input"
+                  placeholder="your@email.com"
+                  required
+                />
+                <button type="submit" className="btn btn--primary btn--sm newsletter-btn">
+                  <Send size={14} />
+                </button>
+              </form>
+            )}
           </div>
         </div>
 
@@ -137,9 +123,6 @@ const Footer = () => {
             <p className="footer__copy">
               © {new Date().getFullYear()} Pixora Web Studio.
               All rights reserved. Made with ❤️ in India.
-            </p>
-            <p className="footer__copy footer__gst">
-              GST: 21XXXXX0000X1ZX
             </p>
           </div>
           <motion.button
