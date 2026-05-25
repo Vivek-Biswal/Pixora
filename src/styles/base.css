@@ -339,3 +339,17 @@ input, select, textarea { width: 100%; }
       animation: none;
     }
   }
+
+  @media (max-width: 768px) {
+    .btn {
+      min-height: 48px;
+    }
+
+    .btn--sm {
+      min-height: 40px;
+    }
+
+    a, button {
+      -webkit-tap-highlight-color: transparent;
+    }
+  }

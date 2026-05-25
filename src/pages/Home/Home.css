@@ -1678,3 +1678,98 @@
   background: var(--color-surface);
 }
 
+@media (max-width: 640px) {
+  /* Hero fixes */
+  .hero {
+    padding-top: calc(var(--navbar-height) + var(--space-8));
+    padding-bottom: var(--space-10);
+    min-height: auto;
+  }
+  .hero-headline {
+    font-size: clamp(30px, 9vw, 42px);
+    line-height: 1.1;
+  }
+  .hero-subheadline {
+    font-size: 15px;
+    max-width: 100%;
+  }
+  .hero-ctas {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+  .cta-primary,
+  .cta-secondary {
+    width: 100%;
+    justify-content: center;
+  }
+  .hero-trust-strip {
+    font-size: 12px;
+  }
+  .hero-stats {
+    gap: 12px;
+  }
+  .stat-num {
+    font-size: 18px;
+  }
+  .stat-label {
+    font-size: 10px;
+  }
+  .hero-right {
+    display: none;
+  }
+
+  /* Stats fixes */
+  .stats__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-4);
+  }
+  .stats__number {
+    font-size: clamp(1.75rem, 8vw, 2.5rem);
+  }
+
+  /* Stacked cards fixes */
+  .stacked-card {
+    position: relative;
+    top: auto !important;
+  }
+  .stacked-card__inner {
+    flex-direction: column;
+    padding: var(--space-6);
+    gap: var(--space-4);
+  }
+
+  /* Section spacing */
+  .section {
+    padding-block: var(--space-16);
+  }
+  .section-header {
+    margin-bottom: var(--space-10);
+  }
+  .section-header h2 {
+    font-size: clamp(1.6rem, 7vw, 2.2rem);
+  }
+
+  /* Testimonials */
+  .testimonial-card {
+    width: 280px;
+    padding: var(--space-5);
+  }
+  .testimonial-card__quote {
+    font-size: 13px;
+  }
+
+  /* Final CTA */
+  .cta-final__actions {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0 var(--space-4);
+  }
+  .cta-final__actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+  .cta-final h2 {
+    font-size: clamp(1.75rem, 8vw, 2.5rem);
+  }
+}
