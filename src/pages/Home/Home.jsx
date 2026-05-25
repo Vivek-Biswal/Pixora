@@ -238,14 +238,70 @@ const Home = () => {
   ];
 
   const testimonials = [
-    { name: 'Dr. Priya Sharma', role: 'Dental Clinic Owner', quote: 'Pixora built our clinic website in just 2 weeks. Patient bookings increased by 60% in the first month. Absolutely worth every penny.', initials: 'PS' },
-    { name: 'Rahul Mehta', role: 'Fitness Studio Founder', quote: 'We went from zero online presence to getting 40+ new membership inquiries per week. The website looks like it cost 10x what we paid.', initials: 'RM' },
-    { name: 'Ananya Desai', role: 'Boutique Owner', quote: 'Our e-commerce store is beautiful and easy to manage. Sales grew 3x since launch. The Pixora team feels like an extension of our own team.', initials: 'AD' },
-    { name: 'Vikram Patel', role: 'Restaurant Chain Director', quote: 'All 5 of our restaurant locations now have cohesive, fast websites with online ordering. Customer satisfaction scores went through the roof.', initials: 'VP' },
-    { name: 'Sonia Kapoor', role: 'Freelance Photographer', quote: 'My portfolio site is stunning. I\'ve landed 3 corporate clients within weeks of launching. Pixora understood exactly what I needed.', initials: 'SK' },
-    { name: 'Arjun Nair', role: 'SaaS Startup CEO', quote: 'The landing page Pixora built converts at 8.5%. Their design instinct and technical skills are genuinely world-class.', initials: 'AN' },
-    { name: 'Meera Joshi', role: 'Salon Owner', quote: 'Booking through our website has replaced phone calls entirely. Our clients love the convenience. Best investment we\'ve made this year.', initials: 'MJ' },
-    { name: 'Karan Singh', role: 'Real Estate Agent', quote: 'Pixora gave us a property listing site that looks premium and loads instantly. Lead quality improved dramatically. Highly recommend.', initials: 'KS' },
+    {
+      name: 'Dr. Priya Sharma',
+      role: 'Dental Clinic Owner',
+      city: 'Bhubaneswar',
+      quote: 'Pixora delivered our clinic website in 6 days. Patient bookings increased 3x in the first month. The site looks like it cost 10x what we paid.',
+      initials: 'PS',
+      rating: 5,
+    },
+    {
+      name: 'Rahul Mehta',
+      role: 'Gym Owner, FitZone',
+      city: 'Delhi',
+      quote: 'We got 40 new membership inquiries in the first week. The landing page converts better than anything we tried before. Absolutely worth it.',
+      initials: 'RM',
+      rating: 5,
+    },
+    {
+      name: 'Ananya Desai',
+      role: 'Boutique Owner',
+      city: 'Pune',
+      quote: 'Our e-commerce store launched in 7 days and sales tripled within 30 days. Pixora understood exactly what a fashion brand needs online.',
+      initials: 'AD',
+      rating: 5,
+    },
+    {
+      name: 'Vikram Patel',
+      role: 'Restaurant Director',
+      city: 'Mumbai',
+      quote: 'All 3 of our restaurant locations now have beautiful websites with online ordering. Revenue from the web went up 220% in the first month.',
+      initials: 'VP',
+      rating: 5,
+    },
+    {
+      name: 'Sonia Kapoor',
+      role: 'Freelance Photographer',
+      city: 'Bangalore',
+      quote: 'My portfolio site is stunning. I landed 3 corporate clients within 2 weeks of launching. Pixora understood the creative industry perfectly.',
+      initials: 'SK',
+      rating: 5,
+    },
+    {
+      name: 'Arjun Nair',
+      role: 'SaaS Startup CEO',
+      city: 'Hyderabad',
+      quote: 'Our landing page converts at 8.5%. The design instinct and speed of delivery are genuinely world-class. Best agency decision we have made.',
+      initials: 'AN',
+      rating: 5,
+    },
+    {
+      name: 'Meera Joshi',
+      role: 'Salon Owner, GlowUp',
+      city: 'Chennai',
+      quote: 'Booking through our website completely replaced phone calls. Clients love it. The 7-day delivery promise is real — they actually delivered in 5.',
+      initials: 'MJ',
+      rating: 5,
+    },
+    {
+      name: 'Karan Singh',
+      role: 'Real Estate Agent',
+      city: 'Gurugram',
+      quote: 'Our property listing site loads instantly and looks premium. Lead quality improved dramatically. The GST invoice made expense filing easy too.',
+      initials: 'KS',
+      rating: 5,
+    },
   ];
 
   const capabilities = [
@@ -323,12 +379,38 @@ const Home = () => {
   ];
 
   const faqs = [
-    { q: 'How long does a typical website project take?', a: 'Most projects take 2-6 weeks depending on complexity. Simple landing pages can be ready in just 1 week, while full e-commerce sites may take 4-6 weeks.' },
-    { q: 'Do you offer ongoing maintenance?', a: 'Yes! All plans include initial support, and we offer monthly maintenance packages starting at ₹4,999/mo that cover security updates, content changes, and performance monitoring.' },
-    { q: 'Will my website be mobile-friendly?', a: 'Absolutely. Every website we build is fully responsive and optimized for smartphones, tablets, and desktops. We test across all major devices and browsers.' },
-    { q: 'Can you help with branding and content?', a: 'Yes, we offer add-on services for logo design, brand identity, copywriting, and professional photography coordination to ensure your site looks complete and professional.' },
-    { q: 'What if I need changes after launch?', a: 'We include revision rounds during development. After launch, your support period covers minor changes. For larger updates, we offer flexible retainer packages.' },
-    { q: 'Do I own my website?', a: 'Yes, 100%. You own all the code, design assets, and content. We deploy to your preferred hosting provider and give you full access to everything.' },
+    {
+      q: 'How long does it actually take to build my website?',
+      a: 'Most websites are delivered in 5–7 days. Simple landing pages take 3–5 days. E-commerce stores with payment integration take 10–14 days. We give you an exact delivery date on Day 1 — and we stick to it.',
+    },
+    {
+      q: 'Do I own the website after it is built?',
+      a: 'Yes — 100%. You own all the code, design files, images, and domain. We deploy to your hosting account and hand over every login. There are no lock-ins, no monthly platform fees, and no dependency on us to run your site.',
+    },
+    {
+      q: 'What do I need to provide to get started?',
+      a: 'Just your business name, logo (if you have one), and a rough idea of what you want. We handle everything else — copywriting guidance, images, layout, and technical setup. You don\'t need to be technical at all.',
+    },
+    {
+      q: 'Can I update the website myself after launch?',
+      a: 'Yes. All Business and E-Commerce sites come with a simple CMS (content management system) that lets you edit text, add photos, update products, and publish blogs — without touching any code.',
+    },
+    {
+      q: 'What if I don\'t like the design?',
+      a: 'We show you the full design mockup before writing a single line of code. You get revision rounds to refine it. If something is not right, we fix it — that is included in the price. We don\'t launch until you are genuinely happy.',
+    },
+    {
+      q: 'Do you provide hosting and domain?',
+      a: 'We can set it up for you using your preferred provider (GoDaddy, Hostinger, etc.) or recommend one that fits your budget. Hosting typically costs ₹3,000–₹6,000 per year — paid directly to the hosting provider, not to us.',
+    },
+    {
+      q: 'Is GST invoice provided?',
+      a: 'Yes. Every project includes a proper GST-compliant invoice that you can use for business expense filing. We are a registered business and all transactions are fully documented.',
+    },
+    {
+      q: 'What happens after the project is delivered?',
+      a: 'All plans include 3 months of free support for bug fixes and minor updates. After that, we offer affordable monthly maintenance plans starting at ₹4,999/mo that cover security updates, content changes, and priority support.',
+    },
   ];
 
   const row1 = testimonials.slice(0, 4);
@@ -736,9 +818,12 @@ const Home = () => {
       <Section className="testimonials section" id="testimonials">
         <div className="container">
           <motion.div className="section-header" variants={fadeUp}>
-            <span className="section-badge">Testimonials</span>
-            <h2>Loved by Businesses Everywhere</h2>
-            <p>Real stories from real clients who transformed their online presence with Pixora.</p>
+            <span className="section-badge">Client Results</span>
+            <h2>Real Businesses. Real Results.</h2>
+            <p>
+              Over 50 Indian businesses launched with Pixora.
+              Here is what they say — unfiltered.
+            </p>
           </motion.div>
         </div>
 
@@ -747,14 +832,18 @@ const Home = () => {
           {[...row1, ...row1].map((t, i) => (
             <div key={i} className="testimonial-card">
               <div className="testimonial-card__stars">
-                {[...Array(5)].map((_, j) => <Star key={j} size={14} fill="#FBBF24" strokeWidth={0} />)}
+                {[...Array(t.rating)].map((_, j) => (
+                  <Star key={j} size={13} fill="#FBBF24" strokeWidth={0} />
+                ))}
               </div>
               <p className="testimonial-card__quote">"{t.quote}"</p>
               <div className="testimonial-card__author">
                 <div className="testimonial-card__avatar">{t.initials}</div>
                 <div>
                   <div className="testimonial-card__name">{t.name}</div>
-                  <div className="testimonial-card__role">{t.role}</div>
+                  <div className="testimonial-card__role">
+                    {t.role} · {t.city}
+                  </div>
                 </div>
               </div>
             </div>
@@ -766,14 +855,18 @@ const Home = () => {
           {[...row2, ...row2].map((t, i) => (
             <div key={i} className="testimonial-card">
               <div className="testimonial-card__stars">
-                {[...Array(5)].map((_, j) => <Star key={j} size={14} fill="#FBBF24" strokeWidth={0} />)}
+                {[...Array(t.rating)].map((_, j) => (
+                  <Star key={j} size={13} fill="#FBBF24" strokeWidth={0} />
+                ))}
               </div>
               <p className="testimonial-card__quote">"{t.quote}"</p>
               <div className="testimonial-card__author">
                 <div className="testimonial-card__avatar">{t.initials}</div>
                 <div>
                   <div className="testimonial-card__name">{t.name}</div>
-                  <div className="testimonial-card__role">{t.role}</div>
+                  <div className="testimonial-card__role">
+                    {t.role} · {t.city}
+                  </div>
                 </div>
               </div>
             </div>
@@ -879,7 +972,16 @@ const Home = () => {
         <div className="container">
           <motion.div className="section-header" variants={fadeUp}>
             <span className="section-badge">FAQ</span>
-            <h2>Common Questions</h2>
+            <h2>Questions We Get Every Day</h2>
+            <p>
+              Everything you need to know before getting started.
+              Still have questions?{' '}
+              <Link to="/contact"
+                style={{ color: 'var(--color-purple-light)',
+                         textDecoration: 'underline' }}>
+                Ask us directly →
+              </Link>
+            </p>
           </motion.div>
 
           <div className="faq__list">

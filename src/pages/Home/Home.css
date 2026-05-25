@@ -1202,7 +1202,8 @@
 }
 .testimonial-card__role {
   font-size: var(--fs-xs);
-  color: var(--text-muted);
+  color: var(--text-secondary);
+  opacity: 0.8;
 }
 
 /* ---- Pricing ---- */
@@ -1371,54 +1372,110 @@
 
 /* ---- FAQ ---- */
 .faq__list {
-  max-width: 740px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-}
-.faq__item {
-  background: rgba(255,255,255,0.02);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  transition: border-color var(--transition-base);
-}
-.faq__item:hover, .faq__item.active {
-  border-color: var(--border-accent);
-}
-.faq__question {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-  padding: var(--space-5) var(--space-6);
-  font-weight: var(--fw-semibold);
-  font-size: var(--fs-body);
-  color: var(--text-primary);
-  transition: color var(--transition-fast);
-}
-.faq__question:hover { color: var(--color-purple-light); }
-.faq__icon {
-  transition: transform var(--transition-base);
-  color: var(--text-muted);
-  flex-shrink: 0;
-}
-.faq__item.active .faq__icon { transform: rotate(45deg); }
-.faq__answer {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.4s ease, padding 0.3s ease;
-}
-.faq__item.active .faq__answer {
-  max-height: 300px;
-  padding: 0 var(--space-6) var(--space-6);
-}
-.faq__answer p {
-  font-size: var(--fs-small);
-  color: var(--text-secondary);
-  line-height: 1.7;
-}
+    max-width: 760px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .faq__item {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: border-color 0.25s ease;
+  }
+
+  .faq__item:hover {
+    border-color: var(--border-default);
+  }
+
+  .faq__item.active {
+    border-color: rgba(139, 92, 246, 0.4);
+    background: rgba(139, 92, 246, 0.03);
+  }
+
+  .faq__question {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    padding: var(--space-5) var(--space-6);
+    font-weight: var(--fw-semibold);
+    font-size: var(--fs-body);
+    color: var(--text-primary);
+    transition: color 0.2s ease;
+    gap: var(--space-4);
+    user-select: none;
+  }
+
+  .faq__question:hover {
+    color: var(--color-purple-light);
+  }
+
+  .faq__icon {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 1px solid var(--border-default);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    flex-shrink: 0;
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+                border-color 0.25s ease,
+                background 0.25s ease,
+                color 0.25s ease;
+  }
+
+  .faq__item.active .faq__icon {
+    transform: rotate(45deg);
+    border-color: rgba(139, 92, 246, 0.5);
+    background: rgba(139, 92, 246, 0.1);
+    color: var(--color-purple-light);
+  }
+
+  .faq__answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                padding 0.3s ease;
+  }
+
+  .faq__item.active .faq__answer {
+    max-height: 300px;
+    padding: 0 var(--space-6) var(--space-6);
+  }
+
+  .faq__answer p {
+    font-size: var(--fs-small);
+    color: var(--text-secondary);
+    line-height: 1.8;
+    border-top: 1px solid var(--border-subtle);
+    padding-top: var(--space-4);
+    margin: 0;
+  }
+
+  [data-theme="light"] .faq__item {
+    background: #ffffff;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.04);
+  }
+
+  [data-theme="light"] .faq__item.active {
+    background: rgba(139, 92, 246, 0.02);
+  }
+
+  @media (max-width: 640px) {
+    .faq__question {
+      font-size: var(--fs-small);
+      padding: var(--space-4) var(--space-5);
+    }
+    .faq__item.active .faq__answer {
+      padding: 0 var(--space-5) var(--space-5);
+    }
+  }
 
 /* ---- Final CTA ---- */
 .cta-final {
