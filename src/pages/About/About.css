@@ -2,13 +2,16 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: var(--space-4);
-  padding: var(--space-10) var(--space-6);
-  background: var(--gradient-card);
+  padding: var(--space-12) var(--space-8);
+  background: rgba(15, 15, 30, 0.6);
   border-radius: var(--radius-2xl);
-  border: 1px solid var(--border-subtle);
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 30px 60px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  position: relative;
+  z-index: 10;
+  margin-top: calc(-1 * var(--space-20));
 }
 
 .about-stat-item {
