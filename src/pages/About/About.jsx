@@ -57,8 +57,8 @@ const About = () => {
       <section className="section">
         <div className="container">
           <div className="grid-2">
-            <ScrollAnimator animation="from-left" style={{ height: '100%' }}>
-              <div className="card" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+            <ScrollAnimator animation="from-left" style={{ height: '100%', display: 'flex' }}>
+              <div className="card" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
                 <div className="icon-box"><Target /></div>
                 <h2 style={{ marginBottom: 'var(--space-4)' }}>Our Mission</h2>
                 <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7, flexGrow: 1 }}>
@@ -68,8 +68,8 @@ const About = () => {
                 </p>
               </div>
             </ScrollAnimator>
-            <ScrollAnimator animation="from-right" style={{ height: '100%' }}>
-              <div className="card" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+            <ScrollAnimator animation="from-right" style={{ height: '100%', display: 'flex' }}>
+              <div className="card" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
                 <div className="icon-box"><Eye /></div>
                 <h2 style={{ marginBottom: 'var(--space-4)' }}>Our Vision</h2>
                 <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7, flexGrow: 1 }}>
@@ -93,10 +93,12 @@ const About = () => {
           
           <div className="grid-3">
             {values.map((v, i) => (
-              <ScrollAnimator key={i} animation="from-bottom" delay={`delay-${(i % 3) + 1}`} className="card" style={{ padding: 'var(--space-6)' }}>
-                <div className="icon-box" style={{ width: '48px', height: '48px' }}>{v.icon}</div>
-                <h4 style={{ marginBottom: '10px' }}>{v.title}</h4>
-                <p style={{ fontSize: '14px' }}>{v.desc}</p>
+              <ScrollAnimator key={i} animation="from-bottom" delay={`delay-${(i % 3) + 1}`} style={{ height: '100%', display: 'flex' }}>
+                <div className="card" style={{ padding: 'var(--space-6)', flex: 1, display: 'flex', flexDirection: 'column' }}>
+                  <div className="icon-box" style={{ width: '48px', height: '48px' }}>{v.icon}</div>
+                  <h4 style={{ marginBottom: '10px' }}>{v.title}</h4>
+                  <p style={{ fontSize: '14px', flexGrow: 1 }}>{v.desc}</p>
+                </div>
               </ScrollAnimator>
             ))}
           </div>
@@ -129,8 +131,8 @@ const About = () => {
                 desc: 'GST invoices, Razorpay integration, Hindi/regional support, local hosting options. We understand the Indian market.',
               },
             ].map((item, i) => (
-              <ScrollAnimator key={i} animation="from-bottom" delay={`delay-${i + 1}`} style={{ height: '100%' }}>
-                <div className="card" style={{ padding: 'var(--space-7)', height: '100%', display: 'flex', flexDirection: 'column' }}>
+              <ScrollAnimator key={i} animation="from-bottom" delay={`delay-${i + 1}`} style={{ height: '100%', display: 'flex' }}>
+                <div className="card" style={{ padding: 'var(--space-7)', flex: 1, display: 'flex', flexDirection: 'column' }}>
                   <div className="icon-box">{item.icon}</div>
                   <h4 style={{ marginBottom: '10px' }}>{item.title}</h4>
                   <p style={{ fontSize: '14px', lineHeight: 1.7, color: 'var(--text-secondary)', flexGrow: 1 }}>{item.desc}</p>
