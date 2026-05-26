@@ -1,6 +1,7 @@
 import React from 'react';
 import { Target, Eye, Heart, Award, Shield, Users, Zap } from 'lucide-react';
 import ScrollAnimator from '../../components/ScrollAnimator';
+import './About.css';
 
 const About = () => {
   const values = [
@@ -12,12 +13,7 @@ const About = () => {
     { icon: <Target />, title: "Results Driven", desc: "Beautiful design is useless if it doesn't meet your business objectives." }
   ];
 
-  const team = [
-    { name: "Alex Rivera", role: "Founder & Creative Director", image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80" },
-    { name: "Sarah Chen", role: "Head of Development", image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=400&q=80" },
-    { name: "Marcus Thorne", role: "UX Strategist", image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80" },
-    { name: "Elena Kosta", role: "Lead SEO Specialist", image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80" }
-  ];
+
 
   return (
     <div className="about-page" style={{ paddingTop: 'var(--navbar-height)' }}>
@@ -26,13 +22,34 @@ const About = () => {
         <div className="container">
           <ScrollAnimator animation="fade-in">
             <span className="section-badge">Our Story</span>
-            <h1 style={{ marginBottom: 'var(--space-4)' }}>Building the Digital Future</h1>
-            <p style={{ maxWidth: '700px', margin: '0 auto' }}>
-              Founded in 2020, Pixora was born out of a desire to bridge the gap between 
-              artistic design and technical performance. We believe the web should be 
-              both beautiful and functional.
+            <h1 style={{ marginBottom: 'var(--space-4)' }}>
+              We Build Websites That Work for You
+            </h1>
+            <p style={{ maxWidth: '680px', margin: '0 auto', fontSize: '1.1rem', lineHeight: 1.7 }}>
+              Pixora was built on a simple belief: every Indian business —
+              no matter how small — deserves a world-class website.
+              We are a team of designers and developers who obsess over
+              delivery speed, design quality, and client results.
             </p>
           </ScrollAnimator>
+        </div>
+      </section>
+
+      <section className="section" style={{ paddingTop: 0 }}>
+        <div className="container">
+          <div className="about-stats">
+            {[
+              { num: '50+',  label: 'Websites Delivered' },
+              { num: '7',    label: 'Days Average Delivery' },
+              { num: '98%',  label: 'Client Satisfaction Rate' },
+              { num: '100%', label: 'Ownership to Clients' },
+            ].map((s, i) => (
+              <div key={i} className="about-stat-item">
+                <span className="about-stat-num gradient-text">{s.num}</span>
+                <span className="about-stat-label">{s.label}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -43,17 +60,19 @@ const About = () => {
             <ScrollAnimator animation="from-left" className="card" style={{ background: 'var(--gradient-primary)', color: 'white' }}>
               <div className="icon-box" style={{ background: 'rgba(255,255,255,0.2)', color: 'white' }}><Target /></div>
               <h2 style={{ color: 'white', marginBottom: 'var(--space-4)' }}>Our Mission</h2>
-              <p style={{ color: 'rgba(255,255,255,0.8)' }}>
-                To empower businesses with premium digital tools that simplify their 
-                operations and amplify their reach through world-class design.
+              <p style={{ color: 'rgba(255,255,255,0.8)', lineHeight: 1.7 }}>
+                To give every Indian business — clinic, gym, restaurant,
+                or startup — a website that genuinely grows their revenue.
+                Premium quality, honest pricing, real ownership.
               </p>
             </ScrollAnimator>
             <ScrollAnimator animation="from-right" className="card" style={{ border: '2px solid var(--color-blue)' }}>
               <div className="icon-box"><Eye /></div>
               <h2 style={{ marginBottom: 'var(--space-4)' }}>Our Vision</h2>
-              <p>
-                To become the global standard for high-performance web design, 
-                recognized for our innovation, quality, and commitment to client success.
+              <p style={{ lineHeight: 1.7 }}>
+                To become the most trusted web studio in India — known not
+                for being the cheapest or the fanciest, but for being the
+                most reliable. Every client should feel like our only client.
               </p>
             </ScrollAnimator>
           </div>
@@ -80,29 +99,38 @@ const About = () => {
         </div>
       </section>
 
-      {/* Team */}
+      {/* Why Choose Us */}
       <section className="section">
         <div className="container">
           <div className="section-header">
-            <span className="section-badge">The Team</span>
-            <h2>Meet the Experts</h2>
+            <span className="section-badge">Why Choose Us</span>
+            <h2>What Makes Pixora Different</h2>
+            <p>We are not a marketplace. Not a freelancer platform. We are a focused studio with one goal — your launch.</p>
           </div>
-          
-          <div className="grid-4">
-            {team.map((member, i) => (
-              <ScrollAnimator key={i} animation="scale-up" delay={`delay-${i + 1}`} style={{ textAlign: 'center' }}>
-                <div style={{ 
-                  width: '100%', 
-                  aspectRatio: '1', 
-                  borderRadius: 'var(--radius-xl)', 
-                  overflow: 'hidden',
-                  marginBottom: 'var(--space-4)',
-                  boxShadow: 'var(--shadow-md)'
-                }}>
-                  <img src={member.image} alt={member.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                </div>
-                <h4>{member.name}</h4>
-                <p style={{ color: 'var(--color-blue)', fontSize: 'var(--fs-small)', fontWeight: '600' }}>{member.role}</p>
+          <div className="grid-3">
+            {[
+              {
+                icon: <Zap />,
+                title: '7-Day Delivery',
+                desc: 'We set a launch date on Day 1 and we hit it. No delays, no excuses, no surprises. Speed is our competitive advantage.',
+              },
+              {
+                icon: <Shield />,
+                title: '100% Code Ownership',
+                desc: 'You own everything — code, design, domain, hosting account. No lock-in. No monthly platform fees. It is yours forever.',
+              },
+              {
+                icon: <Users />,
+                title: 'Built for India',
+                desc: 'GST invoices, Razorpay integration, Hindi/regional support, local hosting options. We understand the Indian market.',
+              },
+            ].map((item, i) => (
+              <ScrollAnimator key={i} animation="from-bottom"
+                delay={`delay-${i + 1}`} className="card"
+                style={{ padding: 'var(--space-7)' }}>
+                <div className="icon-box">{item.icon}</div>
+                <h4 style={{ marginBottom: '10px' }}>{item.title}</h4>
+                <p style={{ fontSize: '14px', lineHeight: 1.7 }}>{item.desc}</p>
               </ScrollAnimator>
             ))}
           </div>
