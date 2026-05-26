@@ -44,13 +44,13 @@
 
 /* ---- Light mode navbar ---- */
 [data-theme="light"] .navbar {
-  background: rgba(250, 250, 250, 0.7);
-  border-bottom-color: rgba(0, 0, 0, 0.06);
+  background: rgba(245, 240, 235, 0.75);
+  border-bottom-color: rgba(26, 17, 40, 0.06);
 }
 
 [data-theme="light"] .navbar--scrolled {
-  background: rgba(255, 255, 255, 0.92);
-  box-shadow: 0 1px 30px rgba(0, 0, 0, 0.08);
+  background: rgba(250, 247, 244, 0.92);
+  box-shadow: 0 1px 30px rgba(26, 17, 40, 0.08);
 }
 
 [data-theme="light"] .navbar--scrolled::after {
@@ -223,9 +223,9 @@
 }
 
 [data-theme="light"] .profile-dropdown {
-  background: rgba(255, 255, 255, 0.95);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.04);
+  background: rgba(250, 247, 244, 0.97);
+  border: 1px solid rgba(26, 17, 40, 0.1);
+  box-shadow: 0 20px 60px rgba(26, 17, 40, 0.12), 0 0 0 1px rgba(26, 17, 40, 0.04);
 }
 
 .profile-dropdown__header {
@@ -237,7 +237,7 @@
 }
 
 [data-theme="light"] .profile-dropdown__header {
-  border-bottom-color: rgba(0, 0, 0, 0.06);
+  border-bottom-color: rgba(26, 17, 40, 0.07);
 }
 
 .profile-dropdown__avatar {
@@ -319,7 +319,7 @@
 }
 
 [data-theme="light"] .profile-dropdown__divider {
-  background: rgba(0, 0, 0, 0.06);
+  background: rgba(26, 17, 40, 0.07);
 }
 
 /* Theme toggle row */
@@ -383,7 +383,7 @@
 }
 
 [data-theme="light"] .profile-dropdown__footer {
-  border-top-color: rgba(0, 0, 0, 0.06);
+  border-top-color: rgba(26, 17, 40, 0.07);
 }
 
 .profile-dropdown__item--danger {
@@ -446,7 +446,7 @@
 }
 
 [data-theme="light"] .nav-drawer {
-  background: rgba(255, 255, 255, 0.97);
+  background: rgba(250, 247, 244, 0.97);
 }
 
 .nav-drawer__header {
