@@ -47,11 +47,14 @@ const Contact = () => {
       <section className="section bg-frost" style={{ background: 'var(--color-frost)', textAlign: 'center' }}>
         <div className="container">
           <ScrollAnimator animation="fade-in">
-            <span className="section-badge">Contact Us</span>
-            <h1 style={{ marginBottom: 'var(--space-4)' }}>Let's Start a Conversation</h1>
-            <p style={{ maxWidth: '600px', margin: '0 auto' }}>
-              Whether you have a specific project in mind or just want to learn more, 
-              we're here to help. Reach out to us today.
+            <span className="section-badge">Get In Touch</span>
+            <h1 style={{ marginBottom: 'var(--space-4)' }}>
+              Let's Build Something Together
+            </h1>
+            <p style={{ maxWidth: '600px', margin: '0 auto', lineHeight: 1.7 }}>
+              Have a project in mind? Fill the form and we will reply
+              within 24 hours with a free quote and project plan.
+              No commitment required.
             </p>
           </ScrollAnimator>
         </div>
@@ -64,7 +67,18 @@ const Contact = () => {
             {/* Form */}
             <ScrollAnimator animation="from-left">
               <div className="card" style={{ padding: 'var(--space-10)' }}>
-                <h3 style={{ marginBottom: 'var(--space-6)' }}>Send us a message</h3>
+                <h3 style={{ marginBottom: 'var(--space-2)' }}>
+                  Send Us a Message
+                </h3>
+                <p style={{
+                  fontSize: '14px',
+                  color: 'var(--text-muted)',
+                  marginBottom: 'var(--space-6)',
+                  lineHeight: 1.5
+                }}>
+                  We reply within 24 hours on business days.
+                  Usually much faster.
+                </p>
                 <form onSubmit={handleSubmit}>
                   <div className="grid-2">
                     <div className="form-group">
@@ -93,8 +107,16 @@ const Contact = () => {
                     <label className="form-label">Message</label>
                     <textarea name="message" value={formData.message} onChange={handleChange} className="form-control" placeholder="Tell us more about your needs..." required></textarea>
                   </div>
-                  <button type="submit" className="btn btn--primary btn--lg" style={{ width: '100%' }} disabled={isSubmitting}>
-                    {isSubmitting ? 'Sending...' : 'Send Message'} <Send size={18} />
+                  <button
+                    type="submit"
+                    className="btn btn--primary btn--lg"
+                    style={{ width: '100%' }}
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting
+                      ? 'Sending your message...'
+                      : 'Send Message — Get Reply in 24hrs'}
+                    {!isSubmitting && <Send size={16} style={{ marginLeft: '8px' }} />}
                   </button>
                 </form>
               </div>
@@ -107,8 +129,15 @@ const Contact = () => {
                   <div className="icon-box" style={{ flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}><GmailIcon size={24} /></div>
                   <div>
                     <h4 style={{ marginBottom: '5px' }}>Official Support</h4>
-                    <p style={{ color: 'var(--color-blue)', fontWeight: '600' }}>hi.pixora.studio@gmail.com</p>
-                    <p style={{ fontSize: '14px' }}>Business inquiries and support.</p>
+                    <a href="mailto:hello@pixora.studio"
+                      style={{ color: 'var(--color-purple-light)',
+                               fontWeight: '600', display: 'block' }}>
+                      hello@pixora.studio
+                    </a>
+                    <p style={{ fontSize: '13px', color: 'var(--text-muted)',
+                                marginTop: '4px' }}>
+                      Reply guaranteed within 24 hours
+                    </p>
                   </div>
                 </div>
                 
@@ -116,8 +145,15 @@ const Contact = () => {
                   <div className="icon-box" style={{ flexShrink: 0 }}><Phone /></div>
                   <div>
                     <h4 style={{ marginBottom: '5px' }}>Phone Support</h4>
-                    <p style={{ color: 'var(--color-blue)', fontWeight: '600' }}>+91 98765 43210</p>
-                    <p style={{ fontSize: '14px' }}>Mon-Fri, 10am to 6pm IST.</p>
+                    <a href="tel:+919876543210"
+                      style={{ color: 'var(--color-purple-light)',
+                               fontWeight: '600', display: 'block' }}>
+                      +91 98765 43210
+                    </a>
+                    <p style={{ fontSize: '13px', color: 'var(--text-muted)',
+                                marginTop: '4px' }}>
+                      Mon–Sat, 10am to 7pm IST
+                    </p>
                   </div>
                 </div>
                 

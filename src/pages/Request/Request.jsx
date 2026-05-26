@@ -88,10 +88,17 @@ const Request = () => {
             <div className="icon-box" style={{ margin: '0 auto var(--space-6)', width: '80px', height: '80px', background: 'var(--color-blue)', color: 'white' }}>
               <Check size={40} />
             </div>
-            <h2>Request Received!</h2>
-            <p style={{ margin: 'var(--space-4) 0 var(--space-8)' }}>
-              Thank you for choosing Pixora. Our team will review your project details 
-              and reach out to you within the next 24 hours to schedule a discovery call.
+            <h2>You're All Set! 🎉</h2>
+            <p style={{ margin: 'var(--space-4) 0 var(--space-8)',
+                        lineHeight: 1.7 }}>
+              We received your request and will send you a free,
+              detailed quote within 24 hours. Check your email —
+              and keep an eye on WhatsApp too.
+            </p>
+            <p style={{ fontSize: '14px', color: 'var(--text-muted)',
+                        marginBottom: 'var(--space-8)' }}>
+              In the meantime, follow us on Instagram for design
+              inspiration and behind-the-scenes work.
             </p>
             <a href="/" className="btn btn--primary">Return Home</a>
           </ScrollAnimator>
@@ -107,9 +114,15 @@ const Request = () => {
         <div style={{ position: 'absolute', top: '-50%', left: '50%', transform: 'translateX(-50%)', width: '800px', height: '800px', background: 'radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 60%)', filter: 'blur(60px)', zIndex: 0, pointerEvents: 'none' }} />
         <div className="container" style={{ position: 'relative', zIndex: 1 }}>
           <ScrollAnimator animation="fade-in">
-            <span className="section-badge">Project Planner</span>
-            <h1 style={{ fontSize: 'var(--fs-h1)', letterSpacing: 'var(--ls-tightest)' }}>Let's build your vision</h1>
-            <p style={{ color: 'var(--text-secondary)' }}>Tell us about your project and we'll help you find the best solution.</p>
+            <span className="section-badge">Start Your Project</span>
+            <h1 style={{ fontSize: 'var(--fs-h1)',
+                         letterSpacing: 'var(--ls-tightest)' }}>
+              Your Website Starts Here
+            </h1>
+            <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7 }}>
+              Takes 3 minutes. Free quote in 24 hours.
+              No technical knowledge needed.
+            </p>
           </ScrollAnimator>
         </div>
       </section>
@@ -120,7 +133,7 @@ const Request = () => {
             {/* Progress Bar */}
             <div style={{ marginBottom: 'var(--space-12)' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 'var(--space-2)' }}>
-                {['Basic Info', 'Project Details', 'Budget & Timeline', 'Review'].map((s, i) => (
+                {['Your Details', 'Your Project', 'Budget & Timeline', 'Review & Submit'].map((s, i) => (
                   <span key={i} style={{ 
                     fontSize: '13px', fontWeight: '600', letterSpacing: '0.02em',
                     color: step > i ? 'var(--text-primary)' : 'var(--text-muted)'
@@ -284,8 +297,16 @@ const Request = () => {
                       Next Step <ArrowRight size={18} />
                     </button>
                   ) : (
-                    <button type="submit" className="btn btn--coral btn--lg" disabled={isSubmitting}>
-                      {isSubmitting ? 'Submitting...' : 'Submit Request'} <Send size={18} />
+                    <button
+                      type="submit"
+                      className="btn btn--primary btn--lg"
+                      disabled={isSubmitting}
+                      style={{ minWidth: '200px' }}
+                    >
+                      {isSubmitting
+                        ? 'Submitting...'
+                        : 'Submit — Get Free Quote'}
+                      {!isSubmitting && <Send size={16} style={{ marginLeft: '8px' }} />}
                     </button>
                   )}
                 </div>
