@@ -950,6 +950,14 @@
     0 0 20px rgba(var(--step-color-rgb, 139, 92, 246), 0.06);
 }
 
+[data-theme="light"] .process__step h4 {
+  color: var(--text-primary);
+}
+
+[data-theme="light"] .process__step p {
+  color: var(--text-secondary);
+}
+
 /* Tablet — 2 columns */
 @media (max-width: 1024px) {
   .process__grid {
