@@ -132,7 +132,7 @@ const About = () => {
               },
             ].map((item, i) => (
               <ScrollAnimator key={i} animation="from-bottom" delay={`delay-${i + 1}`} style={{ display: 'grid' }}>
-                <div className="card" style={{ padding: 'var(--space-7)', display: 'flex', flexDirection: 'column' }}>
+                <div className="card" style={{ display: 'flex', flexDirection: 'column' }}>
                   <div className="icon-box">{item.icon}</div>
                   <h4 style={{ marginBottom: '10px' }}>{item.title}</h4>
                   <p style={{ fontSize: '14px', lineHeight: 1.7, color: 'var(--text-secondary)', flexGrow: 1 }}>{item.desc}</p>
