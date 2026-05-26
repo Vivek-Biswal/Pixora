@@ -57,19 +57,19 @@ const About = () => {
       <section className="section">
         <div className="container">
           <div className="grid-2">
-            <ScrollAnimator animation="from-left" className="card" style={{ background: 'var(--gradient-primary)', color: 'white' }}>
-              <div className="icon-box" style={{ background: 'rgba(255,255,255,0.2)', color: 'white' }}><Target /></div>
-              <h2 style={{ color: 'white', marginBottom: 'var(--space-4)' }}>Our Mission</h2>
-              <p style={{ color: 'rgba(255,255,255,0.8)', lineHeight: 1.7 }}>
+            <ScrollAnimator animation="from-left" className="card" style={{ border: '2px solid var(--color-purple)', height: '100%' }}>
+              <div className="icon-box"><Target /></div>
+              <h2 style={{ marginBottom: 'var(--space-4)' }}>Our Mission</h2>
+              <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7 }}>
                 To give every Indian business — clinic, gym, restaurant,
                 or startup — a website that genuinely grows their revenue.
                 Premium quality, honest pricing, real ownership.
               </p>
             </ScrollAnimator>
-            <ScrollAnimator animation="from-right" className="card" style={{ border: '2px solid var(--color-blue)' }}>
+            <ScrollAnimator animation="from-right" className="card" style={{ border: '2px solid var(--color-blue)', height: '100%' }}>
               <div className="icon-box"><Eye /></div>
               <h2 style={{ marginBottom: 'var(--space-4)' }}>Our Vision</h2>
-              <p style={{ lineHeight: 1.7 }}>
+              <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7 }}>
                 To become the most trusted web studio in India — known not
                 for being the cheapest or the fanciest, but for being the
                 most reliable. Every client should feel like our only client.
@@ -127,10 +127,10 @@ const About = () => {
             ].map((item, i) => (
               <ScrollAnimator key={i} animation="from-bottom"
                 delay={`delay-${i + 1}`} className="card"
-                style={{ padding: 'var(--space-7)' }}>
+                style={{ padding: 'var(--space-7)', height: '100%', display: 'flex', flexDirection: 'column' }}>
                 <div className="icon-box">{item.icon}</div>
                 <h4 style={{ marginBottom: '10px' }}>{item.title}</h4>
-                <p style={{ fontSize: '14px', lineHeight: 1.7 }}>{item.desc}</p>
+                <p style={{ fontSize: '14px', lineHeight: 1.7, color: 'var(--text-secondary)' }}>{item.desc}</p>
               </ScrollAnimator>
             ))}
           </div>

@@ -2,9 +2,13 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: var(--space-4);
-  padding: var(--space-8) 0;
-  border-top: 1px solid var(--border-subtle);
-  border-bottom: 1px solid var(--border-subtle);
+  padding: var(--space-10) var(--space-6);
+  background: var(--gradient-card);
+  border-radius: var(--radius-2xl);
+  border: 1px solid var(--border-subtle);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 }
 
 .about-stat-item {
