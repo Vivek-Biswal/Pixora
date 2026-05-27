@@ -3,7 +3,7 @@ import { NavLink, Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Menu, X, ArrowRight, LayoutDashboard, LogOut, Sun, Moon,
-  User, Settings, Bell, CreditCard, ChevronRight, Zap, Home
+  User, Settings, Bell, CreditCard, ChevronRight, ChevronDown, Zap, Home
 } from 'lucide-react';
 import Logo from './Logo.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
@@ -19,6 +19,24 @@ const Navbar = () => {
   const { isAuthenticated, logout, user } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const dropdownRef = useRef(null);
+  const [activeDropdown, setActiveDropdown] = useState(null);
+  const dropdownTimeoutRef = useRef(null);
+
+  // Cleanup dropdown timeout on unmount
+  useEffect(() => {
+    return () => clearTimeout(dropdownTimeoutRef.current);
+  }, []);
+
+  const handleDropdownEnter = (name) => {
+    clearTimeout(dropdownTimeoutRef.current);
+    setActiveDropdown(name);
+  };
+
+  const handleDropdownLeave = () => {
+    dropdownTimeoutRef.current = setTimeout(() => {
+      setActiveDropdown(null);
+    }, 150);
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -29,7 +47,7 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  useEffect(() => { setIsOpen(false); setProfileOpen(false); }, [location]);
+  useEffect(() => { setIsOpen(false); setProfileOpen(false); setActiveDropdown(null); }, [location]);
 
   // Prevent body scroll when mobile menu open
   useEffect(() => {
@@ -53,7 +71,7 @@ const Navbar = () => {
   // Close dropdown on Escape key
   useEffect(() => {
     const handleEsc = (e) => {
-      if (e.key === 'Escape') setProfileOpen(false);
+      if (e.key === 'Escape') { setProfileOpen(false); setActiveDropdown(null); }
     };
     document.addEventListener('keydown', handleEsc);
     return () => document.removeEventListener('keydown', handleEsc);
@@ -100,16 +118,170 @@ const Navbar = () => {
 
           {/* Desktop Nav Links */}
           <ul className="nav-links" role="list">
-            {navItems.map((item) => (
-              <li key={item.name}>
-                <NavLink
-                  to={item.path}
-                  className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
-                >
-                  {item.name}
-                </NavLink>
-              </li>
-            ))}
+            {navItems.map((item) => {
+              /* ─── Services Mega-Menu ─── */
+              if (item.name === 'Services') {
+                return (
+                  <li
+                    key={item.name}
+                    className="nav-dropdown-trigger"
+                    onMouseEnter={() => handleDropdownEnter('services')}
+                    onMouseLeave={handleDropdownLeave}
+                  >
+                    <NavLink
+                      to={item.path}
+                      className={({ isActive }) =>
+                        `nav-link nav-link--has-dropdown ${isActive ? 'active' : ''} ${activeDropdown === 'services' ? 'nav-link--dropdown-open' : ''}`
+                      }
+                    >
+                      {item.name}
+                      <ChevronDown
+                        size={14}
+                        className={`nav-link__chevron ${activeDropdown === 'services' ? 'nav-link__chevron--open' : ''}`}
+                      />
+                    </NavLink>
+                    <AnimatePresence>
+                      {activeDropdown === 'services' && (
+                        <motion.div
+                          className="nav-mega"
+                          initial={{ opacity: 0, y: 8 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: 8 }}
+                          transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                        >
+                          <div className="nav-mega__grid">
+                            <div className="nav-mega__section">
+                              <div className="nav-mega__section-title">What We Build</div>
+                              <Link to="/services" className="nav-mega__item" onClick={() => setActiveDropdown(null)}>
+                                <div className="nav-mega__item-title">Business Websites</div>
+                                <div className="nav-mega__item-desc">Custom corporate sites that build trust.</div>
+                              </Link>
+                              <Link to="/services" className="nav-mega__item" onClick={() => setActiveDropdown(null)}>
+                                <div className="nav-mega__item-title">E-Commerce Solutions</div>
+                                <div className="nav-mega__item-desc">Online stores that convert visitors.</div>
+                              </Link>
+                              <Link to="/services" className="nav-mega__item" onClick={() => setActiveDropdown(null)}>
+                                <div className="nav-mega__item-title">Portfolio Websites</div>
+                                <div className="nav-mega__item-desc">Visual platforms for creatives.</div>
+                              </Link>
+                              <Link to="/services" className="nav-mega__item" onClick={() => setActiveDropdown(null)}>
+                                <div className="nav-mega__item-title">Landing Pages</div>
+                                <div className="nav-mega__item-desc">High-conversion marketing pages.</div>
+                              </Link>
+                            </div>
+                            <div className="nav-mega__section">
+                              <div className="nav-mega__section-title">What We Do</div>
+                              <Link to="/services" className="nav-mega__item" onClick={() => setActiveDropdown(null)}>
+                                <div className="nav-mega__item-title">SEO Optimization</div>
+                                <div className="nav-mega__item-desc">Boost your organic search visibility.</div>
+                              </Link>
+                              <Link to="/services" className="nav-mega__item" onClick={() => setActiveDropdown(null)}>
+                                <div className="nav-mega__item-title">Maintenance & Care</div>
+                                <div className="nav-mega__item-desc">Keep your site running 24/7.</div>
+                              </Link>
+                              <Link to="/services" className="nav-mega__item" onClick={() => setActiveDropdown(null)}>
+                                <div className="nav-mega__item-title">Website Redesign</div>
+                                <div className="nav-mega__item-desc">Modernize your digital presence.</div>
+                              </Link>
+                              <Link to="/services" className="nav-mega__item" onClick={() => setActiveDropdown(null)}>
+                                <div className="nav-mega__item-title">Custom Solutions</div>
+                                <div className="nav-mega__item-desc">Tailored web apps for your needs.</div>
+                              </Link>
+                            </div>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </li>
+                );
+              }
+
+              /* ─── Portfolio Mega-Menu ─── */
+              if (item.name === 'Portfolio') {
+                return (
+                  <li
+                    key={item.name}
+                    className="nav-dropdown-trigger"
+                    onMouseEnter={() => handleDropdownEnter('portfolio')}
+                    onMouseLeave={handleDropdownLeave}
+                  >
+                    <NavLink
+                      to={item.path}
+                      className={({ isActive }) =>
+                        `nav-link nav-link--has-dropdown ${isActive ? 'active' : ''} ${activeDropdown === 'portfolio' ? 'nav-link--dropdown-open' : ''}`
+                      }
+                    >
+                      {item.name}
+                      <ChevronDown
+                        size={14}
+                        className={`nav-link__chevron ${activeDropdown === 'portfolio' ? 'nav-link__chevron--open' : ''}`}
+                      />
+                    </NavLink>
+                    <AnimatePresence>
+                      {activeDropdown === 'portfolio' && (
+                        <motion.div
+                          className="nav-mega"
+                          initial={{ opacity: 0, y: 8 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: 8 }}
+                          transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                        >
+                          <div className="nav-mega__grid">
+                            <div className="nav-mega__section">
+                              <div className="nav-mega__section-title">Browse by Category</div>
+                              <Link to="/portfolio" className="nav-mega__item" onClick={() => setActiveDropdown(null)}>
+                                <div className="nav-mega__item-title">Business</div>
+                                <div className="nav-mega__item-desc">Corporate & agency websites.</div>
+                              </Link>
+                              <Link to="/portfolio" className="nav-mega__item" onClick={() => setActiveDropdown(null)}>
+                                <div className="nav-mega__item-title">E-Commerce</div>
+                                <div className="nav-mega__item-desc">Online stores & marketplaces.</div>
+                              </Link>
+                              <Link to="/portfolio" className="nav-mega__item" onClick={() => setActiveDropdown(null)}>
+                                <div className="nav-mega__item-title">Portfolio</div>
+                                <div className="nav-mega__item-desc">Creative & personal showcases.</div>
+                              </Link>
+                              <Link to="/portfolio" className="nav-mega__item" onClick={() => setActiveDropdown(null)}>
+                                <div className="nav-mega__item-title">Landing Pages</div>
+                                <div className="nav-mega__item-desc">Campaign & product pages.</div>
+                              </Link>
+                            </div>
+                            <div className="nav-mega__section">
+                              <div className="nav-mega__section-title">Featured</div>
+                              <div className="nav-mega__featured">
+                                <div className="nav-mega__featured-badge">50+ Projects</div>
+                                <p className="nav-mega__featured-text">
+                                  Explore our portfolio of premium websites built for Indian businesses across industries.
+                                </p>
+                                <Link
+                                  to="/portfolio"
+                                  className="nav-mega__featured-link"
+                                  onClick={() => setActiveDropdown(null)}
+                                >
+                                  View All Projects <ArrowRight size={14} />
+                                </Link>
+                              </div>
+                            </div>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </li>
+                );
+              }
+
+              /* ─── Regular Nav Link ─── */
+              return (
+                <li key={item.name}>
+                  <NavLink
+                    to={item.path}
+                    className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+                  >
+                    {item.name}
+                  </NavLink>
+                </li>
+              );
+            })}
           </ul>
 
           {/* Desktop Actions */}
