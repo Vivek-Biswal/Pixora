@@ -145,10 +145,10 @@ const Contact = () => {
                   <div className="icon-box" style={{ flexShrink: 0 }}><Phone /></div>
                   <div>
                     <h4 style={{ marginBottom: '5px' }}>Phone Support</h4>
-                    <a href="tel:+919876543210"
+                    <a href="tel:+919818457227"
                       style={{ color: 'var(--color-purple-light)',
                                fontWeight: '600', display: 'block' }}>
-                      +91 98765 43210
+                      +91 98184 57227
                     </a>
                     <p style={{ fontSize: '13px', color: 'var(--text-muted)',
                                 marginTop: '4px' }}>

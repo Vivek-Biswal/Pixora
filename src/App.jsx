@@ -92,7 +92,7 @@ function App() {
       return null;
     }
 
-    const waLink = 'https://wa.me/919876543210?text=' +
+    const waLink = 'https://wa.me/919818457227?text=' +
       encodeURIComponent(
         'Hi Pixora! I visited your website and I am interested in getting a website built for my business.'
       );
