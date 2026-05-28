@@ -13,6 +13,7 @@ import './Navbar.css';
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
+  const [mobileExpanded, setMobileExpanded] = useState(null);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
@@ -489,12 +490,65 @@ const Navbar = () => {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.05 * i + 0.1 }}
                 >
-                  <NavLink
-                    to={item.path}
-                    className={({ isActive }) => `nav-drawer__link ${isActive ? 'active' : ''}`}
-                  >
-                    {item.name}
-                  </NavLink>
+                  {item.name === 'Services' || item.name === 'Portfolio' ? (
+                    <div className="nav-drawer__accordion">
+                      <button 
+                        className={`nav-drawer__accordion-trigger ${mobileExpanded === item.name ? 'active' : ''}`}
+                        onClick={() => setMobileExpanded(mobileExpanded === item.name ? null : item.name)}
+                      >
+                        {item.name}
+                        <ChevronDown size={18} className={`nav-drawer__accordion-icon ${mobileExpanded === item.name ? 'open' : ''}`} />
+                      </button>
+                      <AnimatePresence>
+                        {mobileExpanded === item.name && (
+                          <motion.div 
+                            className="nav-drawer__accordion-content"
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: 'auto', opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                          >
+                            {item.name === 'Services' && (
+                              <div className="mobile-sub-menu">
+                                <div className="mobile-sub-title">What We Build</div>
+                                <Link to="/services" className="mobile-sub-link" onClick={() => setIsOpen(false)}>Business Websites</Link>
+                                <Link to="/services" className="mobile-sub-link" onClick={() => setIsOpen(false)}>E-Commerce Solutions</Link>
+                                <Link to="/services" className="mobile-sub-link" onClick={() => setIsOpen(false)}>Portfolio Websites</Link>
+                                <Link to="/services" className="mobile-sub-link" onClick={() => setIsOpen(false)}>Landing Pages</Link>
+                                
+                                <div className="mobile-sub-title">What We Do</div>
+                                <Link to="/services" className="mobile-sub-link" onClick={() => setIsOpen(false)}>SEO Optimization</Link>
+                                <Link to="/services" className="mobile-sub-link" onClick={() => setIsOpen(false)}>Maintenance & Care</Link>
+                                <Link to="/services" className="mobile-sub-link" onClick={() => setIsOpen(false)}>Website Redesign</Link>
+                                <Link to="/services" className="mobile-sub-link" onClick={() => setIsOpen(false)}>Custom Solutions</Link>
+                              </div>
+                            )}
+                            {item.name === 'Portfolio' && (
+                              <div className="mobile-sub-menu">
+                                <div className="mobile-sub-title">Browse by Category</div>
+                                <Link to="/portfolio" className="mobile-sub-link" onClick={() => setIsOpen(false)}>Business</Link>
+                                <Link to="/portfolio" className="mobile-sub-link" onClick={() => setIsOpen(false)}>E-Commerce</Link>
+                                <Link to="/portfolio" className="mobile-sub-link" onClick={() => setIsOpen(false)}>Portfolio</Link>
+                                <Link to="/portfolio" className="mobile-sub-link" onClick={() => setIsOpen(false)}>Landing Pages</Link>
+                                
+                                <div className="mobile-sub-title">Featured</div>
+                                <Link to="/portfolio" className="mobile-sub-link mobile-sub-link--featured" onClick={() => setIsOpen(false)}>
+                                  View All Projects <ArrowRight size={14}/>
+                                </Link>
+                              </div>
+                            )}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  ) : (
+                    <NavLink
+                      to={item.path}
+                      className={({ isActive }) => `nav-drawer__link ${isActive ? 'active' : ''}`}
+                      onClick={() => setIsOpen(false)}
+                    >
+                      {item.name}
+                    </NavLink>
+                  )}
                 </motion.li>
               ))}
             </ul>
