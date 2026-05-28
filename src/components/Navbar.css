@@ -607,7 +607,8 @@
   .nav-links { display: none; }
   .nav-actions .btn--ghost,
   .nav-actions .btn--primary,
-  .nav-actions a.btn--secondary { display: none; }
+  .nav-actions a.btn--secondary,
+  .nav-actions .icon-btn { display: none; }
   .profile-avatar-btn { display: none; }
   .mobile-toggle { display: flex; }
 }

@@ -444,7 +444,7 @@ const Home = () => {
                 visible: { transition: { staggerChildren: 0.06 } }
               }}
             >
-              {"Your Business Deserves a Website That ".split(" ").map((word, i) => (
+              {"Your Business Deserves a Website That ".trim().split(" ").map((word, i) => (
                 <motion.span
                   key={i}
                   style={{ display: "inline-block", marginRight: "0.25em" }}
