@@ -433,7 +433,7 @@
   top: 0;
   right: 0;
   width: 300px;
-  height: 100vh;
+  height: 100dvh;
   background: rgba(10, 10, 30, 0.97);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
@@ -443,6 +443,7 @@
   flex-direction: column;
   padding: var(--space-6);
   gap: var(--space-6);
+  overflow-y: auto;
 }
 
 [data-theme="light"] .nav-drawer {
@@ -463,6 +464,12 @@
   gap: var(--space-1);
   flex: 1;
   list-style: none;
+  overflow-y: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.nav-drawer__links::-webkit-scrollbar {
+  display: none;
 }
 
 .nav-drawer__link {
