@@ -153,38 +153,38 @@ const Navbar = () => {
                           <div className="nav-mega__grid">
                             <div className="nav-mega__section">
                               <div className="nav-mega__section-title">What We Build</div>
-                              <Link to="/services" className="nav-mega__item" onClick={() => setActiveDropdown(null)}>
+                              <Link to="/services#business-websites" className="nav-mega__item" onClick={() => setActiveDropdown(null)}>
                                 <div className="nav-mega__item-title">Business Websites</div>
                                 <div className="nav-mega__item-desc">Custom corporate sites that build trust.</div>
                               </Link>
-                              <Link to="/services" className="nav-mega__item" onClick={() => setActiveDropdown(null)}>
+                              <Link to="/services#e-commerce-solutions" className="nav-mega__item" onClick={() => setActiveDropdown(null)}>
                                 <div className="nav-mega__item-title">E-Commerce Solutions</div>
                                 <div className="nav-mega__item-desc">Online stores that convert visitors.</div>
                               </Link>
-                              <Link to="/services" className="nav-mega__item" onClick={() => setActiveDropdown(null)}>
+                              <Link to="/services#portfolio-websites" className="nav-mega__item" onClick={() => setActiveDropdown(null)}>
                                 <div className="nav-mega__item-title">Portfolio Websites</div>
                                 <div className="nav-mega__item-desc">Visual platforms for creatives.</div>
                               </Link>
-                              <Link to="/services" className="nav-mega__item" onClick={() => setActiveDropdown(null)}>
+                              <Link to="/services#landing-pages" className="nav-mega__item" onClick={() => setActiveDropdown(null)}>
                                 <div className="nav-mega__item-title">Landing Pages</div>
                                 <div className="nav-mega__item-desc">High-conversion marketing pages.</div>
                               </Link>
                             </div>
                             <div className="nav-mega__section">
                               <div className="nav-mega__section-title">What We Do</div>
-                              <Link to="/services" className="nav-mega__item" onClick={() => setActiveDropdown(null)}>
+                              <Link to="/services#seo-optimization" className="nav-mega__item" onClick={() => setActiveDropdown(null)}>
                                 <div className="nav-mega__item-title">SEO Optimization</div>
                                 <div className="nav-mega__item-desc">Boost your organic search visibility.</div>
                               </Link>
-                              <Link to="/services" className="nav-mega__item" onClick={() => setActiveDropdown(null)}>
+                              <Link to="/services#maintenance-&-care" className="nav-mega__item" onClick={() => setActiveDropdown(null)}>
                                 <div className="nav-mega__item-title">Maintenance & Care</div>
                                 <div className="nav-mega__item-desc">Keep your site running 24/7.</div>
                               </Link>
-                              <Link to="/services" className="nav-mega__item" onClick={() => setActiveDropdown(null)}>
+                              <Link to="/services#website-redesign" className="nav-mega__item" onClick={() => setActiveDropdown(null)}>
                                 <div className="nav-mega__item-title">Website Redesign</div>
                                 <div className="nav-mega__item-desc">Modernize your digital presence.</div>
                               </Link>
-                              <Link to="/services" className="nav-mega__item" onClick={() => setActiveDropdown(null)}>
+                              <Link to="/services#custom-solutions" className="nav-mega__item" onClick={() => setActiveDropdown(null)}>
                                 <div className="nav-mega__item-title">Custom Solutions</div>
                                 <div className="nav-mega__item-desc">Tailored web apps for your needs.</div>
                               </Link>
@@ -230,19 +230,19 @@ const Navbar = () => {
                           <div className="nav-mega__grid">
                             <div className="nav-mega__section">
                               <div className="nav-mega__section-title">Browse by Category</div>
-                              <Link to="/portfolio" className="nav-mega__item" onClick={() => setActiveDropdown(null)}>
+                              <Link to="/portfolio#business" className="nav-mega__item" onClick={() => setActiveDropdown(null)}>
                                 <div className="nav-mega__item-title">Business</div>
                                 <div className="nav-mega__item-desc">Corporate & agency websites.</div>
                               </Link>
-                              <Link to="/portfolio" className="nav-mega__item" onClick={() => setActiveDropdown(null)}>
+                              <Link to="/portfolio#e-commerce" className="nav-mega__item" onClick={() => setActiveDropdown(null)}>
                                 <div className="nav-mega__item-title">E-Commerce</div>
                                 <div className="nav-mega__item-desc">Online stores & marketplaces.</div>
                               </Link>
-                              <Link to="/portfolio" className="nav-mega__item" onClick={() => setActiveDropdown(null)}>
+                              <Link to="/portfolio#portfolio" className="nav-mega__item" onClick={() => setActiveDropdown(null)}>
                                 <div className="nav-mega__item-title">Portfolio</div>
                                 <div className="nav-mega__item-desc">Creative & personal showcases.</div>
                               </Link>
-                              <Link to="/portfolio" className="nav-mega__item" onClick={() => setActiveDropdown(null)}>
+                              <Link to="/portfolio#landing-pages" className="nav-mega__item" onClick={() => setActiveDropdown(null)}>
                                 <div className="nav-mega__item-title">Landing Pages</div>
                                 <div className="nav-mega__item-desc">Campaign & product pages.</div>
                               </Link>
@@ -510,25 +510,25 @@ const Navbar = () => {
                             {item.name === 'Services' && (
                               <div className="mobile-sub-menu">
                                 <div className="mobile-sub-title">What We Build</div>
-                                <Link to="/services" className="mobile-sub-link" onClick={() => setIsOpen(false)}>Business Websites</Link>
-                                <Link to="/services" className="mobile-sub-link" onClick={() => setIsOpen(false)}>E-Commerce Solutions</Link>
-                                <Link to="/services" className="mobile-sub-link" onClick={() => setIsOpen(false)}>Portfolio Websites</Link>
-                                <Link to="/services" className="mobile-sub-link" onClick={() => setIsOpen(false)}>Landing Pages</Link>
+                                <Link to="/services#business-websites" className="mobile-sub-link" onClick={() => setIsOpen(false)}>Business Websites</Link>
+                                <Link to="/services#e-commerce-solutions" className="mobile-sub-link" onClick={() => setIsOpen(false)}>E-Commerce Solutions</Link>
+                                <Link to="/services#portfolio-websites" className="mobile-sub-link" onClick={() => setIsOpen(false)}>Portfolio Websites</Link>
+                                <Link to="/services#landing-pages" className="mobile-sub-link" onClick={() => setIsOpen(false)}>Landing Pages</Link>
                                 
                                 <div className="mobile-sub-title">What We Do</div>
-                                <Link to="/services" className="mobile-sub-link" onClick={() => setIsOpen(false)}>SEO Optimization</Link>
-                                <Link to="/services" className="mobile-sub-link" onClick={() => setIsOpen(false)}>Maintenance & Care</Link>
-                                <Link to="/services" className="mobile-sub-link" onClick={() => setIsOpen(false)}>Website Redesign</Link>
-                                <Link to="/services" className="mobile-sub-link" onClick={() => setIsOpen(false)}>Custom Solutions</Link>
+                                <Link to="/services#seo-optimization" className="mobile-sub-link" onClick={() => setIsOpen(false)}>SEO Optimization</Link>
+                                <Link to="/services#maintenance-&-care" className="mobile-sub-link" onClick={() => setIsOpen(false)}>Maintenance & Care</Link>
+                                <Link to="/services#website-redesign" className="mobile-sub-link" onClick={() => setIsOpen(false)}>Website Redesign</Link>
+                                <Link to="/services#custom-solutions" className="mobile-sub-link" onClick={() => setIsOpen(false)}>Custom Solutions</Link>
                               </div>
                             )}
                             {item.name === 'Portfolio' && (
                               <div className="mobile-sub-menu">
                                 <div className="mobile-sub-title">Browse by Category</div>
-                                <Link to="/portfolio" className="mobile-sub-link" onClick={() => setIsOpen(false)}>Business</Link>
-                                <Link to="/portfolio" className="mobile-sub-link" onClick={() => setIsOpen(false)}>E-Commerce</Link>
-                                <Link to="/portfolio" className="mobile-sub-link" onClick={() => setIsOpen(false)}>Portfolio</Link>
-                                <Link to="/portfolio" className="mobile-sub-link" onClick={() => setIsOpen(false)}>Landing Pages</Link>
+                                <Link to="/portfolio#business" className="mobile-sub-link" onClick={() => setIsOpen(false)}>Business</Link>
+                                <Link to="/portfolio#e-commerce" className="mobile-sub-link" onClick={() => setIsOpen(false)}>E-Commerce</Link>
+                                <Link to="/portfolio#portfolio" className="mobile-sub-link" onClick={() => setIsOpen(false)}>Portfolio</Link>
+                                <Link to="/portfolio#landing-pages" className="mobile-sub-link" onClick={() => setIsOpen(false)}>Landing Pages</Link>
                                 
                                 <div className="mobile-sub-title">Featured</div>
                                 <Link to="/portfolio" className="mobile-sub-link mobile-sub-link--featured" onClick={() => setIsOpen(false)}>

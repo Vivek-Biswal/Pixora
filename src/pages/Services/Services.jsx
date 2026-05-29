@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { 
   Monitor, ShoppingCart, Smartphone, BarChart, 
   Settings, Zap, Shield, Search, ArrowRight, Check 
@@ -7,6 +7,22 @@ import {
 import ScrollAnimator from '../../components/ScrollAnimator';
 
 const Services = () => {
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.hash) {
+      setTimeout(() => {
+        const id = location.hash.replace('#', '');
+        const element = document.getElementById(id);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }, [location]);
+
   const allServices = [
     { 
       icon: <Monitor size={32} />, 
@@ -80,7 +96,13 @@ const Services = () => {
         <div className="container">
           <div className="grid-2">
             {allServices.map((service, i) => (
-              <ScrollAnimator key={i} animation="from-bottom" delay={`delay-${(i % 2) + 1}`} className="card service-detail-card">
+              <ScrollAnimator 
+                key={i} 
+                id={service.title.toLowerCase().replace(/\s+/g, '-')} 
+                animation="from-bottom" 
+                delay={`delay-${(i % 2) + 1}`} 
+                className="card service-detail-card"
+              >
                 <div className="icon-box" style={{ width: '60px', height: '60px' }}>{service.icon}</div>
                 <h3 style={{ marginBottom: 'var(--space-3)' }}>{service.title}</h3>
                 <p style={{ marginBottom: 'var(--space-6)' }}>{service.desc}</p>
