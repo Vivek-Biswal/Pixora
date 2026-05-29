@@ -97,10 +97,10 @@ const Contact = () => {
                   <div className="form-group">
                     <label className="form-label">Subject</label>
                     <select name="subject" value={formData.subject} onChange={handleChange} className="form-control">
-                      <option>New Project Inquiry</option>
-                      <option>General Support</option>
-                      <option>Partnership</option>
-                      <option>Job Opportunity</option>
+                      <option style={{ background: 'var(--color-bg)', color: 'var(--text-primary)' }}>New Project Inquiry</option>
+                      <option style={{ background: 'var(--color-bg)', color: 'var(--text-primary)' }}>General Support</option>
+                      <option style={{ background: 'var(--color-bg)', color: 'var(--text-primary)' }}>Partnership</option>
+                      <option style={{ background: 'var(--color-bg)', color: 'var(--text-primary)' }}>Job Opportunity</option>
                     </select>
                   </div>
                   <div className="form-group">
@@ -129,10 +129,10 @@ const Contact = () => {
                   <div className="icon-box" style={{ flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}><GmailIcon size={24} /></div>
                   <div>
                     <h4 style={{ marginBottom: '5px' }}>Official Support</h4>
-                    <a href="mailto:hello@pixora.studio"
+                    <a href="mailto:vivekbiswal2006@gmail.com"
                       style={{ color: 'var(--color-purple-light)',
                                fontWeight: '600', display: 'block' }}>
-                      hello@pixora.studio
+                      vivekbiswal2006@gmail.com
                     </a>
                     <p style={{ fontSize: '13px', color: 'var(--text-muted)',
                                 marginTop: '4px' }}>

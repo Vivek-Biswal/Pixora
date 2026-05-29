@@ -978,8 +978,9 @@ const Home = () => {
               Still have questions?{' '}
               <Link to="/contact"
                 style={{ color: 'var(--color-purple-light)',
-                         textDecoration: 'underline' }}>
-                Ask us directly →
+                         textDecoration: 'underline',
+                         whiteSpace: 'nowrap' }}>
+                Ask us directly &rarr;
               </Link>
             </p>
           </motion.div>

@@ -31,7 +31,7 @@ const RefundPolicy = () => {
 
                 <h2>1. Service Cancellation</h2>
                 <p>
-                  Clients may request to cancel a project at any time. Cancellation requests must be sent in writing to hello@pixora.studio.
+                  Clients may request to cancel a project at any time. Cancellation requests must be sent in writing to vivekbiswal2006@gmail.com.
                 </p>
 
                 <h2>2. Refund Eligibility</h2>
@@ -72,7 +72,7 @@ const RefundPolicy = () => {
                 <p>
                   If you have any questions regarding our refund and cancellation policy, please reach out to us:
                   <br />
-                  <strong>Email:</strong> hello@pixora.studio
+                  <strong>Email:</strong> vivekbiswal2006@gmail.com
                 </p>
               </div>
             </div>
