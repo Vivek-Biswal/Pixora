@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { Check, ArrowRight, ArrowLeft, Send, Sparkles, User, Briefcase, Calendar, AlertCircle, UploadCloud } from 'lucide-react';
+import { useNavigate, useLocation, useParams } from 'react-router-dom';
+import { Check, ArrowRight, ArrowLeft, Send, Sparkles, User, Briefcase, Calendar, AlertCircle, UploadCloud, FileText } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
 import ScrollAnimator from '../../components/ScrollAnimator';
 import { useAuth } from '../../context/AuthContext';
 import { submitProjectRequest } from '../../services/db';
+import { servicesConfig, defaultServiceConfig } from '../../config/servicesConfig';
 
 const Request = () => {
   const [step, setStep] = useState(1);
@@ -13,10 +14,15 @@ const Request = () => {
   const { isAuthenticated, user } = useAuth();
   const navigate = useNavigate();
 
+  const { serviceId } = useParams();
+  const config = servicesConfig[serviceId] || defaultServiceConfig;
+  const isSpecificService = !!servicesConfig[serviceId];
+
   // Temporary local state for form preserving
   const [formData, setFormData] = useState({
     name: '', company: '', email: '', phone: '',
-    category: '', description: '', budget: '', deadline: ''
+    category: config.categoryName || '', description: '', budget: '', deadline: '',
+    answers: {}
   });
   const [file, setFile] = useState(null);
 
@@ -25,6 +31,8 @@ const Request = () => {
     const savedData = localStorage.getItem('pixora_request_data');
     if (savedData) {
       setFormData(JSON.parse(savedData));
+    } else if (isSpecificService) {
+      setFormData(prev => ({ ...prev, category: config.categoryName }));
     }
     const savedStep = localStorage.getItem('pixora_request_step');
     if (savedStep && isAuthenticated) {
@@ -33,7 +41,7 @@ const Request = () => {
     } else if (savedStep && parseInt(savedStep, 10) === 4 && !isAuthenticated) {
       setStep(3); // push back if not auth
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, isSpecificService, config.categoryName]);
 
   // Save progress on change
   useEffect(() => {
@@ -43,6 +51,14 @@ const Request = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleAnswerChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      answers: { ...prev.answers, [name]: value }
+    }));
   };
 
   const nextStep = () => {
@@ -114,15 +130,28 @@ const Request = () => {
         <div style={{ position: 'absolute', top: '-50%', left: '50%', transform: 'translateX(-50%)', width: '100%', maxWidth: '800px', height: '800px', background: 'radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 60%)', filter: 'blur(60px)', zIndex: 0, pointerEvents: 'none' }} />
         <div className="container" style={{ position: 'relative', zIndex: 1 }}>
           <ScrollAnimator animation="fade-in">
-            <span className="section-badge">Start Your Project</span>
-            <h1 style={{ fontSize: 'var(--fs-h1)',
-                         letterSpacing: 'var(--ls-tightest)' }}>
-              Your Website Starts Here
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', marginBottom: 'var(--space-4)' }}>
+              {isSpecificService && <div style={{ background: 'rgba(139, 92, 246, 0.15)', color: 'var(--color-accent)', padding: '6px 12px', borderRadius: '20px', fontSize: '13px', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '6px' }}><FileText size={14} /> {config.categoryName}</div>}
+              <span className="section-badge" style={{ margin: 0 }}>Start Your Project</span>
+            </div>
+            <h1 style={{ fontSize: 'var(--fs-h1)', letterSpacing: 'var(--ls-tightest)', maxWidth: '800px', margin: '0 auto var(--space-4)' }}>
+              {config.heroTitle}
             </h1>
-            <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7 }}>
-              Takes 3 minutes. Free quote in 24 hours.
-              No technical knowledge needed.
+            <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7, maxWidth: '600px', margin: '0 auto' }}>
+              {config.heroSubtitle}
             </p>
+            {isSpecificService && (
+              <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', marginTop: 'var(--space-8)', flexWrap: 'wrap' }}>
+                <div style={{ background: 'var(--glass-bg)', border: '1px solid var(--border-subtle)', padding: '12px 20px', borderRadius: '12px', display: 'flex', flexDirection: 'column' }}>
+                  <span style={{ fontSize: '12px', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Starting from</span>
+                  <span style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-primary)' }}>{config.startingPrice}</span>
+                </div>
+                <div style={{ background: 'var(--glass-bg)', border: '1px solid var(--border-subtle)', padding: '12px 20px', borderRadius: '12px', display: 'flex', flexDirection: 'column' }}>
+                  <span style={{ fontSize: '12px', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Est. Delivery</span>
+                  <span style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-primary)' }}>{config.estimatedDelivery}</span>
+                </div>
+              </div>
+            )}
           </ScrollAnimator>
         </div>
       </section>
@@ -190,29 +219,67 @@ const Request = () => {
                       <Briefcase style={{ color: 'var(--color-accent)' }} />
                       <h3 style={{ margin: 0, fontSize: 'var(--fs-h4)' }}>Step 2: Project Details</h3>
                     </div>
-                    <div className="form-group">
-                      <label className="form-label" style={{ color: 'var(--text-secondary)' }}>Project Category</label>
-                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '12px' }}>
-                        {['Business Website', 'E-commerce', 'Portfolio', 'Redesign', 'Other'].map(cat => (
-                          <label key={cat} style={{ 
-                            padding: '16px 12px', borderRadius: '12px',
-                            display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center', cursor: 'pointer', fontSize: '14px', fontWeight: '500',
-                            background: formData.category === cat ? 'rgba(139, 92, 246, 0.15)' : 'var(--glass-bg)',
-                            border: '1px solid',
-                            borderColor: formData.category === cat ? 'var(--color-accent)' : 'var(--border-subtle)',
-                            color: formData.category === cat ? '#fff' : 'var(--text-secondary)',
-                            transition: 'all 0.2s ease',
-                            boxShadow: formData.category === cat ? '0 0 15px rgba(139, 92, 246, 0.2)' : 'none'
-                          }}>
-                            <input type="radio" name="category" value={cat} checked={formData.category === cat} onChange={handleChange} style={{ display: 'none' }} /> 
-                            {cat}
-                          </label>
+
+                    {!isSpecificService && (
+                      <div className="form-group">
+                        <label className="form-label" style={{ color: 'var(--text-secondary)' }}>Project Category</label>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '12px' }}>
+                          {['Business Website', 'E-commerce', 'Portfolio', 'Redesign', 'Other'].map(cat => (
+                            <label key={cat} style={{ 
+                              padding: '16px 12px', borderRadius: '12px',
+                              display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center', cursor: 'pointer', fontSize: '14px', fontWeight: '500',
+                              background: formData.category === cat ? 'rgba(139, 92, 246, 0.15)' : 'var(--glass-bg)',
+                              border: '1px solid',
+                              borderColor: formData.category === cat ? 'var(--color-accent)' : 'var(--border-subtle)',
+                              color: formData.category === cat ? '#fff' : 'var(--text-secondary)',
+                              transition: 'all 0.2s ease',
+                              boxShadow: formData.category === cat ? '0 0 15px rgba(139, 92, 246, 0.2)' : 'none'
+                            }}>
+                              <input type="radio" name="category" value={cat} checked={formData.category === cat} onChange={handleChange} style={{ display: 'none' }} /> 
+                              {cat}
+                            </label>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {config.questions && config.questions.length > 0 && (
+                      <div className="grid-2" style={{ marginBottom: 'var(--space-6)' }}>
+                        {config.questions.map((q, i) => (
+                          <div className="form-group" key={i} style={{ gridColumn: q.type === 'textarea' ? 'span 2' : 'span 1' }}>
+                            <label className="form-label">{q.label}</label>
+                            {q.type === 'text' && (
+                              <input type="text" name={q.name} value={formData.answers?.[q.name] || ''} onChange={handleAnswerChange} className="form-control" placeholder={q.placeholder} />
+                            )}
+                            {q.type === 'select' && (
+                              <select name={q.name} value={formData.answers?.[q.name] || ''} onChange={handleAnswerChange} className="form-control" style={{ background: 'var(--color-bg)', color: 'var(--text-primary)' }}>
+                                <option value="" style={{ background: 'var(--color-bg)', color: 'var(--text-primary)' }}>Select an option</option>
+                                {q.options.map(opt => (
+                                  <option key={opt} value={opt} style={{ background: 'var(--color-bg)', color: 'var(--text-primary)' }}>{opt}</option>
+                                ))}
+                              </select>
+                            )}
+                            {q.type === 'radio' && (
+                              <div style={{ display: 'flex', gap: '12px' }}>
+                                {q.options.map(opt => (
+                                  <label key={opt} style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+                                    <input type="radio" name={q.name} value={opt} checked={formData.answers?.[q.name] === opt} onChange={handleAnswerChange} />
+                                    {opt}
+                                  </label>
+                                ))}
+                              </div>
+                            )}
+                            {q.type === 'textarea' && (
+                              <textarea name={q.name} value={formData.answers?.[q.name] || ''} onChange={handleAnswerChange} className="form-control" placeholder={q.placeholder} style={{ height: '100px' }}></textarea>
+                            )}
+                          </div>
                         ))}
                       </div>
-                    </div>
+                    )}
+
                     <div className="form-group">
                       <label className="form-label">Description of your needs</label>
-                      <textarea name="description" value={formData.description} onChange={handleChange} className="form-control" placeholder="Tell us what you want to achieve..." style={{ height: '150px' }}></textarea>
+                      <textarea name="description" value={formData.description} onChange={handleChange} className="form-control" placeholder={config.placeholder} style={{ height: '150px' }}></textarea>
                     </div>
                     <div className="form-group">
                       <label className="form-label">Upload Reference Files (Temporarily Disabled)</label>
@@ -241,21 +308,18 @@ const Request = () => {
                       <label className="form-label">Estimated Budget</label>
                       <select name="budget" value={formData.budget} onChange={handleChange} className="form-control" style={{ background: 'var(--color-bg)', color: 'var(--text-primary)' }}>
                         <option value="" style={{ background: 'var(--color-bg)', color: 'var(--text-primary)' }}>Select budget</option>
-                        <option style={{ background: 'var(--color-bg)', color: 'var(--text-primary)' }}>₹50,000 - ₹1,00,000</option>
-                        <option style={{ background: 'var(--color-bg)', color: 'var(--text-primary)' }}>₹1,00,000 - ₹2,50,000</option>
-                        <option style={{ background: 'var(--color-bg)', color: 'var(--text-primary)' }}>₹2,50,000 - ₹5,00,000</option>
-                        <option style={{ background: 'var(--color-bg)', color: 'var(--text-primary)' }}>₹5,00,000 - ₹10,00,000</option>
-                        <option style={{ background: 'var(--color-bg)', color: 'var(--text-primary)' }}>₹10,00,000+</option>
+                        {config.budgets.map(b => (
+                          <option key={b} value={b} style={{ background: 'var(--color-bg)', color: 'var(--text-primary)' }}>{b}</option>
+                        ))}
                       </select>
                     </div>
                     <div className="form-group">
                       <label className="form-label">Desired Deadline</label>
                       <select name="deadline" value={formData.deadline} onChange={handleChange} className="form-control" style={{ background: 'var(--color-bg)', color: 'var(--text-primary)' }}>
                         <option value="" style={{ background: 'var(--color-bg)', color: 'var(--text-primary)' }}>Select timeline</option>
-                        <option style={{ background: 'var(--color-bg)', color: 'var(--text-primary)' }}>ASAP (Within 2 weeks)</option>
-                        <option style={{ background: 'var(--color-bg)', color: 'var(--text-primary)' }}>Within 1 month</option>
-                        <option style={{ background: 'var(--color-bg)', color: 'var(--text-primary)' }}>1-3 months</option>
-                        <option style={{ background: 'var(--color-bg)', color: 'var(--text-primary)' }}>No rush</option>
+                        {config.timelines.map(t => (
+                          <option key={t} value={t} style={{ background: 'var(--color-bg)', color: 'var(--text-primary)' }}>{t}</option>
+                        ))}
                       </select>
                     </div>
                   </ScrollAnimator>

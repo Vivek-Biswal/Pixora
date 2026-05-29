@@ -165,6 +165,7 @@ function App() {
           <Route path="/pricing" element={<SiteLayout><Pricing /></SiteLayout>} />
           <Route path="/contact" element={<SiteLayout><Contact /></SiteLayout>} />
           <Route path="/request" element={<SiteLayout><Request /></SiteLayout>} />
+          <Route path="/request/:serviceId" element={<SiteLayout><Request /></SiteLayout>} />
           <Route path="/privacy-policy" element={<SiteLayout><PrivacyPolicy /></SiteLayout>} />
           <Route path="/terms-conditions" element={<SiteLayout><TermsConditions /></SiteLayout>} />
           <Route path="/refund-policy" element={<SiteLayout><RefundPolicy /></SiteLayout>} />

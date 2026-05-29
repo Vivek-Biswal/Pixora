@@ -25,48 +25,56 @@ const Services = () => {
 
   const allServices = [
     { 
+      id: 'business-website',
       icon: <Monitor size={32} />, 
       title: "Business Websites", 
       desc: "Custom corporate solutions designed to build trust and authority in your industry.",
       features: ["Custom UI/UX Design", "Content Management System", "Mobile Responsive", "Speed Optimization"]
     },
     { 
+      id: 'ecommerce',
       icon: <ShoppingCart size={32} />, 
       title: "E-commerce Solutions", 
       desc: "Complete online stores that turn visitors into loyal customers.",
       features: ["Product Management", "Secure Checkout", "Inventory Tracking", "Payment Integration"]
     },
     { 
+      id: 'portfolio',
       icon: <Smartphone size={32} />, 
       title: "Portfolio Websites", 
       desc: "Visual storytelling platforms for creatives, architects, and designers.",
       features: ["High-Res Galleries", "Interactive Elements", "Brand Storytelling", "Contact Forms"]
     },
     { 
+      id: 'landing-page',
       icon: <Zap size={32} />, 
       title: "Landing Pages", 
       desc: "Focused single-page sites designed specifically for conversion and marketing.",
       features: ["A/B Testing Ready", "Copywriting Support", "Lead Generation", "CRM Integration"]
     },
     { 
+      id: 'seo',
       icon: <Search size={32} />, 
       title: "SEO Optimization", 
       desc: "Strategic search engine positioning to increase your organic visibility.",
       features: ["Keyword Research", "On-Page SEO", "Technical SEO Audit", "Monthly Reports"]
     },
     { 
+      id: 'maintenance',
       icon: <Settings size={32} />, 
       title: "Maintenance & Care", 
       desc: "Worry-free maintenance plans to keep your site running perfectly 24/7.",
       features: ["Daily Backups", "Security Monitoring", "Content Updates", "Priority Support"]
     },
     { 
+      id: 'redesign',
       icon: <Shield size={32} />, 
       title: "Website Redesign", 
       desc: "Breath new life into your existing site with a modern, fresh aesthetic.",
       features: ["Audit & Strategy", "Brand Modernization", "UX Improvement", "Tech Stack Upgrade"]
     },
     { 
+      id: 'custom',
       icon: <BarChart size={32} />, 
       title: "Custom Solutions", 
       desc: "Unique web applications and tools built specifically for your business logic.",
@@ -113,7 +121,7 @@ const Services = () => {
                     </li>
                   ))}
                 </ul>
-                <Link to="/request" className="btn btn--primary btn--sm">
+                <Link to={`/request/${service.id}`} className="btn btn--primary btn--sm">
                   Get Started <ArrowRight size={14} />
                 </Link>
               </ScrollAnimator>

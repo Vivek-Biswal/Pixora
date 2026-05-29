@@ -143,6 +143,7 @@ const Home = () => {
   /* ---- Data ---- */
   const services = [
     {
+      id: 'business-website',
       icon: <Monitor size={22} />,
       title: 'Business Websites',
       desc: 'A premium site that builds trust, captures leads, and ranks on Google.',
@@ -152,6 +153,7 @@ const Home = () => {
       featured: true,
     },
     {
+      id: 'ecommerce',
       icon: <ShoppingCart size={22} />,
       title: 'E-Commerce Stores',
       desc: 'Full online store with payments, inventory, and seamless checkout.',
@@ -161,6 +163,7 @@ const Home = () => {
       featured: false,
     },
     {
+      id: 'seo',
       icon: <Search size={22} />,
       title: 'SEO Optimization',
       desc: 'Rank on page 1 of Google. More traffic, more leads, zero guesswork.',
@@ -170,6 +173,7 @@ const Home = () => {
       featured: false,
     },
     {
+      id: 'maintenance',
       icon: <Settings size={22} />,
       title: 'Maintenance & Support',
       desc: '24/7 monitoring, updates, and fixes so your site never breaks.',
@@ -179,6 +183,7 @@ const Home = () => {
       featured: false,
     },
     {
+      id: 'landing-page',
       icon: <Zap size={22} />,
       title: 'Landing Pages',
       desc: 'Single-page conversion machines built for ads and campaigns.',
@@ -188,6 +193,7 @@ const Home = () => {
       featured: false,
     },
     {
+      id: 'custom',
       icon: <Layout size={22} />,
       title: 'Dashboard & CMS',
       desc: 'Manage your content yourself — no developer needed, ever.',
@@ -731,7 +737,7 @@ const Home = () => {
                 <span className="service-card__price">from {s.from}</span>
                 <p>{s.desc}</p>
                 <Link
-                  to="/request"
+                  to={`/request/${s.id}`}
                   className="service-card__cta"
                   aria-label={`Get started with ${s.title}`}
                 >
