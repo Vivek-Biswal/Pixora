@@ -81,7 +81,7 @@ const TermsConditions = () => {
 
                 <h2>11. Contact Information</h2>
                 <p>
-                  If you have any questions about these Terms, please contact us at vivekbiswal2006@gmail.com.
+                  If you have any questions about these Terms, please contact us at hi.pixora.studio@gmail.com.
                 </p>
               </div>
             </div>

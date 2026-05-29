@@ -41,7 +41,7 @@ const Footer = () => {
   };
 
   const socials = [
-    { icon: <GmailIcon size={16} />, href: 'mailto:vivekbiswal2006@gmail.com', label: 'Email' },
+    { icon: <GmailIcon size={16} />, href: 'mailto:hi.pixora.studio@gmail.com', label: 'Email' },
     { icon: <XIcon size={16} />, href: 'https://x.com/Pixora_Studio', label: 'X (Twitter)' },
     { icon: <InstagramIcon size={16} />, href: 'https://www.instagram.com/hi.pixora.studio?igsh=cWJ5Y2Z6OGQzZGw2', label: 'Instagram' },
     { icon: <GithubIcon size={16} />, href: 'https://github.com/Vivek-Biswal/Pixora.git', label: 'GitHub' },

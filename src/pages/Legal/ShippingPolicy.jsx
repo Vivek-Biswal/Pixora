@@ -65,7 +65,7 @@ const ShippingPolicy = () => {
 
                 <h2>5. Contact Us</h2>
                 <p>
-                  If you have any questions about how we deliver our services, please contact us at vivekbiswal2006@gmail.com.
+                  If you have any questions about how we deliver our services, please contact us at hi.pixora.studio@gmail.com.
                 </p>
               </div>
             </div>

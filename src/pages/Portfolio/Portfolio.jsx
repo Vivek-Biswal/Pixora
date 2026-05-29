@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ExternalLink, Eye, ArrowRight } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import ScrollAnimator from '../../components/ScrollAnimator';
@@ -6,12 +6,28 @@ import './Portfolio.css';
 
 const Portfolio = () => {
   const location = useLocation();
+  const [activeFilter, setActiveFilter] = useState('All');
+
+  const scrollToSection = (cat) => {
+    setActiveFilter(cat);
+    if (cat === 'All') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+    const id = cat.toLowerCase().replace(/\s+/g, '-');
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   useEffect(() => {
     if (location.hash) {
+      const hash = location.hash.replace('#', '');
+      const match = categories.find(c => c.toLowerCase().replace(/\s+/g, '-') === hash);
+      if (match) setActiveFilter(match);
       setTimeout(() => {
-        const id = location.hash.replace('#', '');
-        const element = document.getElementById(id);
+        const element = document.getElementById(hash);
         if (element) {
           element.scrollIntoView({ behavior: 'smooth' });
         }
@@ -33,6 +49,7 @@ const Portfolio = () => {
   ];
 
   const categories = ['Business', 'E-commerce', 'Portfolio', 'Landing Pages'];
+  const filterTabs = ['All', ...categories];
 
   return (
     <div className="portfolio-page" style={{ paddingTop: 'var(--navbar-height)' }}>
@@ -48,6 +65,23 @@ const Portfolio = () => {
               exceptional digital experiences.
             </p>
           </ScrollAnimator>
+        </div>
+      </section>
+
+      {/* Filter Bar */}
+      <section className="section" style={{ paddingBottom: 0 }}>
+        <div className="container">
+          <div className="portfolio-filters">
+            {filterTabs.map(cat => (
+              <button 
+                key={cat} 
+                className={`filter-btn ${activeFilter === cat ? 'active' : ''}`}
+                onClick={() => scrollToSection(cat)}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -102,3 +136,4 @@ const Portfolio = () => {
 };
 
 export default Portfolio;
+

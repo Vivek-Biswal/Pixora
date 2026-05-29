@@ -129,10 +129,10 @@ const Contact = () => {
                   <div className="icon-box" style={{ flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}><GmailIcon size={24} /></div>
                   <div>
                     <h4 style={{ marginBottom: '5px' }}>Official Support</h4>
-                    <a href="mailto:vivekbiswal2006@gmail.com"
+                    <a href="mailto:hi.pixora.studio@gmail.com"
                       style={{ color: 'var(--color-purple-light)',
                                fontWeight: '600', display: 'block' }}>
-                      vivekbiswal2006@gmail.com
+                      hi.pixora.studio@gmail.com
                     </a>
                     <p style={{ fontSize: '13px', color: 'var(--text-muted)',
                                 marginTop: '4px' }}>
