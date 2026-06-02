@@ -666,32 +666,35 @@ const Home = () => {
         </section>
       </div>
 
-      <div style={{ position: 'relative', zIndex: 10, background: 'var(--color-bg)' }}>
-        {/* ==================== CAPABILITIES (STACKED CARDS) ==================== */}
-        <section className="stacked-section" id="capabilities">
-        <div className="container stacked-layout">
+      {/* ==================== LOVABLE STYLE STACKED SECTION ==================== */}
+      <section className="lovable-stacked-section" id="capabilities">
+        <div className="container lovable-stacked-layout">
           {/* Left Column - Sticky Header */}
-          <div className="stacked-layout__left">
-            <motion.div className="section-header section-header--left" initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-80px' }} variants={fadeUp}>
-              <span className="section-badge">Capabilities</span>
-              <h2>Built for Growth</h2>
-              <p>We don't just build websites; we build scalable digital engines for your business.</p>
+          <div className="lovable-stacked-left">
+            <motion.div 
+              className="lovable-header" 
+              initial="hidden" 
+              whileInView="visible" 
+              viewport={{ once: true, margin: '-80px' }} 
+              variants={fadeUp}
+            >
+              <h2>Built to<br />be found</h2>
+              <p className="lovable-subtitle">Your apps are discoverable the moment you publish</p>
+              <p className="lovable-desc">
+                We don't just build websites; we build scalable digital engines for your business. 
+                Fast, secure, and fully optimized for search engines so your customers can always find you.
+              </p>
             </motion.div>
           </div>
 
           {/* Right Column - Scrolling Cards */}
-          <div className="stacked-layout__right">
-            <div className="stacked-cards">
+          <div className="lovable-stacked-right">
+            <div className="lovable-cards">
               {capabilities.map((cap, i) => (
-                <div key={i} className="stacked-card" style={{ top: `calc(120px + ${i * 30}px)` }}>
-                  <div className="stacked-card__inner">
-                    <div className="stacked-card__icon" style={{ color: cap.color, backgroundColor: `color-mix(in srgb, ${cap.color} 15%, transparent)` }}>
-                      {cap.icon}
-                    </div>
-                    <div className="stacked-card__content">
-                      <h3>{cap.title}</h3>
-                      <p>{cap.desc}</p>
-                    </div>
+                <div key={i} className="lovable-card" style={{ top: `calc(120px + ${i * 40}px)` }}>
+                  <div className="lovable-card-inner">
+                    <h3>{cap.title}</h3>
+                    <p>{cap.desc}</p>
                   </div>
                 </div>
               ))}
@@ -699,7 +702,6 @@ const Home = () => {
           </div>
         </div>
       </section>
-      </div>
 
       {/* ==================== SERVICES ==================== */}
       <Section className="section" id="services">

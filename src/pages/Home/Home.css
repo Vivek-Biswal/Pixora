@@ -1057,103 +1057,114 @@
   z-index: 1;
 }
 
-/* ---- Stacked Cards Section ---- */
-.stacked-section {
-  padding: var(--space-24) 0;
+/* ---- Lovable Style Stacked Section ---- */
+.lovable-stacked-section {
+  padding: var(--space-32) 0;
   position: relative;
+  background: linear-gradient(to bottom, #fcfaf8, #f5f0e6);
+  color: #111;
+  z-index: 10;
 }
-.stacked-layout {
+.lovable-stacked-layout {
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--space-12);
 }
 @media (min-width: 1024px) {
-  .stacked-layout {
+  .lovable-stacked-layout {
     grid-template-columns: 400px 1fr;
-    gap: var(--space-16);
+    gap: var(--space-20);
     align-items: start;
   }
-  .stacked-layout__left {
+  .lovable-stacked-left {
     position: sticky;
-    top: calc(var(--navbar-height) + 60px);
+    top: calc(var(--navbar-height) + 120px);
   }
 }
-.section-header.section-header--left {
+
+/* Left side header */
+.lovable-header {
   text-align: left;
-  margin-bottom: 0;
-  margin-inline: 0;
-  max-width: 100%;
 }
-.section-header--left h2 {
-  margin-left: 0;
-  margin-right: 0;
-  font-size: var(--fs-display);
-  font-weight: var(--fw-extrabold);
-  line-height: 1;
-  letter-spacing: var(--ls-tightest);
-  max-width: 12ch;
+.lovable-header h2 {
+  font-size: 56px;
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  color: #111;
+  margin-bottom: var(--space-6);
 }
-.section-header--left p {
-  font-size: var(--fs-body-lg);
-  max-width: 32ch;
+.lovable-subtitle {
+  font-size: 20px;
+  font-weight: 600;
+  color: #4b5563;
+  margin-bottom: var(--space-6);
+  line-height: 1.4;
+}
+.lovable-desc {
+  font-size: 16px;
+  color: #6b7280;
   line-height: 1.6;
 }
-.stacked-section {
-  padding: var(--space-32) 0;
-  position: relative;
-}
-.stacked-cards {
-  max-width: 100%;
-  margin: 0;
+
+/* Right side stacked cards */
+.lovable-cards {
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: var(--space-6);
-  padding-bottom: var(--space-20);
+  padding-bottom: var(--space-32);
 }
-.stacked-card {
+.lovable-card {
   position: sticky;
   top: calc(var(--navbar-height) + 40px);
-  padding-top: var(--space-4);
   transform-origin: top center;
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  /* Top border to simulate the card edge clearly */
+  border-top: 1px solid rgba(0,0,0,0.04);
+  border-radius: 32px 32px 0 0;
 }
-.stacked-card__inner {
-  background: var(--color-surface-2);
-  border: 1px solid var(--border-subtle);
-  border-top: 1px solid var(--border-strong);
-  border-radius: var(--radius-2xl);
-  padding: var(--space-12) var(--space-10);
-  display: flex;
-  gap: var(--space-8);
-  align-items: flex-start;
-  box-shadow: 0 -15px 40px rgba(0,0,0,0.4), 0 20px 40px rgba(0,0,0,0.4);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+
+/* To hide the bottom corners visually, we make the cards long or use a wrapper */
+.lovable-card-inner {
+  background: #fdfdfc;
+  border-radius: 32px;
+  padding: 48px;
+  min-height: 280px;
+  box-shadow: 0 -12px 32px rgba(0,0,0,0.06), 0 4px 20px rgba(0,0,0,0.02);
+  border: 1px solid rgba(0,0,0,0.06);
+  border-top: 1px solid #ffffff; /* inner highlight */
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
 }
-.stacked-card__inner:hover {
-  border-color: var(--border-strong);
-  border-top-color: var(--border-accent);
-  box-shadow: 0 -20px 60px rgba(0,0,0,0.6), 0 0 40px rgba(139,92,246,0.1);
-  transform: translateY(-4px);
+
+.lovable-card:hover .lovable-card-inner {
+  box-shadow: 0 -16px 40px rgba(0,0,0,0.08), 0 8px 30px rgba(0,0,0,0.04);
+  transform: translateY(-2px);
 }
-.stacked-card__icon {
-  width: 64px; height: 64px;
-  border-radius: var(--radius-xl);
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-  border: 1px solid var(--border-subtle);
-}
-.stacked-card__content h3 {
-  font-size: var(--fs-h3);
+
+.lovable-card-inner h3 {
+  font-size: 32px;
+  font-weight: 800;
+  color: #111;
   margin-bottom: var(--space-4);
-  color: var(--text-primary);
+  letter-spacing: -0.03em;
 }
-.stacked-card__content p {
-  font-size: var(--fs-body-lg);
-  color: var(--text-secondary);
-  line-height: 1.7;
+
+.lovable-card-inner p {
+  font-size: 16px;
+  color: #4b5563;
+  line-height: 1.6;
+  max-width: 500px;
+}
+
+@media (max-width: 768px) {
+  .lovable-header h2 {
+    font-size: 40px;
+  }
+  .lovable-card-inner {
+    padding: 32px;
+  }
+  .lovable-card-inner h3 {
+    font-size: 24px;
+  }
 }
 
 /* ---- Testimonials Marquee ---- */
