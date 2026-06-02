@@ -1111,7 +1111,7 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  padding-bottom: var(--space-10);
+  padding-bottom: 60vh; /* Extremely important for the final card to stick */
 }
 .lovable-card {
   position: sticky;
@@ -1119,7 +1119,7 @@
   transform-origin: top center;
   border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
   /* Add margin bottom to space them out so they stack during scroll */
-  margin-bottom: 25vh;
+  margin-bottom: 35vh;
 }
 .lovable-card:last-child {
   margin-bottom: 0;
@@ -1133,7 +1133,8 @@
   border: 1px solid var(--border-subtle);
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: var(--radius-2xl);
-  padding: var(--space-10) var(--space-8);
+  padding: var(--space-12) var(--space-10);
+  min-height: 340px;
   box-shadow: 0 -15px 40px rgba(0,0,0,0.6), 0 20px 40px rgba(0,0,0,0.4);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
@@ -1148,14 +1149,19 @@
 }
 
 .lovable-card-icon {
-  width: 64px;
-  height: 64px;
+  width: 72px;
+  height: 72px;
   border-radius: var(--radius-xl);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
   border: 1px solid var(--border-subtle);
+}
+
+.lovable-card-icon svg {
+  width: 32px;
+  height: 32px;
 }
 
 .lovable-card-content h3 {

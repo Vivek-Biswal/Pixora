@@ -313,21 +313,27 @@ const Home = () => {
   const capabilities = [
     {
       title: 'Lightning Fast Performance',
-      desc: 'We build on modern stacks like React and Next.js, ensuring your website loads in milliseconds. Faster sites mean better SEO and higher conversion rates.',
-      icon: <Zap size={28} />,
+      desc: 'We build on modern stacks like React and Vite, ensuring your website loads in milliseconds. Faster sites mean better SEO, lower bounce rates, and significantly higher conversion rates. We optimize every asset, implement lazy loading, and serve content from edge networks to guarantee a flawless experience.',
+      icon: <Zap size={32} />,
       color: 'var(--color-purple)'
     },
     {
       title: 'SEO Optimized by Default',
-      desc: 'Every site comes with technical SEO built-in. From meta tags to semantic HTML and schema markup, we ensure Google loves your website.',
-      icon: <Search size={28} />,
+      desc: 'Every site comes with technical SEO built-in from day one. We implement semantic HTML, perfectly structured schema markup, optimized meta tags, and clean URLs. We make sure Google and AI crawlers can effortlessly read and index your content, pushing you higher up the search results.',
+      icon: <Search size={32} />,
       color: 'var(--color-blue)'
     },
     {
       title: 'Conversion Focused Design',
-      desc: 'Beautiful is good, but profitable is better. Our designs are driven by data and psychology to turn your visitors into paying customers.',
-      icon: <BarChart3 size={28} />,
+      desc: 'Beautiful is good, but profitable is better. Our designs are driven by data, heatmaps, and buyer psychology to turn your visitors into paying customers. We strategically place clear calls-to-action, optimize user journeys, and remove friction from the buying process.',
+      icon: <BarChart3 size={32} />,
       color: 'var(--color-pink)'
+    },
+    {
+      title: 'Bulletproof Security & Scale',
+      desc: 'Your business data is safe with us. We implement enterprise-grade security protocols, secure authentication, and scalable database architectures (like Firebase and PostgreSQL). Whether you have 100 visitors or 100,000, your site will remain stable, secure, and blazing fast.',
+      icon: <Shield size={32} />,
+      color: 'var(--color-green)'
     }
   ];
 
@@ -691,7 +697,7 @@ const Home = () => {
           <div className="lovable-stacked-right">
             <div className="lovable-cards">
               {capabilities.map((cap, i) => (
-                <div key={i} className="lovable-card" style={{ top: `calc(120px + ${i * 40}px)` }}>
+                <div key={i} className="lovable-card" style={{ top: `calc(120px + ${i * 60}px)` }}>
                   <div className="lovable-card-inner">
                     <div className="lovable-card-icon" style={{ color: cap.color, backgroundColor: `color-mix(in srgb, ${cap.color} 15%, transparent)` }}>
                       {cap.icon}
