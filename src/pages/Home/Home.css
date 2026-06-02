@@ -1057,12 +1057,11 @@
   z-index: 1;
 }
 
-/* ---- Lovable Style Stacked Section ---- */
+/* ---- Lovable Style Stacked Section (Dark Theme) ---- */
 .lovable-stacked-section {
-  padding: var(--space-32) 0;
+  padding: var(--space-24) 0;
   position: relative;
-  background: linear-gradient(to bottom, #fcfaf8, #f5f0e6);
-  color: #111;
+  background: transparent;
   z-index: 10;
 }
 .lovable-stacked-layout {
@@ -1073,12 +1072,12 @@
 @media (min-width: 1024px) {
   .lovable-stacked-layout {
     grid-template-columns: 400px 1fr;
-    gap: var(--space-20);
+    gap: var(--space-16);
     align-items: start;
   }
   .lovable-stacked-left {
     position: sticky;
-    top: calc(var(--navbar-height) + 120px);
+    top: calc(var(--navbar-height) + 60px);
   }
 }
 
@@ -1087,23 +1086,23 @@
   text-align: left;
 }
 .lovable-header h2 {
-  font-size: 56px;
-  font-weight: 800;
-  line-height: 1.05;
-  letter-spacing: -0.04em;
-  color: #111;
+  font-size: var(--fs-display);
+  font-weight: var(--fw-extrabold);
+  line-height: 1.1;
+  letter-spacing: var(--ls-tightest);
+  color: var(--text-primary);
   margin-bottom: var(--space-6);
 }
 .lovable-subtitle {
-  font-size: 20px;
-  font-weight: 600;
-  color: #4b5563;
-  margin-bottom: var(--space-6);
+  font-size: var(--fs-h4);
+  font-weight: var(--fw-semibold);
+  color: var(--color-purple-light);
+  margin-bottom: var(--space-4);
   line-height: 1.4;
 }
 .lovable-desc {
-  font-size: 16px;
-  color: #6b7280;
+  font-size: var(--fs-body-lg);
+  color: var(--text-secondary);
   line-height: 1.6;
 }
 
@@ -1112,58 +1111,65 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  padding-bottom: var(--space-32);
+  padding-bottom: var(--space-10);
 }
 .lovable-card {
   position: sticky;
   top: calc(var(--navbar-height) + 40px);
   transform-origin: top center;
-  /* Top border to simulate the card edge clearly */
-  border-top: 1px solid rgba(0,0,0,0.04);
-  border-radius: 32px 32px 0 0;
+  border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
+  /* Add margin bottom to space them out so they stack during scroll */
+  margin-bottom: 25vh;
+}
+.lovable-card:last-child {
+  margin-bottom: 0;
 }
 
-/* To hide the bottom corners visually, we make the cards long or use a wrapper */
 .lovable-card-inner {
-  background: #fdfdfc;
-  border-radius: 32px;
-  padding: 48px;
-  min-height: 280px;
-  box-shadow: 0 -12px 32px rgba(0,0,0,0.06), 0 4px 20px rgba(0,0,0,0.02);
-  border: 1px solid rgba(0,0,0,0.06);
-  border-top: 1px solid #ffffff; /* inner highlight */
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+  background: var(--color-surface-2);
+  border: 1px solid var(--border-subtle);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-10) var(--space-8);
+  box-shadow: 0 -15px 40px rgba(0,0,0,0.6), 0 20px 40px rgba(0,0,0,0.4);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease, border-color 0.4s ease;
 }
 
 .lovable-card:hover .lovable-card-inner {
-  box-shadow: 0 -16px 40px rgba(0,0,0,0.08), 0 8px 30px rgba(0,0,0,0.04);
-  transform: translateY(-2px);
+  border-color: var(--border-strong);
+  border-top-color: var(--border-accent);
+  box-shadow: 0 -20px 60px rgba(0,0,0,0.8), 0 0 40px rgba(139,92,246,0.1);
+  transform: translateY(-4px);
 }
 
 .lovable-card-inner h3 {
-  font-size: 32px;
-  font-weight: 800;
-  color: #111;
+  font-size: var(--fs-h2);
+  font-weight: var(--fw-bold);
+  color: var(--text-primary);
   margin-bottom: var(--space-4);
-  letter-spacing: -0.03em;
+  letter-spacing: -0.02em;
 }
 
 .lovable-card-inner p {
-  font-size: 16px;
-  color: #4b5563;
+  font-size: var(--fs-body-lg);
+  color: var(--text-secondary);
   line-height: 1.6;
-  max-width: 500px;
 }
 
 @media (max-width: 768px) {
   .lovable-header h2 {
-    font-size: 40px;
+    font-size: var(--fs-h1);
   }
   .lovable-card-inner {
-    padding: 32px;
+    padding: var(--space-6);
   }
   .lovable-card-inner h3 {
-    font-size: 24px;
+    font-size: var(--fs-h3);
+  }
+  .lovable-card {
+    margin-bottom: 10vh;
   }
 }
 
