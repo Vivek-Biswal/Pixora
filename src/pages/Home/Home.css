@@ -1126,6 +1126,9 @@
 }
 
 .lovable-card-inner {
+  display: flex;
+  gap: var(--space-8);
+  align-items: flex-start;
   background: var(--color-surface-2);
   border: 1px solid var(--border-subtle);
   border-top: 1px solid rgba(255, 255, 255, 0.1);
@@ -1144,7 +1147,18 @@
   transform: translateY(-4px);
 }
 
-.lovable-card-inner h3 {
+.lovable-card-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-xl);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1px solid var(--border-subtle);
+}
+
+.lovable-card-content h3 {
   font-size: var(--fs-h2);
   font-weight: var(--fw-bold);
   color: var(--text-primary);
@@ -1152,7 +1166,7 @@
   letter-spacing: -0.02em;
 }
 
-.lovable-card-inner p {
+.lovable-card-content p {
   font-size: var(--fs-body-lg);
   color: var(--text-secondary);
   line-height: 1.6;
