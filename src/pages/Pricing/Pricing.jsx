@@ -8,30 +8,36 @@ const Pricing = () => {
 
   const plans = [
     {
-      name: "Starter",
+      name: "Basic",
+      tagline: "Perfect for local businesses",
       icon: <Zap size={24} />,
-      price: billing === 'project' ? "499" : "99",
-      period: billing === 'project' ? "project" : "mo",
-      desc: "Perfect for personal brands and small landing pages.",
-      features: ["3 Pages Custom Design", "Mobile Responsive", "Basic SEO Setup", "1 Week Turnaround", "3 Months Support"],
+      price: "24,999",
+      period: "one-time",
+      delivery: "5-7 days",
+      desc: "Get your business online quickly with a beautiful, fast, and SEO-ready website.",
+      features: ["Up to 5 pages", "Mobile responsive", "Contact form", "Basic SEO setup", "Google Maps embed", "3 months support"],
       popular: false
     },
     {
-      name: "Professional",
+      name: "Business",
+      tagline: "Most chosen by growing brands",
       icon: <Award size={24} />,
-      price: billing === 'project' ? "999" : "199",
-      period: billing === 'project' ? "project" : "mo",
-      desc: "Ideal for growing businesses needing a full corporate site.",
-      features: ["8 Pages Custom Design", "Advanced SEO Setup", "CMS Integration", "2 Weeks Turnaround", "1 Year Support", "Speed Optimization"],
+      price: "49,999",
+      period: "one-time",
+      delivery: "7-10 days",
+      desc: "A powerful digital presence with content management and advanced marketing tools.",
+      features: ["Up to 12 pages", "CMS (edit yourself)", "Advanced SEO + Analytics", "WhatsApp chat button", "Blog or news section", "1 year support", "Speed optimization"],
       popular: true
     },
     {
-      name: "Premium",
+      name: "E-Commerce",
+      tagline: "Sell online from day one",
       icon: <Rocket size={24} />,
-      price: billing === 'project' ? "2499" : "499",
-      period: billing === 'project' ? "project" : "mo",
-      desc: "Complete digital solution with e-commerce and apps.",
-      features: ["Unlimited Pages", "E-commerce System", "Custom App Logic", "4 Weeks Turnaround", "Lifetime Support", "Priority Updates", "Full Marketing Integration"],
+      price: "89,999",
+      period: "one-time",
+      delivery: "10-14 days",
+      desc: "Complete digital storefront with payments, inventory, and order management.",
+      features: ["Unlimited products", "Razorpay / UPI payments", "Order management panel", "Inventory tracking", "Coupon & discount system", "Lifetime support", "Full ownership"],
       popular: false
     }
   ];
@@ -46,56 +52,10 @@ const Pricing = () => {
         <div className="container" style={{ position: 'relative', zIndex: 1 }}>
           <ScrollAnimator animation="fade-in">
             <span className="section-badge">Pricing</span>
-            <h1 style={{ marginBottom: 'var(--space-4)', fontSize: 'var(--fs-h1)', letterSpacing: 'var(--ls-tightest)' }}>Transparent Pricing</h1>
+            <h1 style={{ marginBottom: 'var(--space-4)', fontSize: 'var(--fs-h1)', letterSpacing: 'var(--ls-tightest)' }}>Simple Pricing. You Own It Forever.</h1>
             <p style={{ maxWidth: '600px', margin: '0 auto', marginBottom: 'var(--space-10)', fontSize: 'var(--fs-lg)', color: 'var(--text-secondary)' }}>
-              No hidden fees. Choose the plan that fits your business stage.
+              One-time payment. No monthly fees. No hidden costs. Your website, your code, your ownership — always.
             </p>
-            
-            {/* Premium Toggle */}
-            <div style={{ 
-              display: 'inline-flex', 
-              background: 'rgba(255,255,255,0.03)', 
-              padding: '6px', 
-              borderRadius: '999px',
-              border: '1px solid rgba(255,255,255,0.05)',
-              position: 'relative'
-            }}>
-              {['project', 'monthly'].map((type) => (
-                <button
-                  key={type}
-                  onClick={() => setBilling(type)}
-                  style={{
-                    position: 'relative',
-                    padding: '10px 24px',
-                    borderRadius: '999px',
-                    border: 'none',
-                    background: 'transparent',
-                    color: billing === type ? '#fff' : 'var(--text-secondary)',
-                    fontWeight: billing === type ? '600' : '500',
-                    fontSize: '14px',
-                    cursor: 'pointer',
-                    zIndex: 1,
-                    transition: 'color 0.2s ease'
-                  }}
-                >
-                  {billing === type && (
-                    <motion.div
-                      layoutId="pricing-toggle"
-                      style={{
-                        position: 'absolute',
-                        inset: 0,
-                        background: 'linear-gradient(135deg, var(--color-purple), #60a5fa)',
-                        borderRadius: '999px',
-                        zIndex: -1,
-                        boxShadow: '0 4px 15px rgba(139,92,246,0.3)'
-                      }}
-                      transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                    />
-                  )}
-                  {type === 'project' ? 'Project-based' : 'Monthly Retainer'}
-                </button>
-              ))}
-            </div>
           </ScrollAnimator>
         </div>
       </section>
@@ -129,28 +89,44 @@ const Pricing = () => {
                     MOST POPULAR
                   </div>
                 )}
-                <div className="icon-box" style={{ background: plan.popular ? 'rgba(139,92,246,0.15)' : 'var(--glass-bg-hover)', color: plan.popular ? 'var(--color-accent)' : 'var(--text-secondary)' }}>
-                  {plan.icon}
+                
+                <h3 style={{ fontSize: 'var(--fs-h3)', marginBottom: '4px' }}>{plan.name}</h3>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '14px', marginBottom: 'var(--space-6)' }}>
+                  {plan.tagline}
+                </p>
+
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', marginBottom: 'var(--space-6)' }}>
+                  <span style={{ fontSize: 'var(--fs-display)', fontWeight: 'var(--fw-black)', color: 'var(--text-primary)', letterSpacing: 'var(--ls-tightest)' }}>₹{plan.price}</span>
+                  <span style={{ color: 'var(--text-muted)' }}>{plan.period}</span>
                 </div>
-                <h3>{plan.name}</h3>
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px', margin: 'var(--space-4) 0' }}>
-                  <span style={{ fontSize: 'var(--fs-h2)', fontWeight: 'var(--fw-black)', color: 'var(--text-primary)', letterSpacing: 'var(--ls-tightest)' }}>₹{plan.price}</span>
-                  <span style={{ color: 'var(--text-muted)' }}>/{plan.period}</span>
+
+                <div style={{ 
+                  background: 'rgba(139,92,246,0.1)', 
+                  color: 'var(--color-purple-light)', 
+                  padding: '8px 12px', 
+                  borderRadius: '8px', 
+                  fontSize: '13px', 
+                  fontWeight: '600',
+                  marginBottom: 'var(--space-8)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px'
+                }}>
+                  <Rocket size={14} /> {plan.delivery}
                 </div>
-                <p style={{ fontSize: '14px', marginBottom: 'var(--space-8)', color: 'var(--text-secondary)' }}>{plan.desc}</p>
                 
                 <hr style={{ border: 'none', borderTop: '1px solid var(--border-subtle)', marginBottom: 'var(--space-8)' }} />
                 
                 <ul style={{ marginBottom: 'var(--space-10)' }}>
                   {plan.features.map((feat, idx) => (
-                    <li key={idx} style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px', fontSize: '14px' }}>
-                      <Check size={16} color="var(--color-blue)" /> {feat}
+                    <li key={idx} style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px', fontSize: '14px', color: 'var(--text-secondary)' }}>
+                      <Check size={16} color="var(--color-purple-light)" /> {feat}
                     </li>
                   ))}
                 </ul>
                 
                 <button className={`btn ${plan.popular ? 'btn--primary' : 'btn--outline'} btn--block`} style={{ width: '100%' }}>
-                  Choose {plan.name} <ArrowRight size={16} />
+                  Get Started <ArrowRight size={16} />
                 </button>
               </ScrollAnimator>
             ))}
