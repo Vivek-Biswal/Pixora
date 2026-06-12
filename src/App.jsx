@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { MessageCircle, X } from 'lucide-react';
+import toast, { Toaster } from 'react-hot-toast';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 
@@ -26,12 +27,15 @@ import PrivacyPolicy from './pages/Legal/PrivacyPolicy.jsx';
 import TermsConditions from './pages/Legal/TermsConditions.jsx';
 import RefundPolicy from './pages/Legal/RefundPolicy.jsx';
 import ShippingPolicy from './pages/Legal/ShippingPolicy.jsx';
+import SettingsStub from './pages/Settings/Settings.jsx';
+import NotificationsStub from './pages/Notifications/Notifications.jsx';
 import { AuthProvider, useAuth } from './context/AuthContext.jsx';
 import { ThemeProvider } from './context/ThemeContext.jsx';
 
 // ─── Protected Route ────────────────────────────────────────────────────────
 const ProtectedRoute = ({ children, adminOnly = false }) => {
   const { user, isAuthenticated, loading } = useAuth();
+  const navigate = useNavigate();
 
   if (loading) {
     return (
@@ -46,7 +50,10 @@ const ProtectedRoute = ({ children, adminOnly = false }) => {
   }
 
   if (!isAuthenticated) return <Navigate to="/login" replace />;
-  if (adminOnly && user?.role !== 'admin') return <Navigate to="/dashboard" replace />;
+  if (adminOnly && user?.role !== 'admin') {
+    setTimeout(() => toast.error('Not authorized to access Admin panel'), 100);
+    return <Navigate to="/dashboard" replace />;
+  }
 
   return children;
 };
@@ -180,6 +187,26 @@ function App() {
           <Route path="/dashboard" element={
             <ProtectedRoute>
               <ClientDashboard />
+            </ProtectedRoute>
+          } />
+          <Route path="/profile" element={
+            <ProtectedRoute>
+              <ClientDashboard defaultTab="profile" />
+            </ProtectedRoute>
+          } />
+          <Route path="/billing" element={
+            <ProtectedRoute>
+              <ClientDashboard defaultTab="billing" />
+            </ProtectedRoute>
+          } />
+          <Route path="/settings" element={
+            <ProtectedRoute>
+              <SettingsStub />
+            </ProtectedRoute>
+          } />
+          <Route path="/notifications" element={
+            <ProtectedRoute>
+              <NotificationsStub />
             </ProtectedRoute>
           } />
           <Route path="/admin" element={

@@ -343,19 +343,30 @@ const Navbar = () => {
 
                       {/* Body */}
                       <div className="profile-dropdown__body">
+                        {user?.role === 'admin' && (
+                          <Link
+                            to="/admin"
+                            className={`profile-dropdown__item ${location.pathname === '/admin' ? 'active' : ''}`}
+                            onClick={() => setProfileOpen(false)}
+                          >
+                            <LayoutDashboard size={16} />
+                            Admin Dashboard
+                            <ChevronRight size={14} style={{ marginLeft: 'auto', opacity: 0.4 }} />
+                          </Link>
+                        )}
+
                         <Link
-                          to={user?.role === 'admin' ? '/admin' : '/dashboard'}
-                          className="profile-dropdown__item"
+                          to="/dashboard"
+                          className={`profile-dropdown__item ${location.pathname === '/dashboard' ? 'active' : ''}`}
                           onClick={() => setProfileOpen(false)}
                         >
                           <LayoutDashboard size={16} />
                           Dashboard
-                          <ChevronRight size={14} style={{ marginLeft: 'auto', opacity: 0.4 }} />
                         </Link>
 
                         <Link
-                          to="/dashboard"
-                          className="profile-dropdown__item"
+                          to="/profile"
+                          className={`profile-dropdown__item ${location.pathname === '/profile' ? 'active' : ''}`}
                           onClick={() => setProfileOpen(false)}
                         >
                           <User size={16} />
@@ -363,8 +374,8 @@ const Navbar = () => {
                         </Link>
 
                         <Link
-                          to="/dashboard"
-                          className="profile-dropdown__item"
+                          to="/settings"
+                          className={`profile-dropdown__item ${location.pathname === '/settings' ? 'active' : ''}`}
                           onClick={() => setProfileOpen(false)}
                         >
                           <Settings size={16} />
@@ -386,8 +397,8 @@ const Navbar = () => {
                         </button>
 
                         <Link
-                          to="/dashboard"
-                          className="profile-dropdown__item"
+                          to="/notifications"
+                          className={`profile-dropdown__item ${location.pathname === '/notifications' ? 'active' : ''}`}
                           onClick={() => setProfileOpen(false)}
                         >
                           <Bell size={16} />
@@ -395,8 +406,8 @@ const Navbar = () => {
                         </Link>
 
                         <Link
-                          to="/pricing"
-                          className="profile-dropdown__item"
+                          to="/billing"
+                          className={`profile-dropdown__item ${location.pathname === '/billing' ? 'active' : ''}`}
                           onClick={() => setProfileOpen(false)}
                         >
                           <CreditCard size={16} />

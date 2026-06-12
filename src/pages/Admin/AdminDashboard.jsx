@@ -3,7 +3,7 @@ import { LayoutDashboard, FileText, Users, MessageSquare, TrendingUp, LogOut, Be
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
 import { useNavigate, Link } from 'react-router-dom';
-import { collection, query, orderBy, onSnapshot, updateDoc, doc, getDocs } from 'firebase/firestore';
+import { collection, query, orderBy, onSnapshot, updateDoc, doc, getDocs, addDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 import toast, { Toaster } from 'react-hot-toast';
 import './Dashboard.css';
@@ -28,7 +28,28 @@ const AdminDashboard = () => {
     return () => { u1(); u2(); };
   }, []);
 
-  const updateStatus = async (id, status) => { try { await updateDoc(doc(db, 'project_requests', id), { status }); toast.success(`Status → ${status}`); } catch { toast.error('Failed'); } };
+  const updateStatus = async (id, status) => { 
+    try { 
+      await updateDoc(doc(db, 'project_requests', id), { status }); 
+      toast.success(`Status → ${status}`); 
+      
+      if (status === 'completed') {
+        const req = requests.find(r => r.id === id);
+        if (req && req.userId) {
+          await addDoc(collection(db, 'users', req.userId, 'notifications'), {
+            title: 'Project Completed 🎉',
+            message: `Your project "${req.category || 'Custom Request'}" has been marked as completed! Check the file vault for deliverables.`,
+            type: 'project_status',
+            read: false,
+            createdAt: serverTimestamp(),
+            projectId: id
+          });
+        }
+      }
+    } catch { 
+      toast.error('Failed'); 
+    } 
+  };
   const updateMsgStatus = async (id, status) => { try { await updateDoc(doc(db, 'contact_messages', id), { status }); toast.success(`Marked ${status}`); } catch { toast.error('Failed'); } };
   const handleLogout = async () => { await logout(); navigate('/login'); };
   const fmt = ts => { if (!ts) return 'Just now'; const d = ts.toDate ? ts.toDate() : new Date(ts); return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }); };

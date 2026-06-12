@@ -20,12 +20,16 @@ const createUserDoc = async (firebaseUser, extraData = {}) => {
   const ref = doc(db, 'users', firebaseUser.uid);
   const snap = await getDoc(ref);
 
+  const adminEmail = import.meta.env.VITE_ADMIN_EMAIL;
+  const isAdmin = firebaseUser.email === adminEmail;
+  const role = isAdmin ? 'admin' : 'client';
+
   if (!snap.exists()) {
     await setDoc(ref, {
       uid: firebaseUser.uid,
       email: firebaseUser.email,
       name: firebaseUser.displayName || extraData.name || firebaseUser.email.split('@')[0],
-      role: 'client',
+      role: role,
       createdAt: serverTimestamp(),
       ...extraData
     });
@@ -49,23 +53,30 @@ export const AuthProvider = ({ children }) => {
           const snap = await getDoc(ref);
           const firestoreData = snap.exists() ? snap.data() : {};
 
+          const adminEmail = import.meta.env.VITE_ADMIN_EMAIL;
+          const isAdmin = firebaseUser.email === adminEmail;
+          const role = isAdmin ? 'admin' : (firestoreData.role || 'client');
+
           setUser({
             uid: firebaseUser.uid,
             email: firebaseUser.email,
             name: firestoreData.name || firebaseUser.displayName || firebaseUser.email.split('@')[0],
-            role: firestoreData.role || 'client',
-            photoURL: firebaseUser.photoURL,
+            role: role,
+            photoURL: firebaseUser.photoURL || firestoreData.photoURL,
             ...firestoreData
           });
           setIsAuthenticated(true);
         } catch (err) {
           console.error('Error loading user from Firestore:', err);
+          const adminEmail = import.meta.env.VITE_ADMIN_EMAIL;
+          const isAdmin = firebaseUser.email === adminEmail;
+
           // Still authenticate with basic info if Firestore fails
           setUser({
             uid: firebaseUser.uid,
             email: firebaseUser.email,
             name: firebaseUser.displayName || firebaseUser.email.split('@')[0],
-            role: 'client'
+            role: isAdmin ? 'admin' : 'client'
           });
           setIsAuthenticated(true);
         }

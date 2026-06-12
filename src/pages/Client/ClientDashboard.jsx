@@ -34,8 +34,9 @@ import {
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 import { collection, query, where, orderBy, onSnapshot, addDoc, doc, setDoc, getDoc, serverTimestamp } from 'firebase/firestore';
-import { db, auth } from '../../config/firebase';
-import { updateProfile } from 'firebase/auth';
+import { db, auth, storage } from '../../config/firebase';
+import { updateProfile, sendPasswordResetEmail } from 'firebase/auth';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import toast, { Toaster } from 'react-hot-toast';
 import { processPayment } from '../../services/payment';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -69,7 +70,7 @@ const FAQ_DATA = [
   }
 ];
 
-const ClientDashboard = () => {
+const ClientDashboard = ({ defaultTab = 'overview' }) => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const chatEndRef = useRef(null);
@@ -77,10 +78,12 @@ const ClientDashboard = () => {
   // ─── Core State ───
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState('overview');
+  const [activeTab, setActiveTab] = useState(defaultTab);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchFocused, setSearchFocused] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [hasNewUpdate, setHasNewUpdate] = useState(false);
+  const [notifications, setNotifications] = useState([]);
 
   // ─── Messages State ───
   const [messages, setMessages] = useState([]);
@@ -96,12 +99,14 @@ const ClientDashboard = () => {
   const [profilePhone, setProfilePhone] = useState('');
   const [profileCompany, setProfileCompany] = useState('');
   const [profileSaving, setProfileSaving] = useState(false);
+  const [isEditingProfile, setIsEditingProfile] = useState(false);
+  const [isResettingPassword, setIsResettingPassword] = useState(false);
+  const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
+  const fileInputRef = useRef(null);
 
   // ─── FAQ State ───
   const [expandedFaq, setExpandedFaq] = useState(null);
 
-  // ─── Notification State ───
-  const [hasNewUpdate, setHasNewUpdate] = useState(false);
 
   // ═══════════════════════════════════════
   // FIREBASE SUBSCRIPTIONS
@@ -184,19 +189,35 @@ const ClientDashboard = () => {
     fetchProfile();
   }, [user]);
 
-  // Notification dot logic
+  // Fetch notifications
   useEffect(() => {
-    if (requests.length === 0) {
-      setHasNewUpdate(false);
-      return;
-    }
+    if (!user) return;
+    const q = query(
+      collection(db, 'users', user.uid, 'notifications'),
+      orderBy('createdAt', 'desc')
+    );
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const docs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setNotifications(docs);
+      
+      const unread = docs.some(n => !n.read);
+      setHasNewUpdate(unread);
+    }, (error) => {
+      console.error("Error fetching notifications:", error);
+    });
+    return () => unsubscribe();
+  }, [user]);
+
+  // Notification dot logic fallback
+  useEffect(() => {
+    if (requests.length === 0) return;
     const lastSeen = localStorage.getItem('pixora_last_seen_at');
     const lastSeenTime = lastSeen ? new Date(lastSeen).getTime() : 0;
     const hasUpdate = requests.some(r => {
       const updatedAt = r.updatedAt?.toDate ? r.updatedAt.toDate().getTime() : 0;
       return updatedAt > lastSeenTime;
     });
-    setHasNewUpdate(hasUpdate);
+    if (hasUpdate) setHasNewUpdate(true);
   }, [requests]);
 
   // Auto-scroll chat to bottom
@@ -255,12 +276,20 @@ const ClientDashboard = () => {
 
   const getStatusBadgeClass = (status) => {
     switch (status) {
-      case 'active': return 'cd-badge-purple';
+      case 'active': return 'cd-badge-blue';
       case 'completed': return 'cd-badge-green';
       case 'pending': return 'cd-badge-yellow';
       case 'cancelled': return 'cd-badge-red';
       default: return 'cd-badge-gray';
     }
+  };
+
+  const getStatusText = (status) => {
+    if (status === 'active') return 'In Progress';
+    if (status === 'completed') return 'Completed';
+    if (status === 'pending') return 'Pending';
+    if (status === 'cancelled') return 'Cancelled';
+    return status || 'Pending';
   };
 
   const filteredRequests = requests.filter(r => {
@@ -343,6 +372,12 @@ const ClientDashboard = () => {
       toast.error('Name cannot be empty');
       return;
     }
+    // Phone validation exactly 10 digits if provided
+    if (profilePhone.trim() && !/^\d{10}$/.test(profilePhone.trim())) {
+      toast.error('Phone number must be exactly 10 digits');
+      return;
+    }
+
     setProfileSaving(true);
     try {
       await setDoc(doc(db, 'users', user.uid), {
@@ -355,11 +390,55 @@ const ClientDashboard = () => {
         await updateProfile(auth.currentUser, { displayName: profileName.trim() });
       }
       toast.success('Profile updated successfully!');
+      setIsEditingProfile(false);
     } catch (error) {
       console.error("Error saving profile:", error);
       toast.error('Failed to update profile');
     } finally {
       setProfileSaving(false);
+    }
+  };
+
+  const handlePasswordReset = async () => {
+    if (!user?.email) return;
+    setIsResettingPassword(true);
+    try {
+      await sendPasswordResetEmail(auth, user.email);
+      toast.success('Reset email sent! Check your inbox.');
+    } catch (error) {
+      console.error('Password reset error:', error);
+      toast.error('Failed to send reset email.');
+    } finally {
+      setIsResettingPassword(false);
+    }
+  };
+
+  const handlePhotoUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      toast.error('Please upload an image file');
+      return;
+    }
+
+    setIsUploadingPhoto(true);
+    try {
+      const storageRef = ref(storage, `avatars/${user.uid}`);
+      await uploadBytes(storageRef, file);
+      const downloadURL = await getDownloadURL(storageRef);
+      
+      await updateProfile(auth.currentUser, { photoURL: downloadURL });
+      await setDoc(doc(db, 'users', user.uid), { photoURL: downloadURL }, { merge: true });
+      
+      toast.success('Profile photo updated!');
+      // Force reload to show new photo
+      window.location.reload();
+    } catch (error) {
+      console.error('Photo upload error:', error);
+      toast.error('Failed to upload photo');
+    } finally {
+      setIsUploadingPhoto(false);
     }
   };
 
@@ -439,42 +518,26 @@ const ClientDashboard = () => {
   // ═══════════════════════════════════════
 
   const renderSmartOverview = () => {
-    if (!loading && requests.length === 0) {
+    const activeProjects = requests.filter(r => r.status === 'active' || r.status === 'pending');
+    const hasCompleted = requests.some(r => r.status === 'completed');
+
+    if (requests.length === 0 && !loading) {
       return renderOnboarding();
     }
 
-    const currentPhase = activeRequest ? getPhaseLabel(activeRequest.status) : null;
-    const deadline = activeRequest?.deadline || 'TBD — we will confirm after review';
-    const timeline = activeRequest ? getTimeline(activeRequest.status) : [];
-    const pendingInvoice = invoices.find(inv => inv.status === 'Pending');
-
     return (
       <motion.div variants={pageVariants} initial="initial" animate="in" exit="out" key="overview">
-        <h1 className="cd-page-title">{getGreeting()}, {user?.name?.split(' ')[0]}</h1>
-        <p className="cd-page-desc">Here is the current status of your workspace and active deliverables.</p>
+        <h1 className="cd-page-title">{getGreeting()}, {user?.name?.split(' ')[0]} 👋</h1>
+        <p className="cd-page-desc">Here's your project status and recent activity.</p>
 
-        {/* Hero Status Banner — only when an active request exists */}
-        {activeRequest && (
-          <div className="cd-status-banner" style={{ marginBottom: '32px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-              <div>
-                <div className="cd-badge cd-badge-purple" style={{ marginBottom: '16px' }}>
-                  <Activity size={12} /> Active Phase
-                </div>
-                <h2 style={{ fontSize: '24px', fontWeight: '700', marginBottom: '8px' }}>{currentPhase}</h2>
-                <p style={{ color: 'var(--cd-text-secondary)', maxWidth: '400px', lineHeight: '1.5' }}>
-                  {activeRequest.status === 'pending' && 'Your request is being reviewed by our team. We will get back to you within 24 hours.'}
-                  {activeRequest.status === 'active' && 'Our team is currently working on your project. Check the timeline for detailed progress.'}
-                  {activeRequest.status === 'completed' && 'Your project has been completed and delivered. Check the File Vault for all deliverables.'}
-                  {activeRequest.status === 'cancelled' && 'This project was cancelled. Feel free to submit a new request anytime.'}
-                </p>
-              </div>
-              <div style={{ textAlign: 'right' }}>
-                <div style={{ fontSize: '12px', color: 'var(--cd-text-muted)', textTransform: 'uppercase', marginBottom: '4px' }}>Target Deadline</div>
-                <div style={{ fontSize: '16px', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <CalendarDays size={16} color="var(--cd-accent)" /> {deadline}
-                </div>
-              </div>
+        {hasCompleted && (
+          <div style={{ background: 'linear-gradient(135deg, var(--cd-success), #10b981)', color: 'white', padding: '20px 24px', borderRadius: '12px', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '16px', boxShadow: '0 8px 24px rgba(16,185,129,0.2)' }}>
+            <div style={{ background: 'rgba(255,255,255,0.2)', padding: '12px', borderRadius: '50%' }}>
+              <CheckCircle2 size={24} />
+            </div>
+            <div>
+              <h3 style={{ fontSize: '18px', fontWeight: 'bold', margin: 0, marginBottom: '4px' }}>Your project is live! 🎉</h3>
+              <p style={{ margin: 0, opacity: 0.9, fontSize: '14px' }}>Congratulations! One or more of your projects have been completed and delivered.</p>
             </div>
           </div>
         )}
@@ -482,29 +545,6 @@ const ClientDashboard = () => {
         <div className="cd-grid-overview">
           {/* Left Column */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-            {/* Attention Card — only when real pending invoice exists */}
-            {pendingInvoice && (
-              <div className="cd-card" style={{ padding: '0' }}>
-                <div style={{ padding: '20px 24px', borderBottom: '1px solid var(--cd-border)', display: 'flex', justifyContent: 'space-between' }}>
-                  <h3 style={{ fontSize: '14px', fontWeight: '600' }}>Requires Your Attention</h3>
-                </div>
-                <div style={{ padding: '24px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'rgba(245, 158, 11, 0.05)', border: '1px solid rgba(245, 158, 11, 0.2)', padding: '16px', borderRadius: '8px' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                      <AlertCircle size={20} color="var(--cd-warning)" />
-                      <div>
-                        <div style={{ fontSize: '14px', fontWeight: '600', color: 'var(--cd-text-primary)' }}>Invoice #{pendingInvoice.id} Pending</div>
-                        <div style={{ fontSize: '13px', color: 'var(--cd-text-secondary)' }}>{pendingInvoice.desc || 'Payment required to continue.'}</div>
-                      </div>
-                    </div>
-                    <button className="cd-btn-primary" onClick={() => handlePayment(pendingInvoice.amount)} style={{ background: 'var(--cd-warning)', color: '#000' }}>
-                      Pay ₹{pendingInvoice.amount}
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
-
             {/* Recent Project Requests */}
             <div className="cd-card" style={{ padding: '0' }}>
               <div style={{ padding: '20px 24px', borderBottom: '1px solid var(--cd-border)' }}>
@@ -514,23 +554,25 @@ const ClientDashboard = () => {
                 <thead>
                   <tr>
                     <th>Project Name</th>
+                    <th>Timeline</th>
                     <th>Status</th>
                     <th>Date</th>
                   </tr>
                 </thead>
                 <tbody>
                   {loading ? (
-                    <tr><td colSpan="3" style={{ textAlign: 'center', color: 'var(--cd-text-muted)' }}>Loading...</td></tr>
+                    <tr><td colSpan="4" style={{ textAlign: 'center', color: 'var(--cd-text-muted)' }}>Loading...</td></tr>
                   ) : filteredRequests.length === 0 ? (
-                    <tr><td colSpan="3" style={{ textAlign: 'center', color: 'var(--cd-text-muted)' }}>
+                    <tr><td colSpan="4" style={{ textAlign: 'center', color: 'var(--cd-text-muted)' }}>
                       {searchQuery ? `No results for "${searchQuery}"` : 'No requests found.'}
                     </td></tr>
                   ) : (
                     filteredRequests.slice(0, 5).map(r => (
                       <tr key={r.id}>
                         <td style={{ fontWeight: '500' }}>{r.company || r.category || 'Personal Project'}</td>
-                        <td><span className={`cd-badge ${getStatusBadgeClass(r.status)}`}>{r.status || 'Pending'}</span></td>
-                        <td style={{ color: 'var(--cd-text-secondary)' }}>{formatDate(r.createdAt)}</td>
+                        <td>{r.timeline || 'TBD'}</td>
+                        <td><span className={`cd-badge ${getStatusBadgeClass(r.status)}`}>{getStatusText(r.status)}</span></td>
+                        <td>{formatDate(r.createdAt)}</td>
                       </tr>
                     ))
                   )}
@@ -607,7 +649,7 @@ const ClientDashboard = () => {
                       {r.company || 'Personal Project'}
                     </div>
                   </div>
-                  <span className={`cd-badge ${getStatusBadgeClass(r.status)}`}>{r.status || 'Pending'}</span>
+                  <span className={`cd-badge ${getStatusBadgeClass(r.status)}`}>{getStatusText(r.status)}</span>
                 </div>
 
                 {r.description && (
@@ -659,12 +701,12 @@ const ClientDashboard = () => {
           </p>
           <div style={{ fontSize: '13px', color: 'var(--cd-text-secondary)', lineHeight: '1.6' }}>
             Need to share a file with us?{' '}
-            <a href="https://wa.me/919876543210" target="_blank" rel="noopener noreferrer" style={{ color: '#25D366', textDecoration: 'none', fontWeight: '500' }}>
+            <a href="https://wa.me/919818457227" target="_blank" rel="noopener noreferrer" style={{ color: '#25D366', textDecoration: 'none', fontWeight: '500' }}>
               Send it via WhatsApp
             </a>{' '}
             or email us at{' '}
-            <a href="mailto:hello@pixora.studio" style={{ color: 'var(--cd-accent-light)', textDecoration: 'none', fontWeight: '500' }}>
-              hello@pixora.studio
+            <a href="mailto:vivekbiswal2006@gmail.com" style={{ color: 'var(--cd-accent-light)', textDecoration: 'none', fontWeight: '500' }}>
+              vivekbiswal2006@gmail.com
             </a>
           </div>
         </div>
@@ -822,69 +864,100 @@ const ClientDashboard = () => {
   // RENDER: PROFILE
   // ═══════════════════════════════════════
 
-  const renderProfile = () => (
-    <motion.div variants={pageVariants} initial="initial" animate="in" exit="out" key="profile">
-      <h1 className="cd-page-title">My Profile</h1>
-      <p className="cd-page-desc">Manage your account details and preferences.</p>
+  const renderProfile = () => {
+    const userInitials = user?.name ? user.name.split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase() : 'U';
+    
+    return (
+      <motion.div variants={pageVariants} initial="initial" animate="in" exit="out" key="profile">
+        <h1 className="cd-page-title">My Profile</h1>
+        <p className="cd-page-desc">Manage your account details and preferences.</p>
 
-      <div className="cd-card">
-        <div className="cd-profile-form">
-          <div className="cd-form-group">
-            <label className="cd-form-label">Full Name</label>
-            <input
-              type="text"
-              className="cd-form-input"
-              value={profileName}
-              onChange={(e) => setProfileName(e.target.value)}
-              placeholder="Your full name"
-            />
+        {/* Top Header Profile Card */}
+        <div className="cd-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', padding: '40px 20px', position: 'relative', overflow: 'hidden' }}>
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '100px', background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(37, 99, 235, 0.1))' }} />
+          
+          <div style={{ position: 'relative', width: '96px', height: '96px', borderRadius: '50%', background: 'var(--cd-accent)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '32px', fontWeight: 'bold', border: '4px solid #030014', marginBottom: '16px', boxShadow: '0 8px 16px rgba(0,0,0,0.5)', overflow: 'hidden' }}>
+            {user?.photoURL ? (
+              <img src={user.photoURL} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            ) : (
+              userInitials
+            )}
           </div>
+          
+          <h2 style={{ fontSize: '24px', fontWeight: '700', margin: '0 0 4px 0' }}>{user?.name}</h2>
+          <p style={{ color: 'var(--cd-text-secondary)', margin: '0 0 24px 0' }}>{user?.email}</p>
 
-          <div className="cd-form-group">
-            <label className="cd-form-label">Email Address</label>
-            <input
-              type="email"
-              className="cd-form-input"
-              value={user?.email || ''}
-              disabled
-            />
-            <div className="cd-form-hint">Email cannot be changed. Contact support if you need to update it.</div>
+          <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', justifyContent: 'center' }}>
+            <button className="cd-btn-primary" onClick={() => setIsEditingProfile(!isEditingProfile)}>
+              {isEditingProfile ? 'Cancel Edit' : 'Edit Profile'}
+            </button>
+            <button className="cd-btn-secondary" onClick={handlePasswordReset} disabled={isResettingPassword}>
+              {isResettingPassword ? 'Sending...' : 'Change Password'}
+            </button>
+            <button className="cd-btn-secondary" onClick={() => fileInputRef.current?.click()} disabled={isUploadingPhoto}>
+              {isUploadingPhoto ? 'Uploading...' : 'Upload Photo'}
+            </button>
+            <input type="file" ref={fileInputRef} style={{ display: 'none' }} accept="image/*" onChange={handlePhotoUpload} />
           </div>
-
-          <div className="cd-form-group">
-            <label className="cd-form-label">Phone Number</label>
-            <input
-              type="tel"
-              className="cd-form-input"
-              value={profilePhone}
-              onChange={(e) => setProfilePhone(e.target.value)}
-              placeholder="+91 98765 43210"
-            />
-          </div>
-
-          <div className="cd-form-group">
-            <label className="cd-form-label">Company Name</label>
-            <input
-              type="text"
-              className="cd-form-input"
-              value={profileCompany}
-              onChange={(e) => setProfileCompany(e.target.value)}
-              placeholder="Your company or brand name"
-            />
-          </div>
-
-          <button
-            className="cd-btn-primary"
-            onClick={handleSaveProfile}
-            disabled={profileSaving}
-            style={{ marginTop: '8px', opacity: profileSaving ? 0.6 : 1 }}
-          >
-            {profileSaving ? 'Saving...' : 'Save Changes'}
-          </button>
         </div>
-      </div>
-    </motion.div>
-  );
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px', marginTop: '24px' }}>
+          
+          {/* Info Grid */}
+          <div className="cd-card">
+            <h3 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <User size={18} color="var(--cd-accent)" /> Account Overview
+            </h3>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+              <div>
+                <div style={{ fontSize: '12px', color: 'var(--cd-text-muted)', marginBottom: '4px', textTransform: 'uppercase' }}>Joined Date</div>
+                <div style={{ fontSize: '14px', fontWeight: '500' }}>{user?.createdAt?.toDate ? new Date(user.createdAt.toDate()).toLocaleDateString() : 'Recently'}</div>
+              </div>
+              <div>
+                <div style={{ fontSize: '12px', color: 'var(--cd-text-muted)', marginBottom: '4px', textTransform: 'uppercase' }}>Total Projects</div>
+                <div style={{ fontSize: '14px', fontWeight: '500' }}>{requests.length}</div>
+              </div>
+              <div>
+                <div style={{ fontSize: '12px', color: 'var(--cd-text-muted)', marginBottom: '4px', textTransform: 'uppercase' }}>Current Plan</div>
+                <div style={{ fontSize: '14px', fontWeight: '500' }}>Pay-as-you-go</div>
+              </div>
+              <div>
+                <div style={{ fontSize: '12px', color: 'var(--cd-text-muted)', marginBottom: '4px', textTransform: 'uppercase' }}>Account Type</div>
+                <div style={{ fontSize: '14px', fontWeight: '500', textTransform: 'capitalize' }}>{user?.role || 'Client'}</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Edit Form */}
+          {isEditingProfile && (
+            <motion.div className="cd-card" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
+              <h3 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Settings size={18} color="var(--cd-accent)" /> Update Details
+              </h3>
+              <div className="cd-profile-form" style={{ marginTop: 0 }}>
+                <div className="cd-form-group">
+                  <label className="cd-form-label">Full Name</label>
+                  <input type="text" className="cd-form-input" value={profileName} onChange={(e) => setProfileName(e.target.value)} placeholder="Your full name" />
+                </div>
+                <div className="cd-form-group">
+                  <label className="cd-form-label">Phone Number</label>
+                  <input type="tel" className="cd-form-input" value={profilePhone} onChange={(e) => setProfilePhone(e.target.value)} placeholder="10-digit number" />
+                </div>
+                <div className="cd-form-group">
+                  <label className="cd-form-label">Company Name</label>
+                  <input type="text" className="cd-form-input" value={profileCompany} onChange={(e) => setProfileCompany(e.target.value)} placeholder="Your company" />
+                </div>
+                <button className="cd-btn-primary" onClick={handleSaveProfile} disabled={profileSaving} style={{ width: '100%', marginTop: '8px' }}>
+                  {profileSaving ? 'Saving...' : 'Save Changes'}
+                </button>
+              </div>
+            </motion.div>
+          )}
+
+        </div>
+      </motion.div>
+    );
+  };
 
   // ═══════════════════════════════════════
   // RENDER: HELP & FAQ
@@ -920,11 +993,11 @@ const ClientDashboard = () => {
         <h3>Still have questions? We are here to help.</h3>
         <p>Reach out to us and we will get back to you as soon as possible.</p>
         <div className="cd-contact-links">
-          <a href="https://wa.me/919876543210" target="_blank" rel="noopener noreferrer" className="cd-contact-link cd-contact-link-whatsapp">
+          <a href="https://wa.me/919818457227" target="_blank" rel="noopener noreferrer" className="cd-contact-link cd-contact-link-whatsapp">
             <MessageCircle size={16} /> Chat on WhatsApp
           </a>
-          <a href="mailto:hello@pixora.studio" className="cd-contact-link cd-contact-link-email">
-            <Send size={16} /> hello@pixora.studio
+          <a href="mailto:vivekbiswal2006@gmail.com" className="cd-contact-link cd-contact-link-email">
+            <Send size={16} /> vivekbiswal2006@gmail.com
           </a>
         </div>
       </div>
@@ -992,7 +1065,7 @@ const ClientDashboard = () => {
           {/* WhatsApp Shortcut */}
           <a
             className="cd-nav-item cd-whatsapp-link"
-            href="https://wa.me/919876543210"
+            href="https://wa.me/919818457227"
             target="_blank"
             rel="noopener noreferrer"
           >
