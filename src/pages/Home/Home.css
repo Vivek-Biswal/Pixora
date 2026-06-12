@@ -1111,18 +1111,14 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  padding-bottom: 60vh; /* Extremely important for the final card to stick */
+  gap: var(--space-12);
+  padding-bottom: 50vh; /* Allow scroll past last card */
 }
 .lovable-card {
   position: sticky;
   top: calc(var(--navbar-height) + 40px);
   transform-origin: top center;
   border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
-  /* Add margin bottom to space them out so they stack during scroll */
-  margin-bottom: 35vh;
-}
-.lovable-card:last-child {
-  margin-bottom: 0;
 }
 
 .lovable-card-inner {

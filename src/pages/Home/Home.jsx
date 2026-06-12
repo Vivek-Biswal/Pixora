@@ -697,7 +697,7 @@ const Home = () => {
           <div className="lovable-stacked-right">
             <div className="lovable-cards">
               {capabilities.map((cap, i) => (
-                <div key={i} className="lovable-card" style={{ top: `calc(120px + ${i * 60}px)` }}>
+                <div key={i} className="lovable-card" style={{ top: `calc(120px + ${i * 36}px)` }}>
                   <div className="lovable-card-inner">
                     <div className="lovable-card-icon" style={{ color: cap.color, backgroundColor: `color-mix(in srgb, ${cap.color} 15%, transparent)` }}>
                       {cap.icon}
